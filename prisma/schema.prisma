@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Student {
+  id                 String          @id @default(cuid())
+  image              String?
+  name               String?
+  country            String?
+  studentSince       DateTime?
+  weeklySchedule     String?
+  parentName         String?
+  parentEmail        String?
+  parentPhone        String?
+  groupClassSchedule String?
+  groupTeacher       String?
+  subject            String?
+  courses            StudentCourse[]
+  teacherChanges     TeacherChange[]
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+}
+
+model StudentCourse {
+  id                String   @id @default(cuid())
+  studentId         String
+  courseInformation String?
+  courseStage       String?
+  student           Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([studentId])
+}
+
+model TeacherChange {
+  id                  String   @id @default(cuid())
+  studentId           String
+  previousTeacherName String?
+  newTeacherName      String?
+  changingReason      String?
+  changedAt           DateTime @default(now())
+  student             Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([studentId])
+}
