@@ -387,7 +387,9 @@ export const ModelName = {
   User: 'User',
   Student: 'Student',
   StudentCourse: 'StudentCourse',
-  TeacherChange: 'TeacherChange'
+  TeacherChange: 'TeacherChange',
+  Teacher: 'Teacher',
+  StudentLeftLog: 'StudentLeftLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -403,7 +405,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "student" | "studentCourse" | "teacherChange"
+    modelProps: "user" | "student" | "studentCourse" | "teacherChange" | "teacher" | "studentLeftLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -703,6 +705,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Teacher: {
+      payload: Prisma.$TeacherPayload<ExtArgs>
+      fields: Prisma.TeacherFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TeacherFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TeacherFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayload>
+        }
+        findFirst: {
+          args: Prisma.TeacherFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TeacherFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayload>
+        }
+        findMany: {
+          args: Prisma.TeacherFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayload>[]
+        }
+        create: {
+          args: Prisma.TeacherCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayload>
+        }
+        createMany: {
+          args: Prisma.TeacherCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TeacherCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayload>[]
+        }
+        delete: {
+          args: Prisma.TeacherDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayload>
+        }
+        update: {
+          args: Prisma.TeacherUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayload>
+        }
+        deleteMany: {
+          args: Prisma.TeacherDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TeacherUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TeacherUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayload>[]
+        }
+        upsert: {
+          args: Prisma.TeacherUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayload>
+        }
+        aggregate: {
+          args: Prisma.TeacherAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTeacher>
+        }
+        groupBy: {
+          args: Prisma.TeacherGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TeacherGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TeacherCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TeacherCountAggregateOutputType> | number
+        }
+      }
+    }
+    StudentLeftLog: {
+      payload: Prisma.$StudentLeftLogPayload<ExtArgs>
+      fields: Prisma.StudentLeftLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StudentLeftLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentLeftLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StudentLeftLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentLeftLogPayload>
+        }
+        findFirst: {
+          args: Prisma.StudentLeftLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentLeftLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StudentLeftLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentLeftLogPayload>
+        }
+        findMany: {
+          args: Prisma.StudentLeftLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentLeftLogPayload>[]
+        }
+        create: {
+          args: Prisma.StudentLeftLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentLeftLogPayload>
+        }
+        createMany: {
+          args: Prisma.StudentLeftLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StudentLeftLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentLeftLogPayload>[]
+        }
+        delete: {
+          args: Prisma.StudentLeftLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentLeftLogPayload>
+        }
+        update: {
+          args: Prisma.StudentLeftLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentLeftLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.StudentLeftLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StudentLeftLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StudentLeftLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentLeftLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.StudentLeftLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentLeftLogPayload>
+        }
+        aggregate: {
+          args: Prisma.StudentLeftLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStudentLeftLog>
+        }
+        groupBy: {
+          args: Prisma.StudentLeftLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentLeftLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StudentLeftLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentLeftLogCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -799,6 +949,34 @@ export const TeacherChangeScalarFieldEnum = {
 export type TeacherChangeScalarFieldEnum = (typeof TeacherChangeScalarFieldEnum)[keyof typeof TeacherChangeScalarFieldEnum]
 
 
+export const TeacherScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  imageUrl: 'imageUrl',
+  joiningDate: 'joiningDate',
+  status: 'status',
+  strongArea: 'strongArea',
+  totalStudentsAssignedLifetime: 'totalStudentsAssignedLifetime',
+  currentActiveStudents: 'currentActiveStudents',
+  studentLeftLifetime: 'studentLeftLifetime',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TeacherScalarFieldEnum = (typeof TeacherScalarFieldEnum)[keyof typeof TeacherScalarFieldEnum]
+
+
+export const StudentLeftLogScalarFieldEnum = {
+  id: 'id',
+  teacherId: 'teacherId',
+  studentName: 'studentName',
+  leavingReason: 'leavingReason',
+  createdAt: 'createdAt'
+} as const
+
+export type StudentLeftLogScalarFieldEnum = (typeof StudentLeftLogScalarFieldEnum)[keyof typeof StudentLeftLogScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -858,6 +1036,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'TeacherStatus'
+ */
+export type EnumTeacherStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TeacherStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'TeacherStatus[]'
+ */
+export type ListEnumTeacherStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TeacherStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -868,6 +1060,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -984,6 +1190,8 @@ export type GlobalOmitConfig = {
   student?: Prisma.StudentOmit
   studentCourse?: Prisma.StudentCourseOmit
   teacherChange?: Prisma.TeacherChangeOmit
+  teacher?: Prisma.TeacherOmit
+  studentLeftLog?: Prisma.StudentLeftLogOmit
 }
 
 /* Types for Logging */

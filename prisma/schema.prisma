@@ -7,6 +7,11 @@ datasource db {
   provider = "postgresql"
 }
 
+enum TeacherStatus {
+  ACTIVE
+  INACTIVE
+}
+
 model User {
   id        String   @id @default(cuid())
   name      String
@@ -58,4 +63,30 @@ model TeacherChange {
   updatedAt           DateTime @updatedAt
 
   @@index([studentId])
+}
+
+model Teacher {
+  id                            String           @id @default(uuid())
+  name                          String?
+  imageUrl                      String?
+  joiningDate                   DateTime?
+  status                        TeacherStatus?   @default(ACTIVE)
+  strongArea                    String?
+  totalStudentsAssignedLifetime Int?             @default(0)
+  currentActiveStudents         Int?             @default(0)
+  studentLeftLifetime           Int?             @default(0)
+  studentLeftLogs               StudentLeftLog[]
+  createdAt                     DateTime         @default(now())
+  updatedAt                     DateTime         @updatedAt
+}
+
+model StudentLeftLog {
+  id            String   @id @default(uuid())
+  teacherId     String
+  studentName   String?
+  leavingReason String?
+  teacher       Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+
+  @@index([teacherId])
 }

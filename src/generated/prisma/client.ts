@@ -61,3 +61,13 @@ export type StudentCourse = Prisma.StudentCourseModel
  * 
  */
 export type TeacherChange = Prisma.TeacherChangeModel
+/**
+ * Model Teacher
+ * 
+ */
+export type Teacher = Prisma.TeacherModel
+/**
+ * Model StudentLeftLog
+ * 
+ */
+export type StudentLeftLog = Prisma.StudentLeftLogModel

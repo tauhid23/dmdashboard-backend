@@ -54,7 +54,9 @@ export const ModelName = {
   User: 'User',
   Student: 'Student',
   StudentCourse: 'StudentCourse',
-  TeacherChange: 'TeacherChange'
+  TeacherChange: 'TeacherChange',
+  Teacher: 'Teacher',
+  StudentLeftLog: 'StudentLeftLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -128,6 +130,34 @@ export const TeacherChangeScalarFieldEnum = {
 } as const
 
 export type TeacherChangeScalarFieldEnum = (typeof TeacherChangeScalarFieldEnum)[keyof typeof TeacherChangeScalarFieldEnum]
+
+
+export const TeacherScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  imageUrl: 'imageUrl',
+  joiningDate: 'joiningDate',
+  status: 'status',
+  strongArea: 'strongArea',
+  totalStudentsAssignedLifetime: 'totalStudentsAssignedLifetime',
+  currentActiveStudents: 'currentActiveStudents',
+  studentLeftLifetime: 'studentLeftLifetime',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TeacherScalarFieldEnum = (typeof TeacherScalarFieldEnum)[keyof typeof TeacherScalarFieldEnum]
+
+
+export const StudentLeftLogScalarFieldEnum = {
+  id: 'id',
+  teacherId: 'teacherId',
+  studentName: 'studentName',
+  leavingReason: 'leavingReason',
+  createdAt: 'createdAt'
+} as const
+
+export type StudentLeftLogScalarFieldEnum = (typeof StudentLeftLogScalarFieldEnum)[keyof typeof StudentLeftLogScalarFieldEnum]
 
 
 export const SortOrder = {

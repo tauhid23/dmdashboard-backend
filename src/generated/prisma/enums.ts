@@ -9,7 +9,9 @@
 * 🟢 You can import this file directly.
 */
 
+export const TeacherStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+} as const
 
-
-// This file is empty because there are no enums in the schema.
-export {}
+export type TeacherStatus = (typeof TeacherStatus)[keyof typeof TeacherStatus]
