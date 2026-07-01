@@ -15,3 +15,13 @@ export const TeacherStatus = {
 } as const
 
 export type TeacherStatus = (typeof TeacherStatus)[keyof typeof TeacherStatus]
+
+
+export const StudentStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  TRIAL: 'TRIAL',
+  NEW_SIGN_UP: 'NEW_SIGN_UP'
+} as const
+
+export type StudentStatus = (typeof StudentStatus)[keyof typeof StudentStatus]

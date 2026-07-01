@@ -30,6 +30,15 @@ export const getStudents = async (_req: Request, res: Response) => {
   });
 };
 
+export const getStudentOptions = async (_req: Request, res: Response) => {
+  const students = await studentService.getStudentOptions();
+
+  res.status(200).json({
+    success: true,
+    data: students
+  });
+};
+
 export const getStudentById = async (req: Request, res: Response) => {
   const student = await studentService.getStudentById(getStudentId(req));
 

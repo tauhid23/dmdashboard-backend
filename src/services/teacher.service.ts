@@ -148,6 +148,18 @@ export const getTeachers = async () => {
   });
 };
 
+export const getTeacherOptions = async () => {
+  return prisma.teacher.findMany({
+    select: {
+      id: true,
+      name: true
+    },
+    orderBy: {
+      name: "asc"
+    }
+  });
+};
+
 export const getTeacherById = async (id: string) => {
   const teacher = await prisma.teacher.findUnique({
     where: { id },

@@ -51,6 +51,19 @@ export const getTeachers = async (_req: Request, res: Response) => {
   }
 };
 
+export const getTeacherOptions = async (_req: Request, res: Response) => {
+  try {
+    const teachers = await teacherService.getTeacherOptions();
+
+    res.status(200).json({
+      success: true,
+      data: teachers
+    });
+  } catch (error) {
+    handleControllerError(error, res);
+  }
+};
+
 export const getTeacherById = async (req: Request, res: Response) => {
   try {
     const teacher = await teacherService.getTeacherById(getTeacherId(req));

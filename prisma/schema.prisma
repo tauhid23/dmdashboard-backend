@@ -12,6 +12,13 @@ enum TeacherStatus {
   INACTIVE
 }
 
+enum StudentStatus {
+  ACTIVE
+  INACTIVE
+  TRIAL
+  NEW_SIGN_UP
+}
+
 model User {
   id        String   @id @default(cuid())
   name      String
@@ -21,22 +28,33 @@ model User {
 }
 
 model Student {
-  id                 String          @id @default(cuid())
-  image              String?
-  name               String?
-  country            String?
-  studentSince       DateTime?
-  weeklySchedule     String?
-  parentName         String?
-  parentEmail        String?
-  parentPhone        String?
-  groupClassSchedule String?
-  groupTeacher       String?
-  subject            String?
-  courses            StudentCourse[]
-  teacherChanges     TeacherChange[]
-  createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @updatedAt
+  id                  String          @id @default(cuid())
+  image               String?
+  name                String?
+  country             String?
+  studentSince        DateTime?
+  weeklySchedule      String?
+  parentName          String?
+  parentEmail         String?
+  parentPhone         String?
+  courseName          String?
+  courseStage         String?
+  teacherId           String?
+  teacherName         String?
+  groupClass          Boolean?        @default(false)
+  groupSchedule       String?
+  groupClassSchedule  String?
+  groupTeacher        String?
+  groupSubject        String?
+  subject             String?
+  teacherChanged      Boolean?        @default(false)
+  previousTeacherName String?
+  teacherChangeReason String?
+  status              StudentStatus?  @default(ACTIVE)
+  courses             StudentCourse[]
+  teacherChanges      TeacherChange[]
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
 }
 
 model StudentCourse {

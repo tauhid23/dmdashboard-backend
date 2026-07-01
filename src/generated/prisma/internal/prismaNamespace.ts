@@ -913,9 +913,20 @@ export const StudentScalarFieldEnum = {
   parentName: 'parentName',
   parentEmail: 'parentEmail',
   parentPhone: 'parentPhone',
+  courseName: 'courseName',
+  courseStage: 'courseStage',
+  teacherId: 'teacherId',
+  teacherName: 'teacherName',
+  groupClass: 'groupClass',
+  groupSchedule: 'groupSchedule',
   groupClassSchedule: 'groupClassSchedule',
   groupTeacher: 'groupTeacher',
+  groupSubject: 'groupSubject',
   subject: 'subject',
+  teacherChanged: 'teacherChanged',
+  previousTeacherName: 'previousTeacherName',
+  teacherChangeReason: 'teacherChangeReason',
+  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1032,6 +1043,27 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'StudentStatus'
+ */
+export type EnumStudentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StudentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'StudentStatus[]'
+ */
+export type ListEnumStudentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StudentStatus[]'>
     
 
 
