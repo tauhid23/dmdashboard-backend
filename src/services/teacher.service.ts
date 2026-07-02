@@ -1,5 +1,6 @@
 import { TeacherStatus } from "../generated/prisma/enums.js";
 import { prisma } from "../config/prisma.js";
+import { getTeacherClassReportAverage } from "./classReport.service.js";
 import type {
   CreateTeacherInput,
   StudentLeftLogInput,
@@ -170,8 +171,15 @@ export const getTeacherById = async (id: string) => {
     throw createHttpError(404, "Teacher not found");
   }
 
-  return teacher;
+  const classReportAverage = await getTeacherClassReportAverage(id);
+
+  return {
+    ...teacher,
+    classReportAverage
+  };
 };
+
+export { getTeacherClassReportAverage };
 
 export const updateTeacher = async (
   id: string,

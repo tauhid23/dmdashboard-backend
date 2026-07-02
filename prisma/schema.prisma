@@ -51,10 +51,14 @@ model Student {
   previousTeacherName String?
   teacherChangeReason String?
   status              StudentStatus?  @default(ACTIVE)
+  teacher             Teacher?        @relation(fields: [teacherId], references: [id], onDelete: SetNull)
   courses             StudentCourse[]
   teacherChanges      TeacherChange[]
+  classReports        ClassReport[]
   createdAt           DateTime        @default(now())
   updatedAt           DateTime        @updatedAt
+
+  @@index([teacherId])
 }
 
 model StudentCourse {
@@ -93,9 +97,55 @@ model Teacher {
   totalStudentsAssignedLifetime Int?             @default(0)
   currentActiveStudents         Int?             @default(0)
   studentLeftLifetime           Int?             @default(0)
+  students                      Student[]
+  classReports                  ClassReport[]
   studentLeftLogs               StudentLeftLog[]
   createdAt                     DateTime         @default(now())
   updatedAt                     DateTime         @updatedAt
+}
+
+model ClassReport {
+  id                       String    @id @default(cuid())
+  month                    String?
+  studentId                String?
+  teacherId                String?
+  studentName              String?
+  teacherName              String?
+
+  studentWebcamOn          Boolean?
+  studentWebcamPosition    String?
+  studentWebcamQuality     String?
+  studentNoiseFree         String?
+  studentDevice            String?
+  studentDressup           String?
+  attentionFocus           String?
+  activityInClass          String?
+  lessonUnderstanding      String?
+  languageUnderstanding    String?
+  teacherNote              String?
+
+  teacherWebcamOn          Boolean?
+  teacherWebcamPosition    String?
+  teacherWebcamQuality     String?
+  recommendedHeadphone     String?
+  teacherNoiseFree         String?
+  tutorDevice              String?
+  tutorDressup             String?
+  teachingFocus            String?
+  teachingTone             String?
+  toolsAndContentUse       String?
+  studentInteraction       String?
+  correctionQuality        String?
+  adminNote                String?
+
+  student                  Student?  @relation(fields: [studentId], references: [id], onDelete: SetNull)
+  teacher                  Teacher?  @relation(fields: [teacherId], references: [id], onDelete: SetNull)
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+
+  @@index([studentId])
+  @@index([teacherId])
+  @@index([month])
 }
 
 model StudentLeftLog {

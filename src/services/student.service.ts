@@ -1,8 +1,10 @@
 import { StudentStatus } from "../generated/prisma/enums.js";
 import type { StudentStatus as PrismaStudentStatus } from "../generated/prisma/enums.js";
+import type { Prisma } from "../generated/prisma/client.js";
 import { prisma } from "../config/prisma.js";
 import type {
   CreateStudentInput,
+  StudentFilters,
   StudentStatus as StudentStatusInput,
   StudentCourseInput,
   TeacherChangeInput,
@@ -125,6 +127,22 @@ const compactTeacherChanges = (
   return teacherChanges;
 };
 
+const buildStudentWhere = (filters?: StudentFilters) => {
+  const teacherId = filters?.teacherId?.trim();
+  const teacherName = filters?.teacherName?.trim();
+  const where: Prisma.StudentWhereInput = {};
+
+  if (teacherId) {
+    where.teacherId = teacherId;
+  }
+
+  if (teacherName) {
+    where.teacherName = teacherName;
+  }
+
+  return Object.keys(where).length > 0 ? where : undefined;
+};
+
 export const createStudent = async (payload: CreateStudentInput) => {
   const courses = compactCourses(payload);
   const teacherChanges = compactTeacherChanges(payload);
@@ -204,8 +222,11 @@ export const createStudent = async (payload: CreateStudentInput) => {
   });
 };
 
-export const getStudents = async () => {
+export const getStudents = async (filters?: StudentFilters) => {
+  const where = buildStudentWhere(filters);
+
   return prisma.student.findMany({
+    ...(where ? { where } : {}),
     include: studentInclude,
     orderBy: {
       createdAt: "desc"
@@ -213,8 +234,11 @@ export const getStudents = async () => {
   });
 };
 
-export const getStudentOptions = async () => {
+export const getStudentOptions = async (filters?: StudentFilters) => {
+  const where = buildStudentWhere(filters);
+
   return prisma.student.findMany({
+    ...(where ? { where } : {}),
     select: {
       id: true,
       name: true

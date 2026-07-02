@@ -43,6 +43,11 @@ export type TeacherChange = Prisma.TeacherChangeModel
  */
 export type Teacher = Prisma.TeacherModel
 /**
+ * Model ClassReport
+ * 
+ */
+export type ClassReport = Prisma.ClassReportModel
+/**
  * Model StudentLeftLog
  * 
  */

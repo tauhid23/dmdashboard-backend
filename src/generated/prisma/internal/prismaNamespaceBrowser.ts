@@ -56,6 +56,7 @@ export const ModelName = {
   StudentCourse: 'StudentCourse',
   TeacherChange: 'TeacherChange',
   Teacher: 'Teacher',
+  ClassReport: 'ClassReport',
   StudentLeftLog: 'StudentLeftLog'
 } as const
 
@@ -158,6 +159,44 @@ export const TeacherScalarFieldEnum = {
 } as const
 
 export type TeacherScalarFieldEnum = (typeof TeacherScalarFieldEnum)[keyof typeof TeacherScalarFieldEnum]
+
+
+export const ClassReportScalarFieldEnum = {
+  id: 'id',
+  month: 'month',
+  studentId: 'studentId',
+  teacherId: 'teacherId',
+  studentName: 'studentName',
+  teacherName: 'teacherName',
+  studentWebcamOn: 'studentWebcamOn',
+  studentWebcamPosition: 'studentWebcamPosition',
+  studentWebcamQuality: 'studentWebcamQuality',
+  studentNoiseFree: 'studentNoiseFree',
+  studentDevice: 'studentDevice',
+  studentDressup: 'studentDressup',
+  attentionFocus: 'attentionFocus',
+  activityInClass: 'activityInClass',
+  lessonUnderstanding: 'lessonUnderstanding',
+  languageUnderstanding: 'languageUnderstanding',
+  teacherNote: 'teacherNote',
+  teacherWebcamOn: 'teacherWebcamOn',
+  teacherWebcamPosition: 'teacherWebcamPosition',
+  teacherWebcamQuality: 'teacherWebcamQuality',
+  recommendedHeadphone: 'recommendedHeadphone',
+  teacherNoiseFree: 'teacherNoiseFree',
+  tutorDevice: 'tutorDevice',
+  tutorDressup: 'tutorDressup',
+  teachingFocus: 'teachingFocus',
+  teachingTone: 'teachingTone',
+  toolsAndContentUse: 'toolsAndContentUse',
+  studentInteraction: 'studentInteraction',
+  correctionQuality: 'correctionQuality',
+  adminNote: 'adminNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClassReportScalarFieldEnum = (typeof ClassReportScalarFieldEnum)[keyof typeof ClassReportScalarFieldEnum]
 
 
 export const StudentLeftLogScalarFieldEnum = {

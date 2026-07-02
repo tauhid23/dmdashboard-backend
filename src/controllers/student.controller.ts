@@ -12,6 +12,23 @@ const getStudentId = (req: Request) => {
   return id;
 };
 
+const getQueryString = (value: unknown) => {
+  const rawValue = Array.isArray(value) ? value[0] : value;
+
+  if (typeof rawValue !== "string") {
+    return undefined;
+  }
+
+  const trimmedValue = rawValue.trim();
+
+  return trimmedValue === "" ? undefined : trimmedValue;
+};
+
+const getStudentFilters = (req: Request) => ({
+  teacherId: getQueryString(req.query.teacherId),
+  teacherName: getQueryString(req.query.teacherName)
+});
+
 export const createStudent = async (req: Request, res: Response) => {
   const student = await studentService.createStudent(req.body);
 
@@ -21,8 +38,8 @@ export const createStudent = async (req: Request, res: Response) => {
   });
 };
 
-export const getStudents = async (_req: Request, res: Response) => {
-  const students = await studentService.getStudents();
+export const getStudents = async (req: Request, res: Response) => {
+  const students = await studentService.getStudents(getStudentFilters(req));
 
   res.status(200).json({
     success: true,
@@ -30,8 +47,8 @@ export const getStudents = async (_req: Request, res: Response) => {
   });
 };
 
-export const getStudentOptions = async (_req: Request, res: Response) => {
-  const students = await studentService.getStudentOptions();
+export const getStudentOptions = async (req: Request, res: Response) => {
+  const students = await studentService.getStudentOptions(getStudentFilters(req));
 
   res.status(200).json({
     success: true,

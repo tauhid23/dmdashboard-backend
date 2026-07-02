@@ -51,3 +51,8 @@ export type CreateStudentInput = {
 };
 
 export type UpdateStudentInput = Partial<CreateStudentInput>;
+
+export type StudentFilters = {
+  teacherId?: string;
+  teacherName?: string;
+};

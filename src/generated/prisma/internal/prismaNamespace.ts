@@ -389,6 +389,7 @@ export const ModelName = {
   StudentCourse: 'StudentCourse',
   TeacherChange: 'TeacherChange',
   Teacher: 'Teacher',
+  ClassReport: 'ClassReport',
   StudentLeftLog: 'StudentLeftLog'
 } as const
 
@@ -405,7 +406,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "student" | "studentCourse" | "teacherChange" | "teacher" | "studentLeftLog"
+    modelProps: "user" | "student" | "studentCourse" | "teacherChange" | "teacher" | "classReport" | "studentLeftLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -779,6 +780,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ClassReport: {
+      payload: Prisma.$ClassReportPayload<ExtArgs>
+      fields: Prisma.ClassReportFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ClassReportFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassReportPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ClassReportFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassReportPayload>
+        }
+        findFirst: {
+          args: Prisma.ClassReportFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassReportPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ClassReportFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassReportPayload>
+        }
+        findMany: {
+          args: Prisma.ClassReportFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassReportPayload>[]
+        }
+        create: {
+          args: Prisma.ClassReportCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassReportPayload>
+        }
+        createMany: {
+          args: Prisma.ClassReportCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ClassReportCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassReportPayload>[]
+        }
+        delete: {
+          args: Prisma.ClassReportDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassReportPayload>
+        }
+        update: {
+          args: Prisma.ClassReportUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassReportPayload>
+        }
+        deleteMany: {
+          args: Prisma.ClassReportDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ClassReportUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ClassReportUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassReportPayload>[]
+        }
+        upsert: {
+          args: Prisma.ClassReportUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassReportPayload>
+        }
+        aggregate: {
+          args: Prisma.ClassReportAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateClassReport>
+        }
+        groupBy: {
+          args: Prisma.ClassReportGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClassReportGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ClassReportCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClassReportCountAggregateOutputType> | number
+        }
+      }
+    }
     StudentLeftLog: {
       payload: Prisma.$StudentLeftLogPayload<ExtArgs>
       fields: Prisma.StudentLeftLogFieldRefs
@@ -975,6 +1050,44 @@ export const TeacherScalarFieldEnum = {
 } as const
 
 export type TeacherScalarFieldEnum = (typeof TeacherScalarFieldEnum)[keyof typeof TeacherScalarFieldEnum]
+
+
+export const ClassReportScalarFieldEnum = {
+  id: 'id',
+  month: 'month',
+  studentId: 'studentId',
+  teacherId: 'teacherId',
+  studentName: 'studentName',
+  teacherName: 'teacherName',
+  studentWebcamOn: 'studentWebcamOn',
+  studentWebcamPosition: 'studentWebcamPosition',
+  studentWebcamQuality: 'studentWebcamQuality',
+  studentNoiseFree: 'studentNoiseFree',
+  studentDevice: 'studentDevice',
+  studentDressup: 'studentDressup',
+  attentionFocus: 'attentionFocus',
+  activityInClass: 'activityInClass',
+  lessonUnderstanding: 'lessonUnderstanding',
+  languageUnderstanding: 'languageUnderstanding',
+  teacherNote: 'teacherNote',
+  teacherWebcamOn: 'teacherWebcamOn',
+  teacherWebcamPosition: 'teacherWebcamPosition',
+  teacherWebcamQuality: 'teacherWebcamQuality',
+  recommendedHeadphone: 'recommendedHeadphone',
+  teacherNoiseFree: 'teacherNoiseFree',
+  tutorDevice: 'tutorDevice',
+  tutorDressup: 'tutorDressup',
+  teachingFocus: 'teachingFocus',
+  teachingTone: 'teachingTone',
+  toolsAndContentUse: 'toolsAndContentUse',
+  studentInteraction: 'studentInteraction',
+  correctionQuality: 'correctionQuality',
+  adminNote: 'adminNote',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClassReportScalarFieldEnum = (typeof ClassReportScalarFieldEnum)[keyof typeof ClassReportScalarFieldEnum]
 
 
 export const StudentLeftLogScalarFieldEnum = {
@@ -1223,6 +1336,7 @@ export type GlobalOmitConfig = {
   studentCourse?: Prisma.StudentCourseOmit
   teacherChange?: Prisma.TeacherChangeOmit
   teacher?: Prisma.TeacherOmit
+  classReport?: Prisma.ClassReportOmit
   studentLeftLog?: Prisma.StudentLeftLogOmit
 }
 

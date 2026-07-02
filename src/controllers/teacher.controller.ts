@@ -77,6 +77,24 @@ export const getTeacherById = async (req: Request, res: Response) => {
   }
 };
 
+export const getTeacherClassReportAverage = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const average = await teacherService.getTeacherClassReportAverage(
+      getTeacherId(req)
+    );
+
+    res.status(200).json({
+      success: true,
+      data: average
+    });
+  } catch (error) {
+    handleControllerError(error, res);
+  }
+};
+
 export const updateTeacher = async (req: Request, res: Response) => {
   try {
     const teacher = await teacherService.updateTeacher(
