@@ -1,6 +1,9 @@
 import type { Request, Response } from "express";
 
+import { uploadImageBuffer } from "../config/cloudinary.js";
 import * as studentService from "../services/student.service.js";
+import { getUploadedImageFile } from "../middlewares/imageUpload.js";
+import { normalizeStudentRequestBody } from "../utils/normalizeRequestBody.js";
 
 const getStudentId = (req: Request) => {
   const { id } = req.params;
@@ -30,7 +33,15 @@ const getStudentFilters = (req: Request) => ({
 });
 
 export const createStudent = async (req: Request, res: Response) => {
-  const student = await studentService.createStudent(req.body);
+  const payload = normalizeStudentRequestBody(req.body);
+  const imageFile = getUploadedImageFile(req);
+
+  if (imageFile) {
+    const uploadedImage = await uploadImageBuffer(imageFile, "dmdashboard/students");
+    payload.image = uploadedImage.secure_url;
+  }
+
+  const student = await studentService.createStudent(payload);
 
   res.status(201).json({
     success: true,
@@ -66,7 +77,15 @@ export const getStudentById = async (req: Request, res: Response) => {
 };
 
 export const updateStudent = async (req: Request, res: Response) => {
-  const student = await studentService.updateStudent(getStudentId(req), req.body);
+  const payload = normalizeStudentRequestBody(req.body);
+  const imageFile = getUploadedImageFile(req);
+
+  if (imageFile) {
+    const uploadedImage = await uploadImageBuffer(imageFile, "dmdashboard/students");
+    payload.image = uploadedImage.secure_url;
+  }
+
+  const student = await studentService.updateStudent(getStudentId(req), payload);
 
   res.status(200).json({
     success: true,

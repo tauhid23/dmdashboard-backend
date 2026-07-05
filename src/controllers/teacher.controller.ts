@@ -1,6 +1,9 @@
 import type { Request, Response } from "express";
 
+import { uploadImageBuffer } from "../config/cloudinary.js";
 import * as teacherService from "../services/teacher.service.js";
+import { getUploadedImageFile } from "../middlewares/imageUpload.js";
+import { normalizeTeacherRequestBody } from "../utils/normalizeRequestBody.js";
 
 const getTeacherId = (req: Request) => {
   const { id } = req.params;
@@ -27,7 +30,15 @@ const handleControllerError = (error: unknown, res: Response) => {
 
 export const createTeacher = async (req: Request, res: Response) => {
   try {
-    const teacher = await teacherService.createTeacher(req.body);
+    const payload = normalizeTeacherRequestBody(req.body);
+    const imageFile = getUploadedImageFile(req);
+
+    if (imageFile) {
+      const uploadedImage = await uploadImageBuffer(imageFile, "dmdashboard/teachers");
+      payload.imageUrl = uploadedImage.secure_url;
+    }
+
+    const teacher = await teacherService.createTeacher(payload);
 
     res.status(201).json({
       success: true,
@@ -97,9 +108,17 @@ export const getTeacherClassReportAverage = async (
 
 export const updateTeacher = async (req: Request, res: Response) => {
   try {
+    const payload = normalizeTeacherRequestBody(req.body);
+    const imageFile = getUploadedImageFile(req);
+
+    if (imageFile) {
+      const uploadedImage = await uploadImageBuffer(imageFile, "dmdashboard/teachers");
+      payload.imageUrl = uploadedImage.secure_url;
+    }
+
     const teacher = await teacherService.updateTeacher(
       getTeacherId(req),
-      req.body
+      payload
     );
 
     res.status(200).json({
