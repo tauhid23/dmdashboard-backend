@@ -237,7 +237,7 @@ export const getStudents = async (filters?: StudentFilters) => {
 export const getStudentOptions = async (filters?: StudentFilters) => {
   const where = buildStudentWhere(filters);
 
-  return prisma.student.findMany({
+  const students = await prisma.student.findMany({
     ...(where ? { where } : {}),
     select: {
       id: true,
@@ -247,6 +247,8 @@ export const getStudentOptions = async (filters?: StudentFilters) => {
       name: "asc"
     }
   });
+
+  return [{ id: "", name: "Select option" }, ...students];
 };
 
 export const getStudentById = async (id: string) => {

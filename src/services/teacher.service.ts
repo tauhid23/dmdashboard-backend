@@ -150,7 +150,7 @@ export const getTeachers = async () => {
 };
 
 export const getTeacherOptions = async () => {
-  return prisma.teacher.findMany({
+  const teachers = await prisma.teacher.findMany({
     select: {
       id: true,
       name: true
@@ -159,6 +159,8 @@ export const getTeacherOptions = async () => {
       name: "asc"
     }
   });
+
+  return [{ id: "", name: "Select option" }, ...teachers];
 };
 
 export const getTeacherById = async (id: string) => {

@@ -56,6 +56,13 @@ export const ModelName = {
   StudentCourse: 'StudentCourse',
   TeacherChange: 'TeacherChange',
   Teacher: 'Teacher',
+  ExamAttempt: 'ExamAttempt',
+  ExamRule: 'ExamRule',
+  ExamRuleSection: 'ExamRuleSection',
+  ExamRuleField: 'ExamRuleField',
+  ExamMark: 'ExamMark',
+  ExamSectionResult: 'ExamSectionResult',
+  StudentCourseHistory: 'StudentCourseHistory',
   ClassReport: 'ClassReport',
   StudentLeftLog: 'StudentLeftLog'
 } as const
@@ -112,7 +119,10 @@ export const StudentScalarFieldEnum = {
   teacherChangeReason: 'teacherChangeReason',
   status: 'status',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  currentCourseLevel: 'currentCourseLevel',
+  courseCompleted: 'courseCompleted',
+  courseUpdatedAt: 'courseUpdatedAt'
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
@@ -159,6 +169,128 @@ export const TeacherScalarFieldEnum = {
 } as const
 
 export type TeacherScalarFieldEnum = (typeof TeacherScalarFieldEnum)[keyof typeof TeacherScalarFieldEnum]
+
+
+export const ExamAttemptScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  examinerId: 'examinerId',
+  courseLevel: 'courseLevel',
+  status: 'status',
+  outcome: 'outcome',
+  totalScore: 'totalScore',
+  totalMaxScore: 'totalMaxScore',
+  percentage: 'percentage',
+  attemptNumber: 'attemptNumber',
+  notes: 'notes',
+  idempotencyKey: 'idempotencyKey',
+  createdById: 'createdById',
+  examRuleId: 'examRuleId',
+  examRuleVersion: 'examRuleVersion',
+  submittedAt: 'submittedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExamAttemptScalarFieldEnum = (typeof ExamAttemptScalarFieldEnum)[keyof typeof ExamAttemptScalarFieldEnum]
+
+
+export const ExamRuleScalarFieldEnum = {
+  id: 'id',
+  courseLevel: 'courseLevel',
+  version: 'version',
+  name: 'name',
+  enabled: 'enabled',
+  totalMaximumMarks: 'totalMaximumMarks',
+  passingMarks: 'passingMarks',
+  passingPercentage: 'passingPercentage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExamRuleScalarFieldEnum = (typeof ExamRuleScalarFieldEnum)[keyof typeof ExamRuleScalarFieldEnum]
+
+
+export const ExamRuleSectionScalarFieldEnum = {
+  id: 'id',
+  examRuleId: 'examRuleId',
+  key: 'key',
+  label: 'label',
+  maximumMarks: 'maximumMarks',
+  passingMarks: 'passingMarks',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExamRuleSectionScalarFieldEnum = (typeof ExamRuleSectionScalarFieldEnum)[keyof typeof ExamRuleSectionScalarFieldEnum]
+
+
+export const ExamRuleFieldScalarFieldEnum = {
+  id: 'id',
+  examRuleId: 'examRuleId',
+  sectionId: 'sectionId',
+  key: 'key',
+  label: 'label',
+  description: 'description',
+  maximumMarks: 'maximumMarks',
+  minimumMarks: 'minimumMarks',
+  required: 'required',
+  sortOrder: 'sortOrder',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExamRuleFieldScalarFieldEnum = (typeof ExamRuleFieldScalarFieldEnum)[keyof typeof ExamRuleFieldScalarFieldEnum]
+
+
+export const ExamMarkScalarFieldEnum = {
+  id: 'id',
+  examAttemptId: 'examAttemptId',
+  fieldKey: 'fieldKey',
+  label: 'label',
+  description: 'description',
+  obtainedMarks: 'obtainedMarks',
+  maximumMarks: 'maximumMarks',
+  sectionKey: 'sectionKey',
+  sectionLabel: 'sectionLabel',
+  examRuleFieldId: 'examRuleFieldId',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt'
+} as const
+
+export type ExamMarkScalarFieldEnum = (typeof ExamMarkScalarFieldEnum)[keyof typeof ExamMarkScalarFieldEnum]
+
+
+export const ExamSectionResultScalarFieldEnum = {
+  id: 'id',
+  examAttemptId: 'examAttemptId',
+  sectionKey: 'sectionKey',
+  sectionLabel: 'sectionLabel',
+  obtainedMarks: 'obtainedMarks',
+  maximumMarks: 'maximumMarks',
+  passingMarks: 'passingMarks',
+  passed: 'passed',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt'
+} as const
+
+export type ExamSectionResultScalarFieldEnum = (typeof ExamSectionResultScalarFieldEnum)[keyof typeof ExamSectionResultScalarFieldEnum]
+
+
+export const StudentCourseHistoryScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  fromLevel: 'fromLevel',
+  toLevel: 'toLevel',
+  examAttemptId: 'examAttemptId',
+  reason: 'reason',
+  changedById: 'changedById',
+  createdAt: 'createdAt'
+} as const
+
+export type StudentCourseHistoryScalarFieldEnum = (typeof StudentCourseHistoryScalarFieldEnum)[keyof typeof StudentCourseHistoryScalarFieldEnum]
 
 
 export const ClassReportScalarFieldEnum = {
@@ -218,6 +350,14 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -232,4 +372,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

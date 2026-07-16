@@ -1,0 +1,12 @@
+import type { Request, Response } from "express";
+import { CourseLevel } from "../generated/prisma/enums.js";
+import * as service from "./exam.service.js";
+const param=(req:Request,key:string)=>{const value=req.params[key];return Array.isArray(value)?value[0]:value;};
+export const submit=async(req:Request,res:Response)=>{const result=await service.submitExam(req.body);res.status(result.statusCode).json({success:true,data:result.data});};
+export const list=async(req:Request,res:Response)=>res.json({success:true,data:await service.listExams(req.query)});
+export const get=async(req:Request,res:Response)=>res.json({success:true,data:await service.getExam(param(req,"id"))});
+export const studentHistory=async(req:Request,res:Response)=>res.json({success:true,data:await service.getStudentExamHistory(param(req,"studentId"),req.query)});
+export const studentLatest=async(req:Request,res:Response)=>res.json({success:true,data:await service.getLatestStudentExam(param(req,"studentId"))});
+export const studentCourseResults=async(req:Request,res:Response)=>res.json({success:true,data:await service.getStudentCourseExamResults(param(req,"studentId"))});
+export const rules=async(_req:Request,res:Response)=>res.json({success:true,data:await service.listActiveExamRules()});
+export const rule=async(req:Request,res:Response)=>{const level=param(req,"courseLevel") as CourseLevel;if(!Object.values(CourseLevel).includes(level))return res.status(404).json({success:false,message:"Exam rule not found"});return res.json({success:true,data:await service.getActiveExamRule(level)});};

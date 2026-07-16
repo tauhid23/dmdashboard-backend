@@ -25,3 +25,45 @@ export const StudentStatus = {
 } as const
 
 export type StudentStatus = (typeof StudentStatus)[keyof typeof StudentStatus]
+
+
+export const CourseLevel = {
+  MAKTAB_STAGE_1: 'MAKTAB_STAGE_1',
+  MAKTAB_STAGE_2: 'MAKTAB_STAGE_2',
+  MAKTAB_STAGE_3: 'MAKTAB_STAGE_3',
+  NAZIRAH_STAGE_1: 'NAZIRAH_STAGE_1',
+  NAZIRAH_STAGE_2: 'NAZIRAH_STAGE_2',
+  NAZIRAH_STAGE_3: 'NAZIRAH_STAGE_3',
+  NAZIRAH_STAGE_4: 'NAZIRAH_STAGE_4',
+  HIFZ_STAGE_1: 'HIFZ_STAGE_1',
+  HIFZ_STAGE_2: 'HIFZ_STAGE_2',
+  HIFZ_STAGE_3: 'HIFZ_STAGE_3',
+  HIFZ_STAGE_4: 'HIFZ_STAGE_4'
+} as const
+
+export type CourseLevel = (typeof CourseLevel)[keyof typeof CourseLevel]
+
+
+export const ExamStatus = {
+  DRAFT: 'DRAFT',
+  SUBMITTED: 'SUBMITTED',
+  VOIDED: 'VOIDED'
+} as const
+
+export type ExamStatus = (typeof ExamStatus)[keyof typeof ExamStatus]
+
+
+export const ExamOutcome = {
+  PASSED: 'PASSED',
+  NEEDS_IMPROVEMENT: 'NEEDS_IMPROVEMENT'
+} as const
+
+export type ExamOutcome = (typeof ExamOutcome)[keyof typeof ExamOutcome]
+
+
+export const PromotionReason = {
+  EXAM_PASSED: 'EXAM_PASSED',
+  MANUAL_ADJUSTMENT: 'MANUAL_ADJUSTMENT'
+} as const
+
+export type PromotionReason = (typeof PromotionReason)[keyof typeof PromotionReason]

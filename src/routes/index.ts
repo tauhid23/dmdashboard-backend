@@ -5,6 +5,8 @@ import healthRoutes from "./health.routes.js";
 import studentRoutes from "./student.routes.js";
 import teacherRoutes from "./teacher.routes.js";
 import userRoutes from "./user.routes.js";
+import examRoutes from "../exam/exam.routes.js";
+import examRuleRoutes from "../exam/exam-rule.routes.js";
 
 const router = Router();
 
@@ -13,5 +15,7 @@ router.use("/class-reports", classReportRoutes);
 router.use("/students", studentRoutes);
 router.use("/teachers", teacherRoutes);
 router.use("/users", userRoutes);
+router.use("/exam-attempts", examRoutes);
+router.use("/exam-rules", examRuleRoutes);
 
 export default router;

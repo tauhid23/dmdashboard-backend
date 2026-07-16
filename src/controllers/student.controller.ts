@@ -4,6 +4,7 @@ import { uploadImageBuffer } from "../config/cloudinary.js";
 import * as studentService from "../services/student.service.js";
 import { getUploadedImageFile } from "../middlewares/imageUpload.js";
 import { normalizeStudentRequestBody } from "../utils/normalizeRequestBody.js";
+import { getStudentExamDetails } from "../exam/exam.service.js";
 
 const getStudentId = (req: Request) => {
   const { id } = req.params;
@@ -68,7 +69,7 @@ export const getStudentOptions = async (req: Request, res: Response) => {
 };
 
 export const getStudentById = async (req: Request, res: Response) => {
-  const student = await studentService.getStudentById(getStudentId(req));
+  const student = await getStudentExamDetails(getStudentId(req));
 
   res.status(200).json({
     success: true,

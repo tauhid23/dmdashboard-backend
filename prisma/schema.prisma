@@ -19,16 +19,48 @@ enum StudentStatus {
   NEW_SIGN_UP
 }
 
+enum CourseLevel {
+  MAKTAB_STAGE_1
+  MAKTAB_STAGE_2
+  MAKTAB_STAGE_3
+  NAZIRAH_STAGE_1
+  NAZIRAH_STAGE_2
+  NAZIRAH_STAGE_3
+  NAZIRAH_STAGE_4
+  HIFZ_STAGE_1
+  HIFZ_STAGE_2
+  HIFZ_STAGE_3
+  HIFZ_STAGE_4
+}
+
+enum ExamStatus {
+  DRAFT
+  SUBMITTED
+  VOIDED
+}
+
+enum ExamOutcome {
+  PASSED
+  NEEDS_IMPROVEMENT
+}
+
+enum PromotionReason {
+  EXAM_PASSED
+  MANUAL_ADJUSTMENT
+}
+
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                  String                 @id @default(cuid())
+  name                String
+  email               String                 @unique
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
+  createdExamAttempts ExamAttempt[]          @relation("ExamCreatedBy")
+  courseChanges       StudentCourseHistory[] @relation("CourseChangedBy")
 }
 
 model Student {
-  id                  String          @id @default(cuid())
+  id                  String                 @id @default(cuid())
   image               String?
   name                String?
   country             String?
@@ -41,22 +73,27 @@ model Student {
   courseStage         String?
   teacherId           String?
   teacherName         String?
-  groupClass          Boolean?        @default(false)
+  groupClass          Boolean?               @default(false)
   groupSchedule       String?
   groupClassSchedule  String?
   groupTeacher        String?
   groupSubject        String?
   subject             String?
-  teacherChanged      Boolean?        @default(false)
+  teacherChanged      Boolean?               @default(false)
   previousTeacherName String?
   teacherChangeReason String?
-  status              StudentStatus?  @default(ACTIVE)
-  teacher             Teacher?        @relation(fields: [teacherId], references: [id], onDelete: SetNull)
+  status              StudentStatus?         @default(ACTIVE)
+  teacher             Teacher?               @relation(fields: [teacherId], references: [id], onDelete: SetNull)
   courses             StudentCourse[]
   teacherChanges      TeacherChange[]
   classReports        ClassReport[]
-  createdAt           DateTime        @default(now())
-  updatedAt           DateTime        @updatedAt
+  createdAt           DateTime               @default(now())
+  updatedAt           DateTime               @updatedAt
+  currentCourseLevel  CourseLevel?
+  courseCompleted     Boolean                @default(false)
+  courseUpdatedAt     DateTime?
+  examAttempts        ExamAttempt[]
+  courseHistory       StudentCourseHistory[]
 
   @@index([teacherId])
 }
@@ -102,46 +139,193 @@ model Teacher {
   studentLeftLogs               StudentLeftLog[]
   createdAt                     DateTime         @default(now())
   updatedAt                     DateTime         @updatedAt
+  examAttempts                  ExamAttempt[]
+}
+
+model ExamAttempt {
+  id             String                @id @default(cuid())
+  studentId      String
+  examinerId     String
+  courseLevel    CourseLevel
+  status         ExamStatus            @default(SUBMITTED)
+  outcome        ExamOutcome
+  totalScore     Int
+  totalMaxScore  Int
+  percentage     Decimal               @db.Decimal(5, 2)
+  attemptNumber  Int
+  notes          String?
+  idempotencyKey String                @unique
+  createdById    String?
+  examRuleId     String?
+  examRuleVersion Int?
+  submittedAt    DateTime              @default(now())
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  student        Student               @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  examiner       Teacher               @relation(fields: [examinerId], references: [id], onDelete: Restrict)
+  createdBy      User?                 @relation("ExamCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  examRule       ExamRule?             @relation(fields: [examRuleId], references: [id], onDelete: Restrict)
+  marks          ExamMark[]
+  sections       ExamSectionResult[]
+  promotion      StudentCourseHistory?
+
+  @@unique([studentId, courseLevel, attemptNumber])
+  @@index([studentId, submittedAt])
+  @@index([examinerId])
+  @@index([courseLevel, outcome])
+  @@index([examRuleId])
+}
+
+model ExamRule {
+  id                String            @id @default(cuid())
+  courseLevel       CourseLevel
+  version           Int
+  name              String
+  enabled           Boolean           @default(true)
+  totalMaximumMarks Int
+  passingMarks      Int?
+  passingPercentage Decimal?          @db.Decimal(5, 2)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  sections          ExamRuleSection[]
+  fields            ExamRuleField[]
+  attempts          ExamAttempt[]
+
+  @@unique([courseLevel, version])
+  @@index([courseLevel, enabled])
+}
+
+model ExamRuleSection {
+  id             String          @id @default(cuid())
+  examRuleId     String
+  key            String
+  label          String
+  maximumMarks   Int
+  passingMarks   Int?
+  sortOrder      Int
+  examRule       ExamRule        @relation(fields: [examRuleId], references: [id], onDelete: Cascade)
+  fields         ExamRuleField[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@unique([examRuleId, key])
+  @@index([examRuleId, sortOrder])
+}
+
+model ExamRuleField {
+  id             String          @id @default(cuid())
+  examRuleId     String
+  sectionId      String
+  key            String
+  label          String
+  description    String?
+  maximumMarks   Int
+  minimumMarks   Int             @default(0)
+  required       Boolean         @default(true)
+  sortOrder      Int
+  metadata       Json?
+  examRule       ExamRule        @relation(fields: [examRuleId], references: [id], onDelete: Cascade)
+  section        ExamRuleSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  attemptMarks   ExamMark[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@unique([examRuleId, key])
+  @@index([sectionId, sortOrder])
+}
+
+model ExamMark {
+  id            String      @id @default(cuid())
+  examAttemptId String
+  fieldKey      String
+  label         String
+  description   String?
+  obtainedMarks Int
+  maximumMarks  Int
+  sectionKey    String
+  sectionLabel  String?
+  examRuleFieldId String?
+  sortOrder     Int
+  createdAt     DateTime    @default(now())
+  examAttempt   ExamAttempt @relation(fields: [examAttemptId], references: [id], onDelete: Cascade)
+  examRuleField ExamRuleField? @relation(fields: [examRuleFieldId], references: [id], onDelete: SetNull)
+
+  @@unique([examAttemptId, fieldKey])
+  @@index([examAttemptId])
+  @@index([examRuleFieldId])
+}
+
+model ExamSectionResult {
+  id            String      @id @default(cuid())
+  examAttemptId String
+  sectionKey    String
+  sectionLabel  String
+  obtainedMarks Int
+  maximumMarks  Int
+  passingMarks  Int?
+  passed        Boolean
+  sortOrder     Int @default(0)
+  createdAt     DateTime    @default(now())
+  examAttempt   ExamAttempt @relation(fields: [examAttemptId], references: [id], onDelete: Cascade)
+
+  @@unique([examAttemptId, sectionKey])
+  @@index([examAttemptId])
+}
+
+model StudentCourseHistory {
+  id            String          @id @default(cuid())
+  studentId     String
+  fromLevel     CourseLevel?
+  toLevel       CourseLevel
+  examAttemptId String?         @unique
+  reason        PromotionReason
+  changedById   String?
+  createdAt     DateTime        @default(now())
+  student       Student         @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  examAttempt   ExamAttempt?    @relation(fields: [examAttemptId], references: [id], onDelete: Restrict)
+  changedBy     User?           @relation("CourseChangedBy", fields: [changedById], references: [id], onDelete: SetNull)
+
+  @@index([studentId, createdAt])
 }
 
 model ClassReport {
-  id                       String    @id @default(cuid())
-  month                    String?
-  studentId                String?
-  teacherId                String?
-  studentName              String?
-  teacherName              String?
+  id          String  @id @default(cuid())
+  month       String?
+  studentId   String?
+  teacherId   String?
+  studentName String?
+  teacherName String?
 
-  studentWebcamOn          Boolean?
-  studentWebcamPosition    String?
-  studentWebcamQuality     String?
-  studentNoiseFree         String?
-  studentDevice            String?
-  studentDressup           String?
-  attentionFocus           String?
-  activityInClass          String?
-  lessonUnderstanding      String?
-  languageUnderstanding    String?
-  teacherNote              String?
+  studentWebcamOn       Boolean?
+  studentWebcamPosition String?
+  studentWebcamQuality  String?
+  studentNoiseFree      String?
+  studentDevice         String?
+  studentDressup        String?
+  attentionFocus        String?
+  activityInClass       String?
+  lessonUnderstanding   String?
+  languageUnderstanding String?
+  teacherNote           String?
 
-  teacherWebcamOn          Boolean?
-  teacherWebcamPosition    String?
-  teacherWebcamQuality     String?
-  recommendedHeadphone     String?
-  teacherNoiseFree         String?
-  tutorDevice              String?
-  tutorDressup             String?
-  teachingFocus            String?
-  teachingTone             String?
-  toolsAndContentUse       String?
-  studentInteraction       String?
-  correctionQuality        String?
-  adminNote                String?
+  teacherWebcamOn       Boolean?
+  teacherWebcamPosition String?
+  teacherWebcamQuality  String?
+  recommendedHeadphone  String?
+  teacherNoiseFree      String?
+  tutorDevice           String?
+  tutorDressup          String?
+  teachingFocus         String?
+  teachingTone          String?
+  toolsAndContentUse    String?
+  studentInteraction    String?
+  correctionQuality     String?
+  adminNote             String?
 
-  student                  Student?  @relation(fields: [studentId], references: [id], onDelete: SetNull)
-  teacher                  Teacher?  @relation(fields: [teacherId], references: [id], onDelete: SetNull)
-  createdAt                DateTime  @default(now())
-  updatedAt                DateTime  @updatedAt
+  student   Student? @relation(fields: [studentId], references: [id], onDelete: SetNull)
+  teacher   Teacher? @relation(fields: [teacherId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([studentId])
   @@index([teacherId])

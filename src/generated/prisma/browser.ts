@@ -43,6 +43,41 @@ export type TeacherChange = Prisma.TeacherChangeModel
  */
 export type Teacher = Prisma.TeacherModel
 /**
+ * Model ExamAttempt
+ * 
+ */
+export type ExamAttempt = Prisma.ExamAttemptModel
+/**
+ * Model ExamRule
+ * 
+ */
+export type ExamRule = Prisma.ExamRuleModel
+/**
+ * Model ExamRuleSection
+ * 
+ */
+export type ExamRuleSection = Prisma.ExamRuleSectionModel
+/**
+ * Model ExamRuleField
+ * 
+ */
+export type ExamRuleField = Prisma.ExamRuleFieldModel
+/**
+ * Model ExamMark
+ * 
+ */
+export type ExamMark = Prisma.ExamMarkModel
+/**
+ * Model ExamSectionResult
+ * 
+ */
+export type ExamSectionResult = Prisma.ExamSectionResultModel
+/**
+ * Model StudentCourseHistory
+ * 
+ */
+export type StudentCourseHistory = Prisma.StudentCourseHistoryModel
+/**
  * Model ClassReport
  * 
  */

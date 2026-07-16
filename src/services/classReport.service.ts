@@ -8,17 +8,71 @@ import type {
 } from "../types/classReport.types.js";
 
 const teacherScoreFields = [
-  "teacherWebcamPosition",
-  "teacherWebcamQuality",
-  "recommendedHeadphone",
-  "teacherNoiseFree",
-  "tutorDevice",
-  "tutorDressup",
-  "teachingFocus",
-  "teachingTone",
-  "toolsAndContentUse",
-  "studentInteraction",
-  "correctionQuality"
+  {
+    key: "teacherWebcamOn",
+    label: "Webcam On"
+  },
+  {
+    key: "teacherWebcamPosition",
+    label: "Webcam Position"
+  },
+  {
+    key: "teacherWebcamQuality",
+    label: "Webcam Quality"
+  },
+  {
+    key: "recommendedHeadphone",
+    label: "Recommended Headphone"
+  },
+  {
+    key: "teacherNoiseFree",
+    label: "Noise Free"
+  },
+  {
+    key: "tutorDevice",
+    label: "Tutor Device"
+  },
+  {
+    key: "tutorDressup",
+    label: "Tutor Dressup"
+  },
+  {
+    key: "teachingFocus",
+    label: "Teacher Focus & Presence"
+  },
+  {
+    key: "teachingTone",
+    label: "Teaching Tone & Delivery Style"
+  },
+  {
+    key: "toolsAndContentUse",
+    label: "Tools & Content Use"
+  },
+  {
+    key: "studentInteraction",
+    label: "Student Interaction"
+  },
+  {
+    key: "correctionQuality",
+    label: "Correction & Attention to Mistakes"
+  }
+] as const;
+
+type TeacherScoreField = (typeof teacherScoreFields)[number]["key"];
+
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
 ] as const;
 
 const classReportInclude = {
@@ -64,6 +118,22 @@ const cleanReportType = (value: unknown): ReportType | undefined => {
   }
 
   return reportType as ReportType;
+};
+
+export const parseClassReportYear = (value: unknown) => {
+  const rawYear = cleanString(Array.isArray(value) ? value[0] : value);
+
+  if (!rawYear) {
+    return new Date().getFullYear();
+  }
+
+  const year = Number(rawYear);
+
+  if (!Number.isInteger(year) || year < 2000 || year > 2100) {
+    throw createHttpError(400, "year must be a valid year");
+  }
+
+  return year;
 };
 
 export const parseClassReportFilters = (
@@ -366,54 +436,216 @@ const mapClassReportData = (
     : {})
 });
 
-const scoreTextValue = (value: string) => {
-  const normalizedValue = value.trim().toLowerCase();
+const normalizeScoreText = (value: string) =>
+  value
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
 
-  if (normalizedValue === "") {
+const scoreTeacherField = (
+  field: TeacherScoreField,
+  value: boolean | string | null
+) => {
+  if (value === null || value === "") {
     return null;
   }
 
-  if (
-    normalizedValue.includes("excellent") ||
-    normalizedValue.includes("highly") ||
-    normalizedValue.includes("high quality") ||
-    normalizedValue.includes("proper") ||
-    normalizedValue.includes("quiet") ||
-    normalizedValue.includes("full face") ||
-    normalizedValue.includes("clear & engaging") ||
-    normalizedValue.includes("islamic dress") ||
-    normalizedValue === "laptop"
-  ) {
-    return 5;
+  if (field === "teacherWebcamOn") {
+    if (typeof value === "boolean") {
+      return value ? 100 : 0;
+    }
+
+    const normalizedValue = normalizeScoreText(value);
+
+    if (normalizedValue.includes("camera on")) {
+      return 100;
+    }
+
+    if (normalizedValue.includes("camera off")) {
+      return 0;
+    }
+
+    return null;
   }
 
-  if (
-    normalizedValue.includes("good") ||
-    normalizedValue.includes("active") ||
-    normalizedValue.includes("clear") ||
-    normalizedValue.includes("engaging")
-  ) {
-    return 4;
+  if (typeof value !== "string") {
+    return null;
   }
 
-  if (
-    normalizedValue.includes("average") ||
-    normalizedValue.includes("medium") ||
-    normalizedValue.includes("partial") ||
-    normalizedValue.includes("tablet")
-  ) {
-    return 3;
+  const normalizedValue = normalizeScoreText(value);
+
+  if (field === "teacherWebcamPosition") {
+    if (normalizedValue.includes("full face visible")) {
+      return 100;
+    }
+
+    if (normalizedValue.includes("partially visible")) {
+      return 66;
+    }
+
+    if (normalizedValue.includes("face not visible")) {
+      return 33;
+    }
+
+    if (normalizedValue.includes("only background visible")) {
+      return 0;
+    }
   }
 
-  if (
-    normalizedValue.includes("low") ||
-    normalizedValue.includes("poor") ||
-    normalizedValue.includes("noisy") ||
-    normalizedValue.includes("not") ||
-    normalizedValue.includes("bad") ||
-    normalizedValue.includes("mobile")
-  ) {
-    return 1;
+  if (field === "teacherWebcamQuality") {
+    if (normalizedValue.includes("high quality")) {
+      return 100;
+    }
+
+    if (normalizedValue.includes("average quality")) {
+      return 66;
+    }
+
+    if (normalizedValue.includes("low quality")) {
+      return 0;
+    }
+  }
+
+  if (field === "recommendedHeadphone") {
+    if (normalizedValue.includes("using rec headset")) {
+      return 100;
+    }
+
+    if (normalizedValue.includes("using basic headset")) {
+      return 66;
+    }
+
+    if (normalizedValue.includes("not using headset")) {
+      return 0;
+    }
+  }
+
+  if (field === "teacherNoiseFree") {
+    if (normalizedValue.includes("quiet")) {
+      return 100;
+    }
+
+    if (
+      normalizedValue.includes("some noise") ||
+      normalizedValue.includes("wind noise")
+    ) {
+      return 66;
+    }
+
+    if (normalizedValue.includes("noisy")) {
+      return 0;
+    }
+  }
+
+  if (field === "tutorDevice") {
+    if (normalizedValue.includes("laptop/desktop")) {
+      return 100;
+    }
+
+    if (normalizedValue.includes("tablet")) {
+      return 66;
+    }
+
+    if (normalizedValue.includes("mobile phone")) {
+      return 0;
+    }
+  }
+
+  if (field === "tutorDressup") {
+    if (
+      normalizedValue.includes("withcap") ||
+      normalizedValue.includes("with cap") ||
+      normalizedValue.includes("with hijab")
+    ) {
+      return 100;
+    }
+
+    if (
+      normalizedValue.includes("without cap") ||
+      normalizedValue.includes("without hijab")
+    ) {
+      return 66;
+    }
+
+    if (normalizedValue.includes("casual")) {
+      return 0;
+    }
+  }
+
+  if (field === "teachingFocus") {
+    if (normalizedValue.includes("fully focused")) {
+      return 100;
+    }
+
+    if (normalizedValue.includes("partially focused")) {
+      return 66;
+    }
+
+    if (
+      normalizedValue.includes("distracted") ||
+      normalizedValue.includes("inattentive")
+    ) {
+      return 0;
+    }
+  }
+
+  if (field === "teachingTone") {
+    if (normalizedValue.includes("polite") && normalizedValue.includes("engaging")) {
+      return 100;
+    }
+
+    if (normalizedValue.includes("sometimes harsh")) {
+      return 66;
+    }
+
+    if (normalizedValue.includes("harsh or rude")) {
+      return 0;
+    }
+  }
+
+  if (field === "toolsAndContentUse") {
+    if (normalizedValue.includes("effectively uses tools")) {
+      return 100;
+    }
+
+    if (normalizedValue.includes("uses tools occasionally")) {
+      return 66;
+    }
+
+    if (
+      normalizedValue.includes("rarely uses tools") ||
+      normalizedValue.includes("ignores")
+    ) {
+      return 0;
+    }
+  }
+
+  if (field === "studentInteraction") {
+    if (normalizedValue.includes("friendly") && normalizedValue.includes("effective")) {
+      return 100;
+    }
+
+    if (normalizedValue.includes("needs better balance")) {
+      return 66;
+    }
+
+    if (normalizedValue.includes("poor communication")) {
+      return 0;
+    }
+  }
+
+  if (field === "correctionQuality") {
+    if (normalizedValue.includes("corrects all mistakes")) {
+      return 100;
+    }
+
+    if (normalizedValue.includes("misses some mistakes")) {
+      return 66;
+    }
+
+    if (normalizedValue.includes("rarely corrects")) {
+      return 0;
+    }
   }
 
   return null;
@@ -472,36 +704,166 @@ export const deleteClassReport = async (id: string) => {
   });
 };
 
-export const getTeacherClassReportAverage = async (teacherId: string) => {
+type TeacherAverageColumnAccumulator = {
+  label: string;
+  scoreTotal: number;
+  scoredCount: number;
+};
+
+type TeacherAverageBucket = {
+  reportCount: number;
+  scoreTotal: number;
+  scoredFieldCount: number;
+  columns: Record<TeacherScoreField, TeacherAverageColumnAccumulator>;
+};
+
+const createTeacherAverageColumns = () =>
+  teacherScoreFields.reduce(
+    (columns, field) => ({
+      ...columns,
+      [field.key]: {
+        label: field.label,
+        scoreTotal: 0,
+        scoredCount: 0
+      }
+    }),
+    {} as Record<TeacherScoreField, TeacherAverageColumnAccumulator>
+  );
+
+const createTeacherAverageBucket = (): TeacherAverageBucket => ({
+  reportCount: 0,
+  scoreTotal: 0,
+  scoredFieldCount: 0,
+  columns: createTeacherAverageColumns()
+});
+
+const getAverageScore = (scoreTotal: number, scoredCount: number) =>
+  scoredCount > 0 ? Number((scoreTotal / scoredCount).toFixed(2)) : null;
+
+const summarizeTeacherAverageBucket = (bucket: TeacherAverageBucket) => ({
+  reportCount: bucket.reportCount,
+  scoredFieldCount: bucket.scoredFieldCount,
+  averageScore: getAverageScore(bucket.scoreTotal, bucket.scoredFieldCount),
+  columns: teacherScoreFields.reduce(
+    (columns, field) => {
+      const column = bucket.columns[field.key];
+
+      return {
+        ...columns,
+        [field.key]: {
+          label: column.label,
+          scoredCount: column.scoredCount,
+          averageScore: getAverageScore(column.scoreTotal, column.scoredCount)
+        }
+      };
+    },
+    {} as Record<
+      TeacherScoreField,
+      {
+        label: string;
+        scoredCount: number;
+        averageScore: number | null;
+      }
+    >
+  )
+});
+
+const getReportMonthIndex = (month: string | null, createdAt: Date) => {
+  const normalizedMonth = month?.trim().toLowerCase();
+
+  if (normalizedMonth) {
+    const yearMonthMatch = normalizedMonth.match(/^\d{4}[-/](\d{1,2})/);
+    const monthNumber = yearMonthMatch
+      ? Number(yearMonthMatch[1])
+      : Number(normalizedMonth);
+
+    if (Number.isInteger(monthNumber) && monthNumber >= 1 && monthNumber <= 12) {
+      return monthNumber - 1;
+    }
+
+    const monthNameIndex = monthNames.findIndex((monthName) =>
+      normalizedMonth.startsWith(monthName.toLowerCase())
+    );
+
+    if (monthNameIndex >= 0) {
+      return monthNameIndex;
+    }
+  }
+
+  return createdAt.getMonth();
+};
+
+const addReportToTeacherAverageBucket = (
+  bucket: TeacherAverageBucket,
+  report: Prisma.ClassReportGetPayload<{}>
+) => {
+  bucket.reportCount += 1;
+
+  teacherScoreFields.forEach((field) => {
+    const score = scoreTeacherField(
+      field.key,
+      report[field.key] as boolean | string | null
+    );
+
+    if (score === null) {
+      return;
+    }
+
+    const column = bucket.columns[field.key];
+    column.scoreTotal += score;
+    column.scoredCount += 1;
+    bucket.scoreTotal += score;
+    bucket.scoredFieldCount += 1;
+  });
+};
+
+export const getTeacherClassReportAverage = async (
+  teacherId: string,
+  year = new Date().getFullYear()
+) => {
+  const yearStart = new Date(Date.UTC(year, 0, 1));
+  const nextYearStart = new Date(Date.UTC(year + 1, 0, 1));
   const reports = await prisma.classReport.findMany({
     where: {
       teacherId,
+      createdAt: {
+        gte: yearStart,
+        lt: nextYearStart
+      },
       AND: [hasTeacherReportFilter()]
+    },
+    include: {
+      teacher: {
+        select: {
+          id: true,
+          name: true
+        }
+      }
+    },
+    orderBy: {
+      createdAt: "asc"
     }
   });
 
-  const scores = reports.flatMap((report) => {
-    const fieldScores = teacherScoreFields
-      .map((field) => report[field])
-      .flatMap((value) => (value ? [scoreTextValue(value)] : []))
-      .filter((score): score is number => score !== null);
+  const monthlyBuckets = monthNames.map(() => createTeacherAverageBucket());
+  const totalBucket = createTeacherAverageBucket();
 
-    if (report.teacherWebcamOn !== null) {
-      fieldScores.push(report.teacherWebcamOn ? 5 : 1);
-    }
+  reports.forEach((report) => {
+    const monthIndex = getReportMonthIndex(report.month, report.createdAt);
 
-    return fieldScores;
+    addReportToTeacherAverageBucket(monthlyBuckets[monthIndex], report);
+    addReportToTeacherAverageBucket(totalBucket, report);
   });
-
-  const averageScore =
-    scores.length > 0
-      ? Number((scores.reduce((total, score) => total + score, 0) / scores.length).toFixed(2))
-      : null;
 
   return {
     teacherId,
-    reportCount: reports.length,
-    scoredFieldCount: scores.length,
-    averageScore
+    teacherName: reports[0]?.teacher?.name ?? null,
+    year,
+    months: monthNames.map((monthName, index) => ({
+      month: monthName,
+      monthNumber: index + 1,
+      ...summarizeTeacherAverageBucket(monthlyBuckets[index])
+    })),
+    totals: summarizeTeacherAverageBucket(totalBucket)
   };
 };

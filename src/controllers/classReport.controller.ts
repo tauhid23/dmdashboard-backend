@@ -73,7 +73,8 @@ export const getTeacherClassReportAverage = async (
   res: Response
 ) => {
   const average = await classReportService.getTeacherClassReportAverage(
-    getRouteId(req, "teacherId")
+    getRouteId(req, "teacherId"),
+    classReportService.parseClassReportYear(req.query.year)
   );
 
   res.status(200).json({

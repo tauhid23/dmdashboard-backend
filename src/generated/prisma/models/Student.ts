@@ -50,6 +50,9 @@ export type StudentMinAggregateOutputType = {
   status: $Enums.StudentStatus | null
   createdAt: Date | null
   updatedAt: Date | null
+  currentCourseLevel: $Enums.CourseLevel | null
+  courseCompleted: boolean | null
+  courseUpdatedAt: Date | null
 }
 
 export type StudentMaxAggregateOutputType = {
@@ -78,6 +81,9 @@ export type StudentMaxAggregateOutputType = {
   status: $Enums.StudentStatus | null
   createdAt: Date | null
   updatedAt: Date | null
+  currentCourseLevel: $Enums.CourseLevel | null
+  courseCompleted: boolean | null
+  courseUpdatedAt: Date | null
 }
 
 export type StudentCountAggregateOutputType = {
@@ -106,6 +112,9 @@ export type StudentCountAggregateOutputType = {
   status: number
   createdAt: number
   updatedAt: number
+  currentCourseLevel: number
+  courseCompleted: number
+  courseUpdatedAt: number
   _all: number
 }
 
@@ -136,6 +145,9 @@ export type StudentMinAggregateInputType = {
   status?: true
   createdAt?: true
   updatedAt?: true
+  currentCourseLevel?: true
+  courseCompleted?: true
+  courseUpdatedAt?: true
 }
 
 export type StudentMaxAggregateInputType = {
@@ -164,6 +176,9 @@ export type StudentMaxAggregateInputType = {
   status?: true
   createdAt?: true
   updatedAt?: true
+  currentCourseLevel?: true
+  courseCompleted?: true
+  courseUpdatedAt?: true
 }
 
 export type StudentCountAggregateInputType = {
@@ -192,6 +207,9 @@ export type StudentCountAggregateInputType = {
   status?: true
   createdAt?: true
   updatedAt?: true
+  currentCourseLevel?: true
+  courseCompleted?: true
+  courseUpdatedAt?: true
   _all?: true
 }
 
@@ -293,6 +311,9 @@ export type StudentGroupByOutputType = {
   status: $Enums.StudentStatus | null
   createdAt: Date
   updatedAt: Date
+  currentCourseLevel: $Enums.CourseLevel | null
+  courseCompleted: boolean
+  courseUpdatedAt: Date | null
   _count: StudentCountAggregateOutputType | null
   _min: StudentMinAggregateOutputType | null
   _max: StudentMaxAggregateOutputType | null
@@ -342,10 +363,15 @@ export type StudentWhereInput = {
   status?: Prisma.EnumStudentStatusNullableFilter<"Student"> | $Enums.StudentStatus | null
   createdAt?: Prisma.DateTimeFilter<"Student"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Student"> | Date | string
+  currentCourseLevel?: Prisma.EnumCourseLevelNullableFilter<"Student"> | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFilter<"Student"> | boolean
+  courseUpdatedAt?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
   teacher?: Prisma.XOR<Prisma.TeacherNullableScalarRelationFilter, Prisma.TeacherWhereInput> | null
   courses?: Prisma.StudentCourseListRelationFilter
   teacherChanges?: Prisma.TeacherChangeListRelationFilter
   classReports?: Prisma.ClassReportListRelationFilter
+  examAttempts?: Prisma.ExamAttemptListRelationFilter
+  courseHistory?: Prisma.StudentCourseHistoryListRelationFilter
 }
 
 export type StudentOrderByWithRelationInput = {
@@ -374,10 +400,15 @@ export type StudentOrderByWithRelationInput = {
   status?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  currentCourseLevel?: Prisma.SortOrderInput | Prisma.SortOrder
+  courseCompleted?: Prisma.SortOrder
+  courseUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   teacher?: Prisma.TeacherOrderByWithRelationInput
   courses?: Prisma.StudentCourseOrderByRelationAggregateInput
   teacherChanges?: Prisma.TeacherChangeOrderByRelationAggregateInput
   classReports?: Prisma.ClassReportOrderByRelationAggregateInput
+  examAttempts?: Prisma.ExamAttemptOrderByRelationAggregateInput
+  courseHistory?: Prisma.StudentCourseHistoryOrderByRelationAggregateInput
 }
 
 export type StudentWhereUniqueInput = Prisma.AtLeast<{
@@ -409,10 +440,15 @@ export type StudentWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumStudentStatusNullableFilter<"Student"> | $Enums.StudentStatus | null
   createdAt?: Prisma.DateTimeFilter<"Student"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Student"> | Date | string
+  currentCourseLevel?: Prisma.EnumCourseLevelNullableFilter<"Student"> | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFilter<"Student"> | boolean
+  courseUpdatedAt?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
   teacher?: Prisma.XOR<Prisma.TeacherNullableScalarRelationFilter, Prisma.TeacherWhereInput> | null
   courses?: Prisma.StudentCourseListRelationFilter
   teacherChanges?: Prisma.TeacherChangeListRelationFilter
   classReports?: Prisma.ClassReportListRelationFilter
+  examAttempts?: Prisma.ExamAttemptListRelationFilter
+  courseHistory?: Prisma.StudentCourseHistoryListRelationFilter
 }, "id">
 
 export type StudentOrderByWithAggregationInput = {
@@ -441,6 +477,9 @@ export type StudentOrderByWithAggregationInput = {
   status?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  currentCourseLevel?: Prisma.SortOrderInput | Prisma.SortOrder
+  courseCompleted?: Prisma.SortOrder
+  courseUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.StudentCountOrderByAggregateInput
   _max?: Prisma.StudentMaxOrderByAggregateInput
   _min?: Prisma.StudentMinOrderByAggregateInput
@@ -475,6 +514,9 @@ export type StudentScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumStudentStatusNullableWithAggregatesFilter<"Student"> | $Enums.StudentStatus | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Student"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Student"> | Date | string
+  currentCourseLevel?: Prisma.EnumCourseLevelNullableWithAggregatesFilter<"Student"> | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolWithAggregatesFilter<"Student"> | boolean
+  courseUpdatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Student"> | Date | string | null
 }
 
 export type StudentCreateInput = {
@@ -502,10 +544,15 @@ export type StudentCreateInput = {
   status?: $Enums.StudentStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
   teacher?: Prisma.TeacherCreateNestedOneWithoutStudentsInput
   courses?: Prisma.StudentCourseCreateNestedManyWithoutStudentInput
   teacherChanges?: Prisma.TeacherChangeCreateNestedManyWithoutStudentInput
   classReports?: Prisma.ClassReportCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateInput = {
@@ -534,9 +581,14 @@ export type StudentUncheckedCreateInput = {
   status?: $Enums.StudentStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
   courses?: Prisma.StudentCourseUncheckedCreateNestedManyWithoutStudentInput
   teacherChanges?: Prisma.TeacherChangeUncheckedCreateNestedManyWithoutStudentInput
   classReports?: Prisma.ClassReportUncheckedCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUpdateInput = {
@@ -564,10 +616,15 @@ export type StudentUpdateInput = {
   status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   teacher?: Prisma.TeacherUpdateOneWithoutStudentsNestedInput
   courses?: Prisma.StudentCourseUpdateManyWithoutStudentNestedInput
   teacherChanges?: Prisma.TeacherChangeUpdateManyWithoutStudentNestedInput
   classReports?: Prisma.ClassReportUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateInput = {
@@ -596,9 +653,14 @@ export type StudentUncheckedUpdateInput = {
   status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   courses?: Prisma.StudentCourseUncheckedUpdateManyWithoutStudentNestedInput
   teacherChanges?: Prisma.TeacherChangeUncheckedUpdateManyWithoutStudentNestedInput
   classReports?: Prisma.ClassReportUncheckedUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateManyInput = {
@@ -627,6 +689,9 @@ export type StudentCreateManyInput = {
   status?: $Enums.StudentStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
 }
 
 export type StudentUpdateManyMutationInput = {
@@ -654,6 +719,9 @@ export type StudentUpdateManyMutationInput = {
   status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type StudentUncheckedUpdateManyInput = {
@@ -682,6 +750,9 @@ export type StudentUncheckedUpdateManyInput = {
   status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type StudentCountOrderByAggregateInput = {
@@ -710,6 +781,9 @@ export type StudentCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  currentCourseLevel?: Prisma.SortOrder
+  courseCompleted?: Prisma.SortOrder
+  courseUpdatedAt?: Prisma.SortOrder
 }
 
 export type StudentMaxOrderByAggregateInput = {
@@ -738,6 +812,9 @@ export type StudentMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  currentCourseLevel?: Prisma.SortOrder
+  courseCompleted?: Prisma.SortOrder
+  courseUpdatedAt?: Prisma.SortOrder
 }
 
 export type StudentMinOrderByAggregateInput = {
@@ -766,6 +843,9 @@ export type StudentMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  currentCourseLevel?: Prisma.SortOrder
+  courseCompleted?: Prisma.SortOrder
+  courseUpdatedAt?: Prisma.SortOrder
 }
 
 export type StudentScalarRelationFilter = {
@@ -802,6 +882,14 @@ export type NullableBoolFieldUpdateOperationsInput = {
 
 export type NullableEnumStudentStatusFieldUpdateOperationsInput = {
   set?: $Enums.StudentStatus | null
+}
+
+export type NullableEnumCourseLevelFieldUpdateOperationsInput = {
+  set?: $Enums.CourseLevel | null
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type StudentCreateNestedOneWithoutCoursesInput = {
@@ -874,6 +962,34 @@ export type StudentUncheckedUpdateManyWithoutTeacherNestedInput = {
   deleteMany?: Prisma.StudentScalarWhereInput | Prisma.StudentScalarWhereInput[]
 }
 
+export type StudentCreateNestedOneWithoutExamAttemptsInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutExamAttemptsInput, Prisma.StudentUncheckedCreateWithoutExamAttemptsInput>
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutExamAttemptsInput
+  connect?: Prisma.StudentWhereUniqueInput
+}
+
+export type StudentUpdateOneRequiredWithoutExamAttemptsNestedInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutExamAttemptsInput, Prisma.StudentUncheckedCreateWithoutExamAttemptsInput>
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutExamAttemptsInput
+  upsert?: Prisma.StudentUpsertWithoutExamAttemptsInput
+  connect?: Prisma.StudentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StudentUpdateToOneWithWhereWithoutExamAttemptsInput, Prisma.StudentUpdateWithoutExamAttemptsInput>, Prisma.StudentUncheckedUpdateWithoutExamAttemptsInput>
+}
+
+export type StudentCreateNestedOneWithoutCourseHistoryInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutCourseHistoryInput, Prisma.StudentUncheckedCreateWithoutCourseHistoryInput>
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutCourseHistoryInput
+  connect?: Prisma.StudentWhereUniqueInput
+}
+
+export type StudentUpdateOneRequiredWithoutCourseHistoryNestedInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutCourseHistoryInput, Prisma.StudentUncheckedCreateWithoutCourseHistoryInput>
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutCourseHistoryInput
+  upsert?: Prisma.StudentUpsertWithoutCourseHistoryInput
+  connect?: Prisma.StudentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StudentUpdateToOneWithWhereWithoutCourseHistoryInput, Prisma.StudentUpdateWithoutCourseHistoryInput>, Prisma.StudentUncheckedUpdateWithoutCourseHistoryInput>
+}
+
 export type StudentCreateNestedOneWithoutClassReportsInput = {
   create?: Prisma.XOR<Prisma.StudentCreateWithoutClassReportsInput, Prisma.StudentUncheckedCreateWithoutClassReportsInput>
   connectOrCreate?: Prisma.StudentCreateOrConnectWithoutClassReportsInput
@@ -915,9 +1031,14 @@ export type StudentCreateWithoutCoursesInput = {
   status?: $Enums.StudentStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
   teacher?: Prisma.TeacherCreateNestedOneWithoutStudentsInput
   teacherChanges?: Prisma.TeacherChangeCreateNestedManyWithoutStudentInput
   classReports?: Prisma.ClassReportCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutCoursesInput = {
@@ -946,8 +1067,13 @@ export type StudentUncheckedCreateWithoutCoursesInput = {
   status?: $Enums.StudentStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
   teacherChanges?: Prisma.TeacherChangeUncheckedCreateNestedManyWithoutStudentInput
   classReports?: Prisma.ClassReportUncheckedCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutCoursesInput = {
@@ -991,9 +1117,14 @@ export type StudentUpdateWithoutCoursesInput = {
   status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   teacher?: Prisma.TeacherUpdateOneWithoutStudentsNestedInput
   teacherChanges?: Prisma.TeacherChangeUpdateManyWithoutStudentNestedInput
   classReports?: Prisma.ClassReportUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutCoursesInput = {
@@ -1022,8 +1153,13 @@ export type StudentUncheckedUpdateWithoutCoursesInput = {
   status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   teacherChanges?: Prisma.TeacherChangeUncheckedUpdateManyWithoutStudentNestedInput
   classReports?: Prisma.ClassReportUncheckedUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutTeacherChangesInput = {
@@ -1051,9 +1187,14 @@ export type StudentCreateWithoutTeacherChangesInput = {
   status?: $Enums.StudentStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
   teacher?: Prisma.TeacherCreateNestedOneWithoutStudentsInput
   courses?: Prisma.StudentCourseCreateNestedManyWithoutStudentInput
   classReports?: Prisma.ClassReportCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutTeacherChangesInput = {
@@ -1082,8 +1223,13 @@ export type StudentUncheckedCreateWithoutTeacherChangesInput = {
   status?: $Enums.StudentStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
   courses?: Prisma.StudentCourseUncheckedCreateNestedManyWithoutStudentInput
   classReports?: Prisma.ClassReportUncheckedCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutTeacherChangesInput = {
@@ -1127,9 +1273,14 @@ export type StudentUpdateWithoutTeacherChangesInput = {
   status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   teacher?: Prisma.TeacherUpdateOneWithoutStudentsNestedInput
   courses?: Prisma.StudentCourseUpdateManyWithoutStudentNestedInput
   classReports?: Prisma.ClassReportUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutTeacherChangesInput = {
@@ -1158,8 +1309,13 @@ export type StudentUncheckedUpdateWithoutTeacherChangesInput = {
   status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   courses?: Prisma.StudentCourseUncheckedUpdateManyWithoutStudentNestedInput
   classReports?: Prisma.ClassReportUncheckedUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutTeacherInput = {
@@ -1187,9 +1343,14 @@ export type StudentCreateWithoutTeacherInput = {
   status?: $Enums.StudentStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
   courses?: Prisma.StudentCourseCreateNestedManyWithoutStudentInput
   teacherChanges?: Prisma.TeacherChangeCreateNestedManyWithoutStudentInput
   classReports?: Prisma.ClassReportCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutTeacherInput = {
@@ -1217,9 +1378,14 @@ export type StudentUncheckedCreateWithoutTeacherInput = {
   status?: $Enums.StudentStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
   courses?: Prisma.StudentCourseUncheckedCreateNestedManyWithoutStudentInput
   teacherChanges?: Prisma.TeacherChangeUncheckedCreateNestedManyWithoutStudentInput
   classReports?: Prisma.ClassReportUncheckedCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutTeacherInput = {
@@ -1277,6 +1443,321 @@ export type StudentScalarWhereInput = {
   status?: Prisma.EnumStudentStatusNullableFilter<"Student"> | $Enums.StudentStatus | null
   createdAt?: Prisma.DateTimeFilter<"Student"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Student"> | Date | string
+  currentCourseLevel?: Prisma.EnumCourseLevelNullableFilter<"Student"> | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFilter<"Student"> | boolean
+  courseUpdatedAt?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
+}
+
+export type StudentCreateWithoutExamAttemptsInput = {
+  id?: string
+  image?: string | null
+  name?: string | null
+  country?: string | null
+  studentSince?: Date | string | null
+  weeklySchedule?: string | null
+  parentName?: string | null
+  parentEmail?: string | null
+  parentPhone?: string | null
+  courseName?: string | null
+  courseStage?: string | null
+  teacherName?: string | null
+  groupClass?: boolean | null
+  groupSchedule?: string | null
+  groupClassSchedule?: string | null
+  groupTeacher?: string | null
+  groupSubject?: string | null
+  subject?: string | null
+  teacherChanged?: boolean | null
+  previousTeacherName?: string | null
+  teacherChangeReason?: string | null
+  status?: $Enums.StudentStatus | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
+  teacher?: Prisma.TeacherCreateNestedOneWithoutStudentsInput
+  courses?: Prisma.StudentCourseCreateNestedManyWithoutStudentInput
+  teacherChanges?: Prisma.TeacherChangeCreateNestedManyWithoutStudentInput
+  classReports?: Prisma.ClassReportCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
+}
+
+export type StudentUncheckedCreateWithoutExamAttemptsInput = {
+  id?: string
+  image?: string | null
+  name?: string | null
+  country?: string | null
+  studentSince?: Date | string | null
+  weeklySchedule?: string | null
+  parentName?: string | null
+  parentEmail?: string | null
+  parentPhone?: string | null
+  courseName?: string | null
+  courseStage?: string | null
+  teacherId?: string | null
+  teacherName?: string | null
+  groupClass?: boolean | null
+  groupSchedule?: string | null
+  groupClassSchedule?: string | null
+  groupTeacher?: string | null
+  groupSubject?: string | null
+  subject?: string | null
+  teacherChanged?: boolean | null
+  previousTeacherName?: string | null
+  teacherChangeReason?: string | null
+  status?: $Enums.StudentStatus | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
+  courses?: Prisma.StudentCourseUncheckedCreateNestedManyWithoutStudentInput
+  teacherChanges?: Prisma.TeacherChangeUncheckedCreateNestedManyWithoutStudentInput
+  classReports?: Prisma.ClassReportUncheckedCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
+}
+
+export type StudentCreateOrConnectWithoutExamAttemptsInput = {
+  where: Prisma.StudentWhereUniqueInput
+  create: Prisma.XOR<Prisma.StudentCreateWithoutExamAttemptsInput, Prisma.StudentUncheckedCreateWithoutExamAttemptsInput>
+}
+
+export type StudentUpsertWithoutExamAttemptsInput = {
+  update: Prisma.XOR<Prisma.StudentUpdateWithoutExamAttemptsInput, Prisma.StudentUncheckedUpdateWithoutExamAttemptsInput>
+  create: Prisma.XOR<Prisma.StudentCreateWithoutExamAttemptsInput, Prisma.StudentUncheckedCreateWithoutExamAttemptsInput>
+  where?: Prisma.StudentWhereInput
+}
+
+export type StudentUpdateToOneWithWhereWithoutExamAttemptsInput = {
+  where?: Prisma.StudentWhereInput
+  data: Prisma.XOR<Prisma.StudentUpdateWithoutExamAttemptsInput, Prisma.StudentUncheckedUpdateWithoutExamAttemptsInput>
+}
+
+export type StudentUpdateWithoutExamAttemptsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClass?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  groupSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClassSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupTeacher?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupSubject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChanged?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  previousTeacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChangeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  teacher?: Prisma.TeacherUpdateOneWithoutStudentsNestedInput
+  courses?: Prisma.StudentCourseUpdateManyWithoutStudentNestedInput
+  teacherChanges?: Prisma.TeacherChangeUpdateManyWithoutStudentNestedInput
+  classReports?: Prisma.ClassReportUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentUncheckedUpdateWithoutExamAttemptsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClass?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  groupSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClassSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupTeacher?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupSubject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChanged?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  previousTeacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChangeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  courses?: Prisma.StudentCourseUncheckedUpdateManyWithoutStudentNestedInput
+  teacherChanges?: Prisma.TeacherChangeUncheckedUpdateManyWithoutStudentNestedInput
+  classReports?: Prisma.ClassReportUncheckedUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentCreateWithoutCourseHistoryInput = {
+  id?: string
+  image?: string | null
+  name?: string | null
+  country?: string | null
+  studentSince?: Date | string | null
+  weeklySchedule?: string | null
+  parentName?: string | null
+  parentEmail?: string | null
+  parentPhone?: string | null
+  courseName?: string | null
+  courseStage?: string | null
+  teacherName?: string | null
+  groupClass?: boolean | null
+  groupSchedule?: string | null
+  groupClassSchedule?: string | null
+  groupTeacher?: string | null
+  groupSubject?: string | null
+  subject?: string | null
+  teacherChanged?: boolean | null
+  previousTeacherName?: string | null
+  teacherChangeReason?: string | null
+  status?: $Enums.StudentStatus | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
+  teacher?: Prisma.TeacherCreateNestedOneWithoutStudentsInput
+  courses?: Prisma.StudentCourseCreateNestedManyWithoutStudentInput
+  teacherChanges?: Prisma.TeacherChangeCreateNestedManyWithoutStudentInput
+  classReports?: Prisma.ClassReportCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutStudentInput
+}
+
+export type StudentUncheckedCreateWithoutCourseHistoryInput = {
+  id?: string
+  image?: string | null
+  name?: string | null
+  country?: string | null
+  studentSince?: Date | string | null
+  weeklySchedule?: string | null
+  parentName?: string | null
+  parentEmail?: string | null
+  parentPhone?: string | null
+  courseName?: string | null
+  courseStage?: string | null
+  teacherId?: string | null
+  teacherName?: string | null
+  groupClass?: boolean | null
+  groupSchedule?: string | null
+  groupClassSchedule?: string | null
+  groupTeacher?: string | null
+  groupSubject?: string | null
+  subject?: string | null
+  teacherChanged?: boolean | null
+  previousTeacherName?: string | null
+  teacherChangeReason?: string | null
+  status?: $Enums.StudentStatus | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
+  courses?: Prisma.StudentCourseUncheckedCreateNestedManyWithoutStudentInput
+  teacherChanges?: Prisma.TeacherChangeUncheckedCreateNestedManyWithoutStudentInput
+  classReports?: Prisma.ClassReportUncheckedCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutStudentInput
+}
+
+export type StudentCreateOrConnectWithoutCourseHistoryInput = {
+  where: Prisma.StudentWhereUniqueInput
+  create: Prisma.XOR<Prisma.StudentCreateWithoutCourseHistoryInput, Prisma.StudentUncheckedCreateWithoutCourseHistoryInput>
+}
+
+export type StudentUpsertWithoutCourseHistoryInput = {
+  update: Prisma.XOR<Prisma.StudentUpdateWithoutCourseHistoryInput, Prisma.StudentUncheckedUpdateWithoutCourseHistoryInput>
+  create: Prisma.XOR<Prisma.StudentCreateWithoutCourseHistoryInput, Prisma.StudentUncheckedCreateWithoutCourseHistoryInput>
+  where?: Prisma.StudentWhereInput
+}
+
+export type StudentUpdateToOneWithWhereWithoutCourseHistoryInput = {
+  where?: Prisma.StudentWhereInput
+  data: Prisma.XOR<Prisma.StudentUpdateWithoutCourseHistoryInput, Prisma.StudentUncheckedUpdateWithoutCourseHistoryInput>
+}
+
+export type StudentUpdateWithoutCourseHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClass?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  groupSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClassSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupTeacher?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupSubject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChanged?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  previousTeacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChangeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  teacher?: Prisma.TeacherUpdateOneWithoutStudentsNestedInput
+  courses?: Prisma.StudentCourseUpdateManyWithoutStudentNestedInput
+  teacherChanges?: Prisma.TeacherChangeUpdateManyWithoutStudentNestedInput
+  classReports?: Prisma.ClassReportUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentUncheckedUpdateWithoutCourseHistoryInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClass?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  groupSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClassSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupTeacher?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupSubject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChanged?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  previousTeacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChangeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  courses?: Prisma.StudentCourseUncheckedUpdateManyWithoutStudentNestedInput
+  teacherChanges?: Prisma.TeacherChangeUncheckedUpdateManyWithoutStudentNestedInput
+  classReports?: Prisma.ClassReportUncheckedUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutClassReportsInput = {
@@ -1304,9 +1785,14 @@ export type StudentCreateWithoutClassReportsInput = {
   status?: $Enums.StudentStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
   teacher?: Prisma.TeacherCreateNestedOneWithoutStudentsInput
   courses?: Prisma.StudentCourseCreateNestedManyWithoutStudentInput
   teacherChanges?: Prisma.TeacherChangeCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutClassReportsInput = {
@@ -1335,8 +1821,13 @@ export type StudentUncheckedCreateWithoutClassReportsInput = {
   status?: $Enums.StudentStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
   courses?: Prisma.StudentCourseUncheckedCreateNestedManyWithoutStudentInput
   teacherChanges?: Prisma.TeacherChangeUncheckedCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutClassReportsInput = {
@@ -1380,9 +1871,14 @@ export type StudentUpdateWithoutClassReportsInput = {
   status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   teacher?: Prisma.TeacherUpdateOneWithoutStudentsNestedInput
   courses?: Prisma.StudentCourseUpdateManyWithoutStudentNestedInput
   teacherChanges?: Prisma.TeacherChangeUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutClassReportsInput = {
@@ -1411,8 +1907,13 @@ export type StudentUncheckedUpdateWithoutClassReportsInput = {
   status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   courses?: Prisma.StudentCourseUncheckedUpdateManyWithoutStudentNestedInput
   teacherChanges?: Prisma.TeacherChangeUncheckedUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateManyTeacherInput = {
@@ -1440,6 +1941,9 @@ export type StudentCreateManyTeacherInput = {
   status?: $Enums.StudentStatus | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
 }
 
 export type StudentUpdateWithoutTeacherInput = {
@@ -1467,9 +1971,14 @@ export type StudentUpdateWithoutTeacherInput = {
   status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   courses?: Prisma.StudentCourseUpdateManyWithoutStudentNestedInput
   teacherChanges?: Prisma.TeacherChangeUpdateManyWithoutStudentNestedInput
   classReports?: Prisma.ClassReportUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutTeacherInput = {
@@ -1497,9 +2006,14 @@ export type StudentUncheckedUpdateWithoutTeacherInput = {
   status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   courses?: Prisma.StudentCourseUncheckedUpdateManyWithoutStudentNestedInput
   teacherChanges?: Prisma.TeacherChangeUncheckedUpdateManyWithoutStudentNestedInput
   classReports?: Prisma.ClassReportUncheckedUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateManyWithoutTeacherInput = {
@@ -1527,6 +2041,9 @@ export type StudentUncheckedUpdateManyWithoutTeacherInput = {
   status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -1538,12 +2055,16 @@ export type StudentCountOutputType = {
   courses: number
   teacherChanges: number
   classReports: number
+  examAttempts: number
+  courseHistory: number
 }
 
 export type StudentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   courses?: boolean | StudentCountOutputTypeCountCoursesArgs
   teacherChanges?: boolean | StudentCountOutputTypeCountTeacherChangesArgs
   classReports?: boolean | StudentCountOutputTypeCountClassReportsArgs
+  examAttempts?: boolean | StudentCountOutputTypeCountExamAttemptsArgs
+  courseHistory?: boolean | StudentCountOutputTypeCountCourseHistoryArgs
 }
 
 /**
@@ -1577,6 +2098,20 @@ export type StudentCountOutputTypeCountClassReportsArgs<ExtArgs extends runtime.
   where?: Prisma.ClassReportWhereInput
 }
 
+/**
+ * StudentCountOutputType without action
+ */
+export type StudentCountOutputTypeCountExamAttemptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ExamAttemptWhereInput
+}
+
+/**
+ * StudentCountOutputType without action
+ */
+export type StudentCountOutputTypeCountCourseHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StudentCourseHistoryWhereInput
+}
+
 
 export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1604,10 +2139,15 @@ export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  currentCourseLevel?: boolean
+  courseCompleted?: boolean
+  courseUpdatedAt?: boolean
   teacher?: boolean | Prisma.Student$teacherArgs<ExtArgs>
   courses?: boolean | Prisma.Student$coursesArgs<ExtArgs>
   teacherChanges?: boolean | Prisma.Student$teacherChangesArgs<ExtArgs>
   classReports?: boolean | Prisma.Student$classReportsArgs<ExtArgs>
+  examAttempts?: boolean | Prisma.Student$examAttemptsArgs<ExtArgs>
+  courseHistory?: boolean | Prisma.Student$courseHistoryArgs<ExtArgs>
   _count?: boolean | Prisma.StudentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
 
@@ -1637,6 +2177,9 @@ export type StudentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  currentCourseLevel?: boolean
+  courseCompleted?: boolean
+  courseUpdatedAt?: boolean
   teacher?: boolean | Prisma.Student$teacherArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
 
@@ -1666,6 +2209,9 @@ export type StudentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  currentCourseLevel?: boolean
+  courseCompleted?: boolean
+  courseUpdatedAt?: boolean
   teacher?: boolean | Prisma.Student$teacherArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
 
@@ -1695,14 +2241,19 @@ export type StudentSelectScalar = {
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  currentCourseLevel?: boolean
+  courseCompleted?: boolean
+  courseUpdatedAt?: boolean
 }
 
-export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "image" | "name" | "country" | "studentSince" | "weeklySchedule" | "parentName" | "parentEmail" | "parentPhone" | "courseName" | "courseStage" | "teacherId" | "teacherName" | "groupClass" | "groupSchedule" | "groupClassSchedule" | "groupTeacher" | "groupSubject" | "subject" | "teacherChanged" | "previousTeacherName" | "teacherChangeReason" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["student"]>
+export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "image" | "name" | "country" | "studentSince" | "weeklySchedule" | "parentName" | "parentEmail" | "parentPhone" | "courseName" | "courseStage" | "teacherId" | "teacherName" | "groupClass" | "groupSchedule" | "groupClassSchedule" | "groupTeacher" | "groupSubject" | "subject" | "teacherChanged" | "previousTeacherName" | "teacherChangeReason" | "status" | "createdAt" | "updatedAt" | "currentCourseLevel" | "courseCompleted" | "courseUpdatedAt", ExtArgs["result"]["student"]>
 export type StudentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   teacher?: boolean | Prisma.Student$teacherArgs<ExtArgs>
   courses?: boolean | Prisma.Student$coursesArgs<ExtArgs>
   teacherChanges?: boolean | Prisma.Student$teacherChangesArgs<ExtArgs>
   classReports?: boolean | Prisma.Student$classReportsArgs<ExtArgs>
+  examAttempts?: boolean | Prisma.Student$examAttemptsArgs<ExtArgs>
+  courseHistory?: boolean | Prisma.Student$courseHistoryArgs<ExtArgs>
   _count?: boolean | Prisma.StudentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StudentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1719,6 +2270,8 @@ export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     courses: Prisma.$StudentCoursePayload<ExtArgs>[]
     teacherChanges: Prisma.$TeacherChangePayload<ExtArgs>[]
     classReports: Prisma.$ClassReportPayload<ExtArgs>[]
+    examAttempts: Prisma.$ExamAttemptPayload<ExtArgs>[]
+    courseHistory: Prisma.$StudentCourseHistoryPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1746,6 +2299,9 @@ export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     status: $Enums.StudentStatus | null
     createdAt: Date
     updatedAt: Date
+    currentCourseLevel: $Enums.CourseLevel | null
+    courseCompleted: boolean
+    courseUpdatedAt: Date | null
   }, ExtArgs["result"]["student"]>
   composites: {}
 }
@@ -2144,6 +2700,8 @@ export interface Prisma__StudentClient<T, Null = never, ExtArgs extends runtime.
   courses<T extends Prisma.Student$coursesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentCoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   teacherChanges<T extends Prisma.Student$teacherChangesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$teacherChangesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TeacherChangePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   classReports<T extends Prisma.Student$classReportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$classReportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClassReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  examAttempts<T extends Prisma.Student$examAttemptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$examAttemptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExamAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  courseHistory<T extends Prisma.Student$courseHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$courseHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentCourseHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2198,6 +2756,9 @@ export interface StudentFieldRefs {
   readonly status: Prisma.FieldRef<"Student", 'StudentStatus'>
   readonly createdAt: Prisma.FieldRef<"Student", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Student", 'DateTime'>
+  readonly currentCourseLevel: Prisma.FieldRef<"Student", 'CourseLevel'>
+  readonly courseCompleted: Prisma.FieldRef<"Student", 'Boolean'>
+  readonly courseUpdatedAt: Prisma.FieldRef<"Student", 'DateTime'>
 }
     
 
@@ -2687,6 +3248,54 @@ export type Student$classReportsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.ClassReportScalarFieldEnum | Prisma.ClassReportScalarFieldEnum[]
+}
+
+/**
+ * Student.examAttempts
+ */
+export type Student$examAttemptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ExamAttempt
+   */
+  select?: Prisma.ExamAttemptSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ExamAttempt
+   */
+  omit?: Prisma.ExamAttemptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExamAttemptInclude<ExtArgs> | null
+  where?: Prisma.ExamAttemptWhereInput
+  orderBy?: Prisma.ExamAttemptOrderByWithRelationInput | Prisma.ExamAttemptOrderByWithRelationInput[]
+  cursor?: Prisma.ExamAttemptWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ExamAttemptScalarFieldEnum | Prisma.ExamAttemptScalarFieldEnum[]
+}
+
+/**
+ * Student.courseHistory
+ */
+export type Student$courseHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StudentCourseHistory
+   */
+  select?: Prisma.StudentCourseHistorySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StudentCourseHistory
+   */
+  omit?: Prisma.StudentCourseHistoryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StudentCourseHistoryInclude<ExtArgs> | null
+  where?: Prisma.StudentCourseHistoryWhereInput
+  orderBy?: Prisma.StudentCourseHistoryOrderByWithRelationInput | Prisma.StudentCourseHistoryOrderByWithRelationInput[]
+  cursor?: Prisma.StudentCourseHistoryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StudentCourseHistoryScalarFieldEnum | Prisma.StudentCourseHistoryScalarFieldEnum[]
 }
 
 /**
