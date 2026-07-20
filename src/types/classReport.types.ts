@@ -2,6 +2,7 @@ export type ReportType = "student" | "teacher" | "full";
 
 export type ClassReportFilters = {
   reportType?: ReportType;
+  search?: string;
   studentId?: string;
   teacherId?: string;
   month?: string;

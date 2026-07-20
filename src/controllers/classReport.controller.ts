@@ -57,10 +57,9 @@ export const getTeacherClassReports = async (req: Request, res: Response) => {
 };
 
 export const getFullClassReports = async (req: Request, res: Response) => {
-  const classReports = await classReportService.getClassReports({
-    ...classReportService.parseClassReportFilters(req.query),
-    reportType: "full"
-  });
+  const classReports = await classReportService.getFullClassReports(
+    classReportService.parseClassReportFilters(req.query)
+  );
 
   res.status(200).json({
     success: true,

@@ -9,6 +9,13 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User.js'
+export type * from './models/Role.js'
+export type * from './models/Permission.js'
+export type * from './models/RolePermission.js'
+export type * from './models/UserPermissionOverride.js'
+export type * from './models/RefreshSession.js'
+export type * from './models/PasswordResetToken.js'
+export type * from './models/AuditLog.js'
 export type * from './models/Student.js'
 export type * from './models/StudentCourse.js'
 export type * from './models/TeacherChange.js'

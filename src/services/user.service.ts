@@ -1,19 +1,26 @@
 import { prisma } from "../config/prisma.js";
-import type { CreateUserInput } from "../types/user.types.js";
+import { safeUser } from "../auth/permissions.js";
+import { hashPassword } from "../auth/security.js";
+import { revokeSessions, validatePassword } from "../auth/auth.service.js";
+import type { PermissionMap } from "../auth/auth.types.js";
+const error = (statusCode: number, message: string, code: string, errors?: unknown) => Object.assign(new Error(message), { statusCode, code, errors });
+const roleCode = (value: string) => value.trim().toUpperCase().replaceAll(" ", "_");
+const normalize = (value: string) => value.trim().toLowerCase();
+const include = { role: true } as const;
 
-export const createUser = async (payload: CreateUserInput) => {
-  return prisma.user.create({
-    data: {
-      name: payload.name,
-      email: payload.email
-    }
-  });
-};
+async function role(value: string) { const item = await prisma.role.findFirst({ where: { OR: [{ code: roleCode(value) }, { name: { equals: value, mode: "insensitive" } }] } }); if (!item) throw error(404, "Role not found", "ROLE_NOT_FOUND"); return item; }
+async function ensureUnique(email: string, username: string, excludeId?: string) { const duplicate = await prisma.user.findFirst({ where: { id: excludeId ? { not: excludeId } : undefined, OR: [{ normalizedEmail: normalize(email) }, { normalizedUsername: normalize(username) }] } }); if (duplicate) throw error(409, "Email or username already in use", "DUPLICATE_USER", duplicate.normalizedEmail === normalize(email) ? { email: ["Email is already in use"] } : { username: ["Username is already in use"] }); }
+async function setOverrides(userId: string, permissions: Partial<PermissionMap> | undefined, roleId: string) { if (permissions === undefined) return; const rolePermissions = await prisma.rolePermission.findMany({ where: { roleId }, include: { permission: true } }); const defaults = new Set(rolePermissions.map(p => p.permission.code)); const all = await prisma.permission.findMany(); const desired = new Map<string, boolean>(); for (const [resource, actions] of Object.entries(permissions)) for (const [action, allowed] of Object.entries(actions ?? {})) desired.set(`${resource}.${action}`, Boolean(allowed)); await prisma.userPermissionOverride.deleteMany({ where: { userId } }); const rows = all.flatMap(permission => desired.has(permission.code) && desired.get(permission.code) !== defaults.has(permission.code) ? [{ userId, permissionId: permission.id, allowed: desired.get(permission.code)! }] : []); if (rows.length) await prisma.userPermissionOverride.createMany({ data: rows }); }
+async function activeSuperAdmins() { return prisma.user.count({ where: { deletedAt: null, status: "ACTIVE", role: { code: "SUPER_ADMIN" } } }); }
+async function protectLastSuperAdmin(target: { id: string; status: string; role: { code: string } }, next: { status?: string; roleCode?: string; deleted?: boolean }) { if (target.role.code === "SUPER_ADMIN" && (next.deleted || next.status === "INACTIVE" || next.roleCode && next.roleCode !== "SUPER_ADMIN") && await activeSuperAdmins() <= 1) throw error(403, "The last active Super Admin cannot be demoted, disabled or deleted", "LAST_SUPER_ADMIN"); }
 
-export const getUsers = async () => {
-  return prisma.user.findMany({
-    orderBy: {
-      createdAt: "desc"
-    }
-  });
-};
+export async function createUser(payload: any) { if (!payload.name || !payload.email || !payload.username || !payload.temporaryPassword || !payload.role) throw error(422, "Validation failed", "VALIDATION_ERROR"); validatePassword(payload.temporaryPassword); await ensureUnique(payload.email, payload.username); const selected = await role(payload.role); const user = await prisma.user.create({ data: { name: payload.name.trim(), email: payload.email.trim(), normalizedEmail: normalize(payload.email), username: payload.username.trim(), normalizedUsername: normalize(payload.username), passwordHash: await hashPassword(payload.temporaryPassword), status: roleCode(payload.status ?? "Active") as "ACTIVE" | "INACTIVE", roleId: selected.id, mustChangePassword: true }, include }); await setOverrides(user.id, payload.permissions, selected.id); return safeUser(user); }
+export async function getUsers(query: any = {}) { const page = Math.max(1, Number(query.page) || 1), limit = Math.min(100, Math.max(1, Number(query.limit) || 20)); const where: any = { deletedAt: null }; if (query.search) where.OR = ["name", "email", "username"].map(field => ({ [field]: { contains: String(query.search), mode: "insensitive" } })); if (query.status) where.status = roleCode(query.status); if (query.role) where.role = { code: roleCode(query.role) }; const [users, total] = await prisma.$transaction([prisma.user.findMany({ where, include, orderBy: { createdAt: "desc" }, skip: (page - 1) * limit, take: limit }), prisma.user.count({ where })]); return { data: await Promise.all(users.map(safeUser)), pagination: { page, limit, total, totalPages: Math.ceil(total / limit) } }; }
+export async function getUser(id: string) { const user = await prisma.user.findFirst({ where: { id, deletedAt: null }, include }); if (!user) throw error(404, "User not found", "NOT_FOUND"); return safeUser(user); }
+export async function updateUser(actorId: string, id: string, payload: any) { const target = await prisma.user.findFirst({ where: { id, deletedAt: null }, include }); if (!target) throw error(404, "User not found", "NOT_FOUND"); if (actorId === id && (payload.status || payload.role || payload.permissions !== undefined)) throw error(403, "You cannot change your own status, role, or permissions", "SELF_MODIFICATION"); if (payload.email || payload.username) await ensureUnique(payload.email ?? target.email, payload.username ?? target.username, id); const selected = payload.role ? await role(payload.role) : target.role; const nextStatus = payload.status ? roleCode(payload.status) : target.status; await protectLastSuperAdmin(target, { status: nextStatus, roleCode: selected.code }); const user = await prisma.user.update({ where: { id }, data: { name: payload.name?.trim(), email: payload.email?.trim(), normalizedEmail: payload.email ? normalize(payload.email) : undefined, username: payload.username?.trim(), normalizedUsername: payload.username ? normalize(payload.username) : undefined, status: nextStatus as "ACTIVE" | "INACTIVE", roleId: selected.id }, include }); await setOverrides(id, payload.permissions, selected.id); if (target.status !== nextStatus && nextStatus === "INACTIVE") await revokeSessions(id); return safeUser(user); }
+export async function deleteUser(actorId: string, id: string) { if (actorId === id) throw error(403, "Users cannot delete themselves", "SELF_DELETE"); const target = await prisma.user.findFirst({ where: { id, deletedAt: null }, include }); if (!target) throw error(404, "User not found", "NOT_FOUND"); await protectLastSuperAdmin(target, { deleted: true }); await prisma.user.update({ where: { id }, data: { deletedAt: new Date(), status: "INACTIVE" } }); await revokeSessions(id); }
+export async function adminResetPassword(actorId: string, id: string, password: string) { if (actorId === id) throw error(400, "Use change-password for your own account", "USE_CHANGE_PASSWORD"); validatePassword(password); const target = await prisma.user.findFirst({ where: { id, deletedAt: null } }); if (!target) throw error(404, "User not found", "NOT_FOUND"); await prisma.user.update({ where: { id }, data: { passwordHash: await hashPassword(password), mustChangePassword: true } }); await revokeSessions(id); }
+export const getRoles = () => prisma.role.findMany({ orderBy: { name: "asc" } });
+export const getPermissions = () => prisma.permission.findMany({ orderBy: [{ resource: "asc" }, { action: "asc" }] });
+export async function updateRolePermissions(roleId: string, permissions: Record<string, boolean>) { const roleItem = await prisma.role.findUnique({ where: { id: roleId } }); if (!roleItem) throw error(404, "Role not found", "NOT_FOUND"); if (roleItem.code === "SUPER_ADMIN") throw error(403, "Super Admin permissions cannot be reduced", "PROTECTED_ROLE"); const selected = await prisma.permission.findMany({ where: { code: { in: Object.entries(permissions).filter(([, v]) => v).map(([k]) => k) } } }); await prisma.$transaction([prisma.rolePermission.deleteMany({ where: { roleId } }), prisma.rolePermission.createMany({ data: selected.map(p => ({ roleId, permissionId: p.id })) })]); return getRoles(); }
+

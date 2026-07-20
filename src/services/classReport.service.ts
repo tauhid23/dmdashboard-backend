@@ -60,7 +60,7 @@ const teacherScoreFields = [
 
 type TeacherScoreField = (typeof teacherScoreFields)[number]["key"];
 
-const monthNames = [
+export const classReportMonthNames = [
   "January",
   "February",
   "March",
@@ -74,6 +74,8 @@ const monthNames = [
   "November",
   "December"
 ] as const;
+
+const monthNames = classReportMonthNames;
 
 const classReportInclude = {
   student: {
@@ -104,6 +106,45 @@ const cleanString = (value: unknown) => {
   const trimmedValue = value.trim();
 
   return trimmedValue === "" ? undefined : trimmedValue;
+};
+
+const cleanSingleQueryString = (value: unknown, fieldName: string) => {
+  if (Array.isArray(value)) {
+    throw createHttpError(400, `${fieldName} must be supplied only once`);
+  }
+
+  return cleanString(value);
+};
+
+const cleanIdFilter = (value: unknown, fieldName: "studentId" | "teacherId") => {
+  const id = cleanSingleQueryString(value, fieldName);
+
+  if (!id) {
+    return undefined;
+  }
+
+  if (id.length > 128 || !/^[A-Za-z0-9_-]+$/.test(id)) {
+    throw createHttpError(400, `${fieldName} must be a valid ID`);
+  }
+
+  return id;
+};
+
+const cleanMonthFilter = (value: unknown) => {
+  const month = cleanSingleQueryString(value, "month");
+
+  if (!month) {
+    return undefined;
+  }
+
+  if (!monthNames.includes(month as (typeof monthNames)[number])) {
+    throw createHttpError(
+      400,
+      `month must be a valid month name: ${monthNames.join(", ")}`
+    );
+  }
+
+  return month;
 };
 
 const cleanReportType = (value: unknown): ReportType | undefined => {
@@ -140,9 +181,10 @@ export const parseClassReportFilters = (
   query: Record<string, unknown>
 ): ClassReportFilters => ({
   reportType: cleanReportType(query.reportType ?? query.type),
-  studentId: cleanString(query.studentId),
-  teacherId: cleanString(query.teacherId),
-  month: cleanString(query.month)
+  search: cleanSingleQueryString(query.search, "search"),
+  studentId: cleanIdFilter(query.studentId, "studentId"),
+  teacherId: cleanIdFilter(query.teacherId, "teacherId"),
+  month: cleanMonthFilter(query.month)
 });
 
 const hasStudentReportFilter = (): Prisma.ClassReportWhereInput => ({
@@ -179,8 +221,23 @@ const hasTeacherReportFilter = (): Prisma.ClassReportWhereInput => ({
   ]
 });
 
-const buildClassReportWhere = (filters?: ClassReportFilters) => {
+export const buildClassReportWhere = (filters?: ClassReportFilters) => {
   const andFilters: Prisma.ClassReportWhereInput[] = [];
+
+  if (filters?.search) {
+    const contains = { contains: filters.search, mode: "insensitive" as const };
+
+    andFilters.push({
+      OR: [
+        { studentName: contains },
+        { teacherName: contains },
+        { teacherNote: contains },
+        { adminNote: contains },
+        { student: { is: { name: contains } } },
+        { teacher: { is: { name: contains } } }
+      ]
+    });
+  }
 
   if (filters?.studentId) {
     andFilters.push({ studentId: filters.studentId });
@@ -657,10 +714,67 @@ export const getClassReports = async (filters?: ClassReportFilters) => {
   return prisma.classReport.findMany({
     ...(where ? { where } : {}),
     include: classReportInclude,
-    orderBy: {
-      createdAt: "desc"
-    }
+    orderBy: [{ createdAt: "desc" }, { id: "desc" }]
   });
+};
+
+type IncludedClassReport = Prisma.ClassReportGetPayload<{
+  include: typeof classReportInclude;
+}>;
+
+export const formatFullClassReport = (report: IncludedClassReport) => {
+  const studentName = report.student?.name ?? report.studentName;
+  const teacherName = report.teacher?.name ?? report.teacherName;
+  const shared = {
+    id: report.id,
+    month: report.month,
+    studentId: report.studentId,
+    teacherId: report.teacherId,
+    studentName,
+    teacherName
+  };
+
+  return {
+    ...report,
+    studentName,
+    teacherName,
+    studentReport: {
+      ...shared,
+      webcamOn: report.studentWebcamOn,
+      webcamPosition: report.studentWebcamPosition,
+      webcamQuality: report.studentWebcamQuality,
+      noiseFree: report.studentNoiseFree,
+      studentDevice: report.studentDevice,
+      studentDressup: report.studentDressup,
+      attentionFocus: report.attentionFocus,
+      activityInClass: report.activityInClass,
+      lessonUnderstanding: report.lessonUnderstanding,
+      languageUnderstanding: report.languageUnderstanding,
+      teacherNote: report.teacherNote
+    },
+    teacherReport: {
+      ...shared,
+      webcamOn: report.teacherWebcamOn,
+      webcamPosition: report.teacherWebcamPosition,
+      webcamQuality: report.teacherWebcamQuality,
+      recommendedHeadphone: report.recommendedHeadphone,
+      noiseFree: report.teacherNoiseFree,
+      tutorDevice: report.tutorDevice,
+      tutorDressup: report.tutorDressup,
+      teachingFocus: report.teachingFocus,
+      teachingTone: report.teachingTone,
+      toolsAndContentUse: report.toolsAndContentUse,
+      studentInteraction: report.studentInteraction,
+      correctionQuality: report.correctionQuality,
+      adminNote: report.adminNote
+    }
+  };
+};
+
+export const getFullClassReports = async (filters?: ClassReportFilters) => {
+  const reports = await getClassReports({ ...filters, reportType: "full" });
+
+  return reports.map(formatFullClassReport);
 };
 
 export const createClassReport = async (payload: CreateClassReportInput) => {
@@ -795,7 +909,7 @@ const getReportMonthIndex = (month: string | null, createdAt: Date) => {
 
 const addReportToTeacherAverageBucket = (
   bucket: TeacherAverageBucket,
-  report: Prisma.ClassReportGetPayload<{}>
+  report: Prisma.ClassReportGetPayload<Prisma.ClassReportDefaultArgs>
 ) => {
   bucket.reportCount += 1;
 

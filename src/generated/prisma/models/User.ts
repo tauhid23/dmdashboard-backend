@@ -20,14 +20,34 @@ export type UserModel = runtime.Types.Result.DefaultSelection<Prisma.$UserPayloa
 
 export type AggregateUser = {
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
+}
+
+export type UserAvgAggregateOutputType = {
+  sessionVersion: number | null
+}
+
+export type UserSumAggregateOutputType = {
+  sessionVersion: number | null
 }
 
 export type UserMinAggregateOutputType = {
   id: string | null
   name: string | null
   email: string | null
+  normalizedEmail: string | null
+  username: string | null
+  normalizedUsername: string | null
+  passwordHash: string | null
+  status: $Enums.UserStatus | null
+  roleId: string | null
+  mustChangePassword: boolean | null
+  lastLoginAt: Date | null
+  deletedAt: Date | null
+  sessionVersion: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -36,6 +56,16 @@ export type UserMaxAggregateOutputType = {
   id: string | null
   name: string | null
   email: string | null
+  normalizedEmail: string | null
+  username: string | null
+  normalizedUsername: string | null
+  passwordHash: string | null
+  status: $Enums.UserStatus | null
+  roleId: string | null
+  mustChangePassword: boolean | null
+  lastLoginAt: Date | null
+  deletedAt: Date | null
+  sessionVersion: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -44,16 +74,44 @@ export type UserCountAggregateOutputType = {
   id: number
   name: number
   email: number
+  normalizedEmail: number
+  username: number
+  normalizedUsername: number
+  passwordHash: number
+  status: number
+  roleId: number
+  mustChangePassword: number
+  lastLoginAt: number
+  deletedAt: number
+  sessionVersion: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
 
+export type UserAvgAggregateInputType = {
+  sessionVersion?: true
+}
+
+export type UserSumAggregateInputType = {
+  sessionVersion?: true
+}
+
 export type UserMinAggregateInputType = {
   id?: true
   name?: true
   email?: true
+  normalizedEmail?: true
+  username?: true
+  normalizedUsername?: true
+  passwordHash?: true
+  status?: true
+  roleId?: true
+  mustChangePassword?: true
+  lastLoginAt?: true
+  deletedAt?: true
+  sessionVersion?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -62,6 +120,16 @@ export type UserMaxAggregateInputType = {
   id?: true
   name?: true
   email?: true
+  normalizedEmail?: true
+  username?: true
+  normalizedUsername?: true
+  passwordHash?: true
+  status?: true
+  roleId?: true
+  mustChangePassword?: true
+  lastLoginAt?: true
+  deletedAt?: true
+  sessionVersion?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -70,6 +138,16 @@ export type UserCountAggregateInputType = {
   id?: true
   name?: true
   email?: true
+  normalizedEmail?: true
+  username?: true
+  normalizedUsername?: true
+  passwordHash?: true
+  status?: true
+  roleId?: true
+  mustChangePassword?: true
+  lastLoginAt?: true
+  deletedAt?: true
+  sessionVersion?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -113,6 +191,18 @@ export type UserAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: UserAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: UserSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: UserMinAggregateInputType
@@ -143,6 +233,8 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   _count?: UserCountAggregateInputType | true
+  _avg?: UserAvgAggregateInputType
+  _sum?: UserSumAggregateInputType
   _min?: UserMinAggregateInputType
   _max?: UserMaxAggregateInputType
 }
@@ -151,9 +243,21 @@ export type UserGroupByOutputType = {
   id: string
   name: string
   email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status: $Enums.UserStatus
+  roleId: string
+  mustChangePassword: boolean
+  lastLoginAt: Date | null
+  deletedAt: Date | null
+  sessionVersion: number
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
+  _avg: UserAvgAggregateOutputType | null
+  _sum: UserSumAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
 }
@@ -180,8 +284,24 @@ export type UserWhereInput = {
   id?: Prisma.StringFilter<"User"> | string
   name?: Prisma.StringFilter<"User"> | string
   email?: Prisma.StringFilter<"User"> | string
+  normalizedEmail?: Prisma.StringFilter<"User"> | string
+  username?: Prisma.StringFilter<"User"> | string
+  normalizedUsername?: Prisma.StringFilter<"User"> | string
+  passwordHash?: Prisma.StringFilter<"User"> | string
+  status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
+  roleId?: Prisma.StringFilter<"User"> | string
+  mustChangePassword?: Prisma.BoolFilter<"User"> | boolean
+  lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  sessionVersion?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  role?: Prisma.XOR<Prisma.RoleScalarRelationFilter, Prisma.RoleWhereInput>
+  sessions?: Prisma.RefreshSessionListRelationFilter
+  passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter
+  permissionOverrides?: Prisma.UserPermissionOverrideListRelationFilter
+  auditLogsAsActor?: Prisma.AuditLogListRelationFilter
+  auditLogsAsTarget?: Prisma.AuditLogListRelationFilter
   createdExamAttempts?: Prisma.ExamAttemptListRelationFilter
   courseChanges?: Prisma.StudentCourseHistoryListRelationFilter
 }
@@ -190,34 +310,78 @@ export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  normalizedEmail?: Prisma.SortOrder
+  username?: Prisma.SortOrder
+  normalizedUsername?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  roleId?: Prisma.SortOrder
+  mustChangePassword?: Prisma.SortOrder
+  lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  sessionVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  role?: Prisma.RoleOrderByWithRelationInput
+  sessions?: Prisma.RefreshSessionOrderByRelationAggregateInput
+  passwordResetTokens?: Prisma.PasswordResetTokenOrderByRelationAggregateInput
+  permissionOverrides?: Prisma.UserPermissionOverrideOrderByRelationAggregateInput
+  auditLogsAsActor?: Prisma.AuditLogOrderByRelationAggregateInput
+  auditLogsAsTarget?: Prisma.AuditLogOrderByRelationAggregateInput
   createdExamAttempts?: Prisma.ExamAttemptOrderByRelationAggregateInput
   courseChanges?: Prisma.StudentCourseHistoryOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  email?: string
+  normalizedEmail?: string
+  normalizedUsername?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringFilter<"User"> | string
+  email?: Prisma.StringFilter<"User"> | string
+  username?: Prisma.StringFilter<"User"> | string
+  passwordHash?: Prisma.StringFilter<"User"> | string
+  status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
+  roleId?: Prisma.StringFilter<"User"> | string
+  mustChangePassword?: Prisma.BoolFilter<"User"> | boolean
+  lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  sessionVersion?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  role?: Prisma.XOR<Prisma.RoleScalarRelationFilter, Prisma.RoleWhereInput>
+  sessions?: Prisma.RefreshSessionListRelationFilter
+  passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter
+  permissionOverrides?: Prisma.UserPermissionOverrideListRelationFilter
+  auditLogsAsActor?: Prisma.AuditLogListRelationFilter
+  auditLogsAsTarget?: Prisma.AuditLogListRelationFilter
   createdExamAttempts?: Prisma.ExamAttemptListRelationFilter
   courseChanges?: Prisma.StudentCourseHistoryListRelationFilter
-}, "id" | "email">
+}, "id" | "normalizedEmail" | "normalizedUsername">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  normalizedEmail?: Prisma.SortOrder
+  username?: Prisma.SortOrder
+  normalizedUsername?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  roleId?: Prisma.SortOrder
+  mustChangePassword?: Prisma.SortOrder
+  lastLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deletedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  sessionVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
+  _avg?: Prisma.UserAvgOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
+  _sum?: Prisma.UserSumOrderByAggregateInput
 }
 
 export type UserScalarWhereWithAggregatesInput = {
@@ -227,6 +391,16 @@ export type UserScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"User"> | string
   name?: Prisma.StringWithAggregatesFilter<"User"> | string
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
+  normalizedEmail?: Prisma.StringWithAggregatesFilter<"User"> | string
+  username?: Prisma.StringWithAggregatesFilter<"User"> | string
+  normalizedUsername?: Prisma.StringWithAggregatesFilter<"User"> | string
+  passwordHash?: Prisma.StringWithAggregatesFilter<"User"> | string
+  status?: Prisma.EnumUserStatusWithAggregatesFilter<"User"> | $Enums.UserStatus
+  roleId?: Prisma.StringWithAggregatesFilter<"User"> | string
+  mustChangePassword?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  lastLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  deletedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  sessionVersion?: Prisma.IntWithAggregatesFilter<"User"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -235,8 +409,23 @@ export type UserCreateInput = {
   id?: string
   name: string
   email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  sessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  permissionOverrides?: Prisma.UserPermissionOverrideCreateNestedManyWithoutUserInput
+  auditLogsAsActor?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  auditLogsAsTarget?: Prisma.AuditLogCreateNestedManyWithoutTargetUserInput
   createdExamAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutCreatedByInput
   courseChanges?: Prisma.StudentCourseHistoryCreateNestedManyWithoutChangedByInput
 }
@@ -245,8 +434,23 @@ export type UserUncheckedCreateInput = {
   id?: string
   name: string
   email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  roleId: string
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  sessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUncheckedCreateNestedManyWithoutUserInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  auditLogsAsTarget?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTargetUserInput
   createdExamAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutCreatedByInput
   courseChanges?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutChangedByInput
 }
@@ -255,8 +459,23 @@ export type UserUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  sessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUpdateManyWithoutUserNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  auditLogsAsTarget?: Prisma.AuditLogUpdateManyWithoutTargetUserNestedInput
   createdExamAttempts?: Prisma.ExamAttemptUpdateManyWithoutCreatedByNestedInput
   courseChanges?: Prisma.StudentCourseHistoryUpdateManyWithoutChangedByNestedInput
 }
@@ -265,8 +484,23 @@ export type UserUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUncheckedUpdateManyWithoutUserNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  auditLogsAsTarget?: Prisma.AuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
   createdExamAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutCreatedByNestedInput
   courseChanges?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutChangedByNestedInput
 }
@@ -275,6 +509,16 @@ export type UserCreateManyInput = {
   id?: string
   name: string
   email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  roleId: string
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -283,6 +527,15 @@ export type UserUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -291,6 +544,16 @@ export type UserUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -299,14 +562,38 @@ export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  normalizedEmail?: Prisma.SortOrder
+  username?: Prisma.SortOrder
+  normalizedUsername?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  roleId?: Prisma.SortOrder
+  mustChangePassword?: Prisma.SortOrder
+  lastLoginAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  sessionVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserAvgOrderByAggregateInput = {
+  sessionVersion?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  normalizedEmail?: Prisma.SortOrder
+  username?: Prisma.SortOrder
+  normalizedUsername?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  roleId?: Prisma.SortOrder
+  mustChangePassword?: Prisma.SortOrder
+  lastLoginAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  sessionVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -315,8 +602,37 @@ export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  normalizedEmail?: Prisma.SortOrder
+  username?: Prisma.SortOrder
+  normalizedUsername?: Prisma.SortOrder
+  passwordHash?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  roleId?: Prisma.SortOrder
+  mustChangePassword?: Prisma.SortOrder
+  lastLoginAt?: Prisma.SortOrder
+  deletedAt?: Prisma.SortOrder
+  sessionVersion?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type UserSumOrderByAggregateInput = {
+  sessionVersion?: Prisma.SortOrder
+}
+
+export type UserListRelationFilter = {
+  every?: Prisma.UserWhereInput
+  some?: Prisma.UserWhereInput
+  none?: Prisma.UserWhereInput
+}
+
+export type UserOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
 }
 
 export type UserNullableScalarRelationFilter = {
@@ -328,8 +644,144 @@ export type StringFieldUpdateOperationsInput = {
   set?: string
 }
 
+export type EnumUserStatusFieldUpdateOperationsInput = {
+  set?: $Enums.UserStatus
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type UserCreateNestedManyWithoutRoleInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRoleInput, Prisma.UserUncheckedCreateWithoutRoleInput> | Prisma.UserCreateWithoutRoleInput[] | Prisma.UserUncheckedCreateWithoutRoleInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRoleInput | Prisma.UserCreateOrConnectWithoutRoleInput[]
+  createMany?: Prisma.UserCreateManyRoleInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUncheckedCreateNestedManyWithoutRoleInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRoleInput, Prisma.UserUncheckedCreateWithoutRoleInput> | Prisma.UserCreateWithoutRoleInput[] | Prisma.UserUncheckedCreateWithoutRoleInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRoleInput | Prisma.UserCreateOrConnectWithoutRoleInput[]
+  createMany?: Prisma.UserCreateManyRoleInputEnvelope
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+}
+
+export type UserUpdateManyWithoutRoleNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRoleInput, Prisma.UserUncheckedCreateWithoutRoleInput> | Prisma.UserCreateWithoutRoleInput[] | Prisma.UserUncheckedCreateWithoutRoleInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRoleInput | Prisma.UserCreateOrConnectWithoutRoleInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutRoleInput | Prisma.UserUpsertWithWhereUniqueWithoutRoleInput[]
+  createMany?: Prisma.UserCreateManyRoleInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutRoleInput | Prisma.UserUpdateWithWhereUniqueWithoutRoleInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutRoleInput | Prisma.UserUpdateManyWithWhereWithoutRoleInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserUncheckedUpdateManyWithoutRoleNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutRoleInput, Prisma.UserUncheckedCreateWithoutRoleInput> | Prisma.UserCreateWithoutRoleInput[] | Prisma.UserUncheckedCreateWithoutRoleInput[]
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutRoleInput | Prisma.UserCreateOrConnectWithoutRoleInput[]
+  upsert?: Prisma.UserUpsertWithWhereUniqueWithoutRoleInput | Prisma.UserUpsertWithWhereUniqueWithoutRoleInput[]
+  createMany?: Prisma.UserCreateManyRoleInputEnvelope
+  set?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  disconnect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  delete?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  connect?: Prisma.UserWhereUniqueInput | Prisma.UserWhereUniqueInput[]
+  update?: Prisma.UserUpdateWithWhereUniqueWithoutRoleInput | Prisma.UserUpdateWithWhereUniqueWithoutRoleInput[]
+  updateMany?: Prisma.UserUpdateManyWithWhereWithoutRoleInput | Prisma.UserUpdateManyWithWhereWithoutRoleInput[]
+  deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+}
+
+export type UserCreateNestedOneWithoutPermissionOverridesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPermissionOverridesInput, Prisma.UserUncheckedCreateWithoutPermissionOverridesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPermissionOverridesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPermissionOverridesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPermissionOverridesInput, Prisma.UserUncheckedCreateWithoutPermissionOverridesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPermissionOverridesInput
+  upsert?: Prisma.UserUpsertWithoutPermissionOverridesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPermissionOverridesInput, Prisma.UserUpdateWithoutPermissionOverridesInput>, Prisma.UserUncheckedUpdateWithoutPermissionOverridesInput>
+}
+
+export type UserCreateNestedOneWithoutSessionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSessionsInput
+  upsert?: Prisma.UserUpsertWithoutSessionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSessionsInput, Prisma.UserUpdateWithoutSessionsInput>, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+}
+
+export type UserCreateNestedOneWithoutPasswordResetTokensInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordResetTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPasswordResetTokensNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordResetTokensInput
+  upsert?: Prisma.UserUpsertWithoutPasswordResetTokensInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPasswordResetTokensInput, Prisma.UserUpdateWithoutPasswordResetTokensInput>, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
+}
+
+export type UserCreateNestedOneWithoutAuditLogsAsActorInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsAsActorInput, Prisma.UserUncheckedCreateWithoutAuditLogsAsActorInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuditLogsAsActorInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutAuditLogsAsTargetInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsAsTargetInput, Prisma.UserUncheckedCreateWithoutAuditLogsAsTargetInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuditLogsAsTargetInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutAuditLogsAsActorNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsAsActorInput, Prisma.UserUncheckedCreateWithoutAuditLogsAsActorInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuditLogsAsActorInput
+  upsert?: Prisma.UserUpsertWithoutAuditLogsAsActorInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuditLogsAsActorInput, Prisma.UserUpdateWithoutAuditLogsAsActorInput>, Prisma.UserUncheckedUpdateWithoutAuditLogsAsActorInput>
+}
+
+export type UserUpdateOneWithoutAuditLogsAsTargetNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsAsTargetInput, Prisma.UserUncheckedCreateWithoutAuditLogsAsTargetInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAuditLogsAsTargetInput
+  upsert?: Prisma.UserUpsertWithoutAuditLogsAsTargetInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuditLogsAsTargetInput, Prisma.UserUpdateWithoutAuditLogsAsTargetInput>, Prisma.UserUncheckedUpdateWithoutAuditLogsAsTargetInput>
 }
 
 export type UserCreateNestedOneWithoutCreatedExamAttemptsInput = {
@@ -364,12 +816,682 @@ export type UserUpdateOneWithoutCourseChangesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCourseChangesInput, Prisma.UserUpdateWithoutCourseChangesInput>, Prisma.UserUncheckedUpdateWithoutCourseChangesInput>
 }
 
+export type UserCreateWithoutRoleInput = {
+  id?: string
+  name: string
+  email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  permissionOverrides?: Prisma.UserPermissionOverrideCreateNestedManyWithoutUserInput
+  auditLogsAsActor?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  auditLogsAsTarget?: Prisma.AuditLogCreateNestedManyWithoutTargetUserInput
+  createdExamAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutCreatedByInput
+  courseChanges?: Prisma.StudentCourseHistoryCreateNestedManyWithoutChangedByInput
+}
+
+export type UserUncheckedCreateWithoutRoleInput = {
+  id?: string
+  name: string
+  email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUncheckedCreateNestedManyWithoutUserInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  auditLogsAsTarget?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTargetUserInput
+  createdExamAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutCreatedByInput
+  courseChanges?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutChangedByInput
+}
+
+export type UserCreateOrConnectWithoutRoleInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutRoleInput, Prisma.UserUncheckedCreateWithoutRoleInput>
+}
+
+export type UserCreateManyRoleInputEnvelope = {
+  data: Prisma.UserCreateManyRoleInput | Prisma.UserCreateManyRoleInput[]
+  skipDuplicates?: boolean
+}
+
+export type UserUpsertWithWhereUniqueWithoutRoleInput = {
+  where: Prisma.UserWhereUniqueInput
+  update: Prisma.XOR<Prisma.UserUpdateWithoutRoleInput, Prisma.UserUncheckedUpdateWithoutRoleInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutRoleInput, Prisma.UserUncheckedCreateWithoutRoleInput>
+}
+
+export type UserUpdateWithWhereUniqueWithoutRoleInput = {
+  where: Prisma.UserWhereUniqueInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutRoleInput, Prisma.UserUncheckedUpdateWithoutRoleInput>
+}
+
+export type UserUpdateManyWithWhereWithoutRoleInput = {
+  where: Prisma.UserScalarWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateManyMutationInput, Prisma.UserUncheckedUpdateManyWithoutRoleInput>
+}
+
+export type UserScalarWhereInput = {
+  AND?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  OR?: Prisma.UserScalarWhereInput[]
+  NOT?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
+  id?: Prisma.StringFilter<"User"> | string
+  name?: Prisma.StringFilter<"User"> | string
+  email?: Prisma.StringFilter<"User"> | string
+  normalizedEmail?: Prisma.StringFilter<"User"> | string
+  username?: Prisma.StringFilter<"User"> | string
+  normalizedUsername?: Prisma.StringFilter<"User"> | string
+  passwordHash?: Prisma.StringFilter<"User"> | string
+  status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
+  roleId?: Prisma.StringFilter<"User"> | string
+  mustChangePassword?: Prisma.BoolFilter<"User"> | boolean
+  lastLoginAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  deletedAt?: Prisma.DateTimeNullableFilter<"User"> | Date | string | null
+  sessionVersion?: Prisma.IntFilter<"User"> | number
+  createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
+}
+
+export type UserCreateWithoutPermissionOverridesInput = {
+  id?: string
+  name: string
+  email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  sessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  auditLogsAsActor?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  auditLogsAsTarget?: Prisma.AuditLogCreateNestedManyWithoutTargetUserInput
+  createdExamAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutCreatedByInput
+  courseChanges?: Prisma.StudentCourseHistoryCreateNestedManyWithoutChangedByInput
+}
+
+export type UserUncheckedCreateWithoutPermissionOverridesInput = {
+  id?: string
+  name: string
+  email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  roleId: string
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  auditLogsAsTarget?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTargetUserInput
+  createdExamAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutCreatedByInput
+  courseChanges?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutChangedByInput
+}
+
+export type UserCreateOrConnectWithoutPermissionOverridesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPermissionOverridesInput, Prisma.UserUncheckedCreateWithoutPermissionOverridesInput>
+}
+
+export type UserUpsertWithoutPermissionOverridesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPermissionOverridesInput, Prisma.UserUncheckedUpdateWithoutPermissionOverridesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPermissionOverridesInput, Prisma.UserUncheckedCreateWithoutPermissionOverridesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPermissionOverridesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPermissionOverridesInput, Prisma.UserUncheckedUpdateWithoutPermissionOverridesInput>
+}
+
+export type UserUpdateWithoutPermissionOverridesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  sessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  auditLogsAsTarget?: Prisma.AuditLogUpdateManyWithoutTargetUserNestedInput
+  createdExamAttempts?: Prisma.ExamAttemptUpdateManyWithoutCreatedByNestedInput
+  courseChanges?: Prisma.StudentCourseHistoryUpdateManyWithoutChangedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPermissionOverridesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  auditLogsAsTarget?: Prisma.AuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
+  createdExamAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutCreatedByNestedInput
+  courseChanges?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+}
+
+export type UserCreateWithoutSessionsInput = {
+  id?: string
+  name: string
+  email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  permissionOverrides?: Prisma.UserPermissionOverrideCreateNestedManyWithoutUserInput
+  auditLogsAsActor?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  auditLogsAsTarget?: Prisma.AuditLogCreateNestedManyWithoutTargetUserInput
+  createdExamAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutCreatedByInput
+  courseChanges?: Prisma.StudentCourseHistoryCreateNestedManyWithoutChangedByInput
+}
+
+export type UserUncheckedCreateWithoutSessionsInput = {
+  id?: string
+  name: string
+  email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  roleId: string
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUncheckedCreateNestedManyWithoutUserInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  auditLogsAsTarget?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTargetUserInput
+  createdExamAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutCreatedByInput
+  courseChanges?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutChangedByInput
+}
+
+export type UserCreateOrConnectWithoutSessionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+}
+
+export type UserUpsertWithoutSessionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSessionsInput, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSessionsInput, Prisma.UserUncheckedCreateWithoutSessionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSessionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSessionsInput, Prisma.UserUncheckedUpdateWithoutSessionsInput>
+}
+
+export type UserUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUpdateManyWithoutUserNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  auditLogsAsTarget?: Prisma.AuditLogUpdateManyWithoutTargetUserNestedInput
+  createdExamAttempts?: Prisma.ExamAttemptUpdateManyWithoutCreatedByNestedInput
+  courseChanges?: Prisma.StudentCourseHistoryUpdateManyWithoutChangedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUncheckedUpdateManyWithoutUserNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  auditLogsAsTarget?: Prisma.AuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
+  createdExamAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutCreatedByNestedInput
+  courseChanges?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+}
+
+export type UserCreateWithoutPasswordResetTokensInput = {
+  id?: string
+  name: string
+  email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  sessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  permissionOverrides?: Prisma.UserPermissionOverrideCreateNestedManyWithoutUserInput
+  auditLogsAsActor?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  auditLogsAsTarget?: Prisma.AuditLogCreateNestedManyWithoutTargetUserInput
+  createdExamAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutCreatedByInput
+  courseChanges?: Prisma.StudentCourseHistoryCreateNestedManyWithoutChangedByInput
+}
+
+export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
+  id?: string
+  name: string
+  email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  roleId: string
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUncheckedCreateNestedManyWithoutUserInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  auditLogsAsTarget?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTargetUserInput
+  createdExamAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutCreatedByInput
+  courseChanges?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutChangedByInput
+}
+
+export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+}
+
+export type UserUpsertWithoutPasswordResetTokensInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPasswordResetTokensInput, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPasswordResetTokensInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPasswordResetTokensInput, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
+}
+
+export type UserUpdateWithoutPasswordResetTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  sessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUpdateManyWithoutUserNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  auditLogsAsTarget?: Prisma.AuditLogUpdateManyWithoutTargetUserNestedInput
+  createdExamAttempts?: Prisma.ExamAttemptUpdateManyWithoutCreatedByNestedInput
+  courseChanges?: Prisma.StudentCourseHistoryUpdateManyWithoutChangedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUncheckedUpdateManyWithoutUserNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  auditLogsAsTarget?: Prisma.AuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
+  createdExamAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutCreatedByNestedInput
+  courseChanges?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+}
+
+export type UserCreateWithoutAuditLogsAsActorInput = {
+  id?: string
+  name: string
+  email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  sessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  permissionOverrides?: Prisma.UserPermissionOverrideCreateNestedManyWithoutUserInput
+  auditLogsAsTarget?: Prisma.AuditLogCreateNestedManyWithoutTargetUserInput
+  createdExamAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutCreatedByInput
+  courseChanges?: Prisma.StudentCourseHistoryCreateNestedManyWithoutChangedByInput
+}
+
+export type UserUncheckedCreateWithoutAuditLogsAsActorInput = {
+  id?: string
+  name: string
+  email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  roleId: string
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUncheckedCreateNestedManyWithoutUserInput
+  auditLogsAsTarget?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTargetUserInput
+  createdExamAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutCreatedByInput
+  courseChanges?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutChangedByInput
+}
+
+export type UserCreateOrConnectWithoutAuditLogsAsActorInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsAsActorInput, Prisma.UserUncheckedCreateWithoutAuditLogsAsActorInput>
+}
+
+export type UserCreateWithoutAuditLogsAsTargetInput = {
+  id?: string
+  name: string
+  email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  sessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  permissionOverrides?: Prisma.UserPermissionOverrideCreateNestedManyWithoutUserInput
+  auditLogsAsActor?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  createdExamAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutCreatedByInput
+  courseChanges?: Prisma.StudentCourseHistoryCreateNestedManyWithoutChangedByInput
+}
+
+export type UserUncheckedCreateWithoutAuditLogsAsTargetInput = {
+  id?: string
+  name: string
+  email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  roleId: string
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUncheckedCreateNestedManyWithoutUserInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  createdExamAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutCreatedByInput
+  courseChanges?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutChangedByInput
+}
+
+export type UserCreateOrConnectWithoutAuditLogsAsTargetInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsAsTargetInput, Prisma.UserUncheckedCreateWithoutAuditLogsAsTargetInput>
+}
+
+export type UserUpsertWithoutAuditLogsAsActorInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAuditLogsAsActorInput, Prisma.UserUncheckedUpdateWithoutAuditLogsAsActorInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsAsActorInput, Prisma.UserUncheckedCreateWithoutAuditLogsAsActorInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAuditLogsAsActorInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAuditLogsAsActorInput, Prisma.UserUncheckedUpdateWithoutAuditLogsAsActorInput>
+}
+
+export type UserUpdateWithoutAuditLogsAsActorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  sessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUpdateManyWithoutUserNestedInput
+  auditLogsAsTarget?: Prisma.AuditLogUpdateManyWithoutTargetUserNestedInput
+  createdExamAttempts?: Prisma.ExamAttemptUpdateManyWithoutCreatedByNestedInput
+  courseChanges?: Prisma.StudentCourseHistoryUpdateManyWithoutChangedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAuditLogsAsActorInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUncheckedUpdateManyWithoutUserNestedInput
+  auditLogsAsTarget?: Prisma.AuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
+  createdExamAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutCreatedByNestedInput
+  courseChanges?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+}
+
+export type UserUpsertWithoutAuditLogsAsTargetInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAuditLogsAsTargetInput, Prisma.UserUncheckedUpdateWithoutAuditLogsAsTargetInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAuditLogsAsTargetInput, Prisma.UserUncheckedCreateWithoutAuditLogsAsTargetInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAuditLogsAsTargetInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAuditLogsAsTargetInput, Prisma.UserUncheckedUpdateWithoutAuditLogsAsTargetInput>
+}
+
+export type UserUpdateWithoutAuditLogsAsTargetInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  sessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUpdateManyWithoutUserNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  createdExamAttempts?: Prisma.ExamAttemptUpdateManyWithoutCreatedByNestedInput
+  courseChanges?: Prisma.StudentCourseHistoryUpdateManyWithoutChangedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAuditLogsAsTargetInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUncheckedUpdateManyWithoutUserNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  createdExamAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutCreatedByNestedInput
+  courseChanges?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+}
+
 export type UserCreateWithoutCreatedExamAttemptsInput = {
   id?: string
   name: string
   email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  sessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  permissionOverrides?: Prisma.UserPermissionOverrideCreateNestedManyWithoutUserInput
+  auditLogsAsActor?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  auditLogsAsTarget?: Prisma.AuditLogCreateNestedManyWithoutTargetUserInput
   courseChanges?: Prisma.StudentCourseHistoryCreateNestedManyWithoutChangedByInput
 }
 
@@ -377,8 +1499,23 @@ export type UserUncheckedCreateWithoutCreatedExamAttemptsInput = {
   id?: string
   name: string
   email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  roleId: string
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  sessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUncheckedCreateNestedManyWithoutUserInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  auditLogsAsTarget?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTargetUserInput
   courseChanges?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutChangedByInput
 }
 
@@ -402,8 +1539,23 @@ export type UserUpdateWithoutCreatedExamAttemptsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  sessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUpdateManyWithoutUserNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  auditLogsAsTarget?: Prisma.AuditLogUpdateManyWithoutTargetUserNestedInput
   courseChanges?: Prisma.StudentCourseHistoryUpdateManyWithoutChangedByNestedInput
 }
 
@@ -411,8 +1563,23 @@ export type UserUncheckedUpdateWithoutCreatedExamAttemptsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUncheckedUpdateManyWithoutUserNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  auditLogsAsTarget?: Prisma.AuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
   courseChanges?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutChangedByNestedInput
 }
 
@@ -420,8 +1587,23 @@ export type UserCreateWithoutCourseChangesInput = {
   id?: string
   name: string
   email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  role: Prisma.RoleCreateNestedOneWithoutUsersInput
+  sessions?: Prisma.RefreshSessionCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
+  permissionOverrides?: Prisma.UserPermissionOverrideCreateNestedManyWithoutUserInput
+  auditLogsAsActor?: Prisma.AuditLogCreateNestedManyWithoutActorInput
+  auditLogsAsTarget?: Prisma.AuditLogCreateNestedManyWithoutTargetUserInput
   createdExamAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutCreatedByInput
 }
 
@@ -429,8 +1611,23 @@ export type UserUncheckedCreateWithoutCourseChangesInput = {
   id?: string
   name: string
   email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  roleId: string
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  sessions?: Prisma.RefreshSessionUncheckedCreateNestedManyWithoutUserInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUncheckedCreateNestedManyWithoutUserInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedCreateNestedManyWithoutActorInput
+  auditLogsAsTarget?: Prisma.AuditLogUncheckedCreateNestedManyWithoutTargetUserInput
   createdExamAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutCreatedByInput
 }
 
@@ -454,8 +1651,23 @@ export type UserUpdateWithoutCourseChangesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  role?: Prisma.RoleUpdateOneRequiredWithoutUsersNestedInput
+  sessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUpdateManyWithoutUserNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  auditLogsAsTarget?: Prisma.AuditLogUpdateManyWithoutTargetUserNestedInput
   createdExamAttempts?: Prisma.ExamAttemptUpdateManyWithoutCreatedByNestedInput
 }
 
@@ -463,9 +1675,106 @@ export type UserUncheckedUpdateWithoutCourseChangesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  roleId?: Prisma.StringFieldUpdateOperationsInput | string
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUncheckedUpdateManyWithoutUserNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  auditLogsAsTarget?: Prisma.AuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
   createdExamAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateManyRoleInput = {
+  id?: string
+  name: string
+  email: string
+  normalizedEmail: string
+  username: string
+  normalizedUsername: string
+  passwordHash: string
+  status?: $Enums.UserStatus
+  mustChangePassword?: boolean
+  lastLoginAt?: Date | string | null
+  deletedAt?: Date | string | null
+  sessionVersion?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type UserUpdateWithoutRoleInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.RefreshSessionUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUpdateManyWithoutUserNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUpdateManyWithoutActorNestedInput
+  auditLogsAsTarget?: Prisma.AuditLogUpdateManyWithoutTargetUserNestedInput
+  createdExamAttempts?: Prisma.ExamAttemptUpdateManyWithoutCreatedByNestedInput
+  courseChanges?: Prisma.StudentCourseHistoryUpdateManyWithoutChangedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutRoleInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.RefreshSessionUncheckedUpdateManyWithoutUserNestedInput
+  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+  permissionOverrides?: Prisma.UserPermissionOverrideUncheckedUpdateManyWithoutUserNestedInput
+  auditLogsAsActor?: Prisma.AuditLogUncheckedUpdateManyWithoutActorNestedInput
+  auditLogsAsTarget?: Prisma.AuditLogUncheckedUpdateManyWithoutTargetUserNestedInput
+  createdExamAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutCreatedByNestedInput
+  courseChanges?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutChangedByNestedInput
+}
+
+export type UserUncheckedUpdateManyWithoutRoleInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  normalizedUsername?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+  mustChangePassword?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deletedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sessionVersion?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -474,11 +1783,21 @@ export type UserUncheckedUpdateWithoutCourseChangesInput = {
  */
 
 export type UserCountOutputType = {
+  sessions: number
+  passwordResetTokens: number
+  permissionOverrides: number
+  auditLogsAsActor: number
+  auditLogsAsTarget: number
   createdExamAttempts: number
   courseChanges: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  sessions?: boolean | UserCountOutputTypeCountSessionsArgs
+  passwordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
+  permissionOverrides?: boolean | UserCountOutputTypeCountPermissionOverridesArgs
+  auditLogsAsActor?: boolean | UserCountOutputTypeCountAuditLogsAsActorArgs
+  auditLogsAsTarget?: boolean | UserCountOutputTypeCountAuditLogsAsTargetArgs
   createdExamAttempts?: boolean | UserCountOutputTypeCountCreatedExamAttemptsArgs
   courseChanges?: boolean | UserCountOutputTypeCountCourseChangesArgs
 }
@@ -491,6 +1810,41 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
    * Select specific fields to fetch from the UserCountOutputType
    */
   select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.RefreshSessionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PasswordResetTokenWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPermissionOverridesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserPermissionOverrideWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAuditLogsAsActorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AuditLogWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAuditLogsAsTargetArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AuditLogWhereInput
 }
 
 /**
@@ -512,8 +1866,24 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   id?: boolean
   name?: boolean
   email?: boolean
+  normalizedEmail?: boolean
+  username?: boolean
+  normalizedUsername?: boolean
+  passwordHash?: boolean
+  status?: boolean
+  roleId?: boolean
+  mustChangePassword?: boolean
+  lastLoginAt?: boolean
+  deletedAt?: boolean
+  sessionVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>
+  permissionOverrides?: boolean | Prisma.User$permissionOverridesArgs<ExtArgs>
+  auditLogsAsActor?: boolean | Prisma.User$auditLogsAsActorArgs<ExtArgs>
+  auditLogsAsTarget?: boolean | Prisma.User$auditLogsAsTargetArgs<ExtArgs>
   createdExamAttempts?: boolean | Prisma.User$createdExamAttemptsArgs<ExtArgs>
   courseChanges?: boolean | Prisma.User$courseChangesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -523,38 +1893,86 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   id?: boolean
   name?: boolean
   email?: boolean
+  normalizedEmail?: boolean
+  username?: boolean
+  normalizedUsername?: boolean
+  passwordHash?: boolean
+  status?: boolean
+  roleId?: boolean
+  mustChangePassword?: boolean
+  lastLoginAt?: boolean
+  deletedAt?: boolean
+  sessionVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
   email?: boolean
+  normalizedEmail?: boolean
+  username?: boolean
+  normalizedUsername?: boolean
+  passwordHash?: boolean
+  status?: boolean
+  roleId?: boolean
+  mustChangePassword?: boolean
+  lastLoginAt?: boolean
+  deletedAt?: boolean
+  sessionVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
   id?: boolean
   name?: boolean
   email?: boolean
+  normalizedEmail?: boolean
+  username?: boolean
+  normalizedUsername?: boolean
+  passwordHash?: boolean
+  status?: boolean
+  roleId?: boolean
+  mustChangePassword?: boolean
+  lastLoginAt?: boolean
+  deletedAt?: boolean
+  sessionVersion?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "normalizedEmail" | "username" | "normalizedUsername" | "passwordHash" | "status" | "roleId" | "mustChangePassword" | "lastLoginAt" | "deletedAt" | "sessionVersion" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
+  sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
+  passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>
+  permissionOverrides?: boolean | Prisma.User$permissionOverridesArgs<ExtArgs>
+  auditLogsAsActor?: boolean | Prisma.User$auditLogsAsActorArgs<ExtArgs>
+  auditLogsAsTarget?: boolean | Prisma.User$auditLogsAsTargetArgs<ExtArgs>
   createdExamAttempts?: boolean | Prisma.User$createdExamAttemptsArgs<ExtArgs>
   courseChanges?: boolean | Prisma.User$courseChangesArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
+}
+export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  role?: boolean | Prisma.RoleDefaultArgs<ExtArgs>
+}
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
   objects: {
+    role: Prisma.$RolePayload<ExtArgs>
+    sessions: Prisma.$RefreshSessionPayload<ExtArgs>[]
+    passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
+    permissionOverrides: Prisma.$UserPermissionOverridePayload<ExtArgs>[]
+    auditLogsAsActor: Prisma.$AuditLogPayload<ExtArgs>[]
+    auditLogsAsTarget: Prisma.$AuditLogPayload<ExtArgs>[]
     createdExamAttempts: Prisma.$ExamAttemptPayload<ExtArgs>[]
     courseChanges: Prisma.$StudentCourseHistoryPayload<ExtArgs>[]
   }
@@ -562,6 +1980,16 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     id: string
     name: string
     email: string
+    normalizedEmail: string
+    username: string
+    normalizedUsername: string
+    passwordHash: string
+    status: $Enums.UserStatus
+    roleId: string
+    mustChangePassword: boolean
+    lastLoginAt: Date | null
+    deletedAt: Date | null
+    sessionVersion: number
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -958,6 +2386,12 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  role<T extends Prisma.RoleDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.RoleDefaultArgs<ExtArgs>>): Prisma.Prisma__RoleClient<runtime.Types.Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  sessions<T extends Prisma.User$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  passwordResetTokens<T extends Prisma.User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  permissionOverrides<T extends Prisma.User$permissionOverridesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$permissionOverridesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPermissionOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  auditLogsAsActor<T extends Prisma.User$auditLogsAsActorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsAsActorArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  auditLogsAsTarget<T extends Prisma.User$auditLogsAsTargetArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsAsTargetArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdExamAttempts<T extends Prisma.User$createdExamAttemptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdExamAttemptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExamAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   courseChanges<T extends Prisma.User$courseChangesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$courseChangesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentCourseHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -992,6 +2426,16 @@ export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'String'>
   readonly name: Prisma.FieldRef<"User", 'String'>
   readonly email: Prisma.FieldRef<"User", 'String'>
+  readonly normalizedEmail: Prisma.FieldRef<"User", 'String'>
+  readonly username: Prisma.FieldRef<"User", 'String'>
+  readonly normalizedUsername: Prisma.FieldRef<"User", 'String'>
+  readonly passwordHash: Prisma.FieldRef<"User", 'String'>
+  readonly status: Prisma.FieldRef<"User", 'UserStatus'>
+  readonly roleId: Prisma.FieldRef<"User", 'String'>
+  readonly mustChangePassword: Prisma.FieldRef<"User", 'Boolean'>
+  readonly lastLoginAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly deletedAt: Prisma.FieldRef<"User", 'DateTime'>
+  readonly sessionVersion: Prisma.FieldRef<"User", 'Int'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -1248,6 +2692,10 @@ export type UserCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    */
   data: Prisma.UserCreateManyInput | Prisma.UserCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1318,6 +2766,10 @@ export type UserUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many Users to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1384,6 +2836,126 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Limit how many Users to delete.
    */
   limit?: number
+}
+
+/**
+ * User.sessions
+ */
+export type User$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the RefreshSession
+   */
+  select?: Prisma.RefreshSessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the RefreshSession
+   */
+  omit?: Prisma.RefreshSessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.RefreshSessionInclude<ExtArgs> | null
+  where?: Prisma.RefreshSessionWhereInput
+  orderBy?: Prisma.RefreshSessionOrderByWithRelationInput | Prisma.RefreshSessionOrderByWithRelationInput[]
+  cursor?: Prisma.RefreshSessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.RefreshSessionScalarFieldEnum | Prisma.RefreshSessionScalarFieldEnum[]
+}
+
+/**
+ * User.passwordResetTokens
+ */
+export type User$passwordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PasswordResetToken
+   */
+  select?: Prisma.PasswordResetTokenSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PasswordResetToken
+   */
+  omit?: Prisma.PasswordResetTokenOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PasswordResetTokenInclude<ExtArgs> | null
+  where?: Prisma.PasswordResetTokenWhereInput
+  orderBy?: Prisma.PasswordResetTokenOrderByWithRelationInput | Prisma.PasswordResetTokenOrderByWithRelationInput[]
+  cursor?: Prisma.PasswordResetTokenWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PasswordResetTokenScalarFieldEnum | Prisma.PasswordResetTokenScalarFieldEnum[]
+}
+
+/**
+ * User.permissionOverrides
+ */
+export type User$permissionOverridesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserPermissionOverride
+   */
+  select?: Prisma.UserPermissionOverrideSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the UserPermissionOverride
+   */
+  omit?: Prisma.UserPermissionOverrideOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserPermissionOverrideInclude<ExtArgs> | null
+  where?: Prisma.UserPermissionOverrideWhereInput
+  orderBy?: Prisma.UserPermissionOverrideOrderByWithRelationInput | Prisma.UserPermissionOverrideOrderByWithRelationInput[]
+  cursor?: Prisma.UserPermissionOverrideWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserPermissionOverrideScalarFieldEnum | Prisma.UserPermissionOverrideScalarFieldEnum[]
+}
+
+/**
+ * User.auditLogsAsActor
+ */
+export type User$auditLogsAsActorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AuditLog
+   */
+  select?: Prisma.AuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AuditLog
+   */
+  omit?: Prisma.AuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AuditLogInclude<ExtArgs> | null
+  where?: Prisma.AuditLogWhereInput
+  orderBy?: Prisma.AuditLogOrderByWithRelationInput | Prisma.AuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.AuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
+}
+
+/**
+ * User.auditLogsAsTarget
+ */
+export type User$auditLogsAsTargetArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AuditLog
+   */
+  select?: Prisma.AuditLogSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AuditLog
+   */
+  omit?: Prisma.AuditLogOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AuditLogInclude<ExtArgs> | null
+  where?: Prisma.AuditLogWhereInput
+  orderBy?: Prisma.AuditLogOrderByWithRelationInput | Prisma.AuditLogOrderByWithRelationInput[]
+  cursor?: Prisma.AuditLogWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
 }
 
 /**

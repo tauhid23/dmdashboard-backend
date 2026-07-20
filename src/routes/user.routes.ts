@@ -1,11 +1,2 @@
-import { Router } from "express";
-
-import * as userController from "../controllers/user.controller.js";
-import { asyncHandler } from "../utils/asyncHandler.js";
-
-const router = Router();
-
-router.post("/", asyncHandler(userController.createUser));
-router.get("/", asyncHandler(userController.getUsers));
-
-export default router;
+import {Router} from "express";import * as c from "../controllers/user.controller.js";import {authenticate,requirePermission} from "../middlewares/auth.js";import {asyncHandler} from "../utils/asyncHandler.js";
+const r=Router();r.use(authenticate);r.get("/",requirePermission("user-management","view"),asyncHandler(c.getUsers));r.post("/",requirePermission("user-management","add"),asyncHandler(c.createUser));r.get("/:id",requirePermission("user-management","view"),asyncHandler(c.getUser));r.patch("/:id",requirePermission("user-management","edit"),asyncHandler(c.updateUser));r.delete("/:id",requirePermission("user-management","delete"),asyncHandler(c.deleteUser));r.post("/:id/reset-password",requirePermission("user-management","edit"),asyncHandler(c.resetPassword));export default r;

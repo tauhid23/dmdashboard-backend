@@ -49,14 +49,117 @@ enum PromotionReason {
   MANUAL_ADJUSTMENT
 }
 
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
 model User {
   id                  String                 @id @default(cuid())
   name                String
-  email               String                 @unique
+  email               String
+  normalizedEmail     String                 @unique
+  username            String
+  normalizedUsername  String                 @unique
+  passwordHash        String
+  status              UserStatus             @default(ACTIVE)
+  roleId              String
+  mustChangePassword  Boolean                @default(false)
+  lastLoginAt         DateTime?
+  deletedAt           DateTime?
+  sessionVersion      Int                    @default(0)
   createdAt           DateTime               @default(now())
   updatedAt           DateTime               @updatedAt
+  role                Role                   @relation(fields: [roleId], references: [id], onDelete: Restrict)
+  sessions            RefreshSession[]
+  passwordResetTokens PasswordResetToken[]
+  permissionOverrides UserPermissionOverride[]
+  auditLogsAsActor    AuditLog[]              @relation("AuditActor")
+  auditLogsAsTarget   AuditLog[]              @relation("AuditTarget")
   createdExamAttempts ExamAttempt[]          @relation("ExamCreatedBy")
   courseChanges       StudentCourseHistory[] @relation("CourseChangedBy")
+}
+
+model Role {
+  id          String           @id @default(cuid())
+  code        String           @unique
+  name        String           @unique
+  description String?
+  isSystem    Boolean          @default(true)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  users       User[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id          String           @id @default(cuid())
+  resource    String
+  action      String
+  code        String           @unique
+  description String?
+  roles       RolePermission[]
+  userOverrides UserPermissionOverride[]
+  @@unique([resource, action])
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  @@id([roleId, permissionId])
+}
+
+model UserPermissionOverride {
+  userId       String
+  permissionId String
+  allowed      Boolean
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  @@id([userId, permissionId])
+}
+
+model RefreshSession {
+  id          String    @id @default(cuid())
+  userId      String
+  tokenHash   String    @unique
+  expiresAt   DateTime
+  revokedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  lastUsedAt  DateTime?
+  ipAddress   String?
+  userAgent   String?
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
+}
+
+model AuditLog {
+  id           String   @id @default(cuid())
+  actorId      String?
+  targetUserId String?
+  action       String
+  ipAddress    String?
+  userAgent    String?
+  requestId    String?
+  before       Json?
+  after        Json?
+  createdAt    DateTime @default(now())
+  actor        User?    @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  targetUser   User?    @relation("AuditTarget", fields: [targetUserId], references: [id], onDelete: SetNull)
+  @@index([actorId, createdAt])
+  @@index([targetUserId, createdAt])
 }
 
 model Student {
@@ -330,6 +433,10 @@ model ClassReport {
   @@index([studentId])
   @@index([teacherId])
   @@index([month])
+  @@index([createdAt, id])
+  @@index([studentId, createdAt])
+  @@index([teacherId, createdAt])
+  @@index([month, createdAt])
 }
 
 model StudentLeftLog {

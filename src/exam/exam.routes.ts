@@ -1,8 +1,10 @@
 import { Router } from "express";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import * as controller from "./exam.controller.js";
+import { authenticate, requirePermission } from "../middlewares/auth.js";
 const router=Router();
-router.post("/",asyncHandler(controller.submit));
+router.use(authenticate,requirePermission("exams","view"));
+router.post("/",requirePermission("exams","add"),asyncHandler(controller.submit));
 router.get("/",asyncHandler(controller.list));
 router.get("/:id",asyncHandler(controller.get));
 export default router;

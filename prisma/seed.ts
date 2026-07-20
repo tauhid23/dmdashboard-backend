@@ -2,8 +2,31 @@ import type { Prisma } from "../src/generated/prisma/client.js";
 import { prisma } from "../src/config/prisma.js";
 import { COURSE_RULES, validateExamRules, type ExamRule as RuleDefinition } from "../src/exam/exam.rules.js";
 import { courseDisplay } from "../src/exam/course-progression.js";
+import { hashPassword } from "../src/auth/security.js";
+import { env } from "../src/config/env.js";
+import { ACTIONS, RESOURCES } from "../src/auth/auth.types.js";
 
 validateExamRules();
+
+const permissionRows=RESOURCES.flatMap(resource=>ACTIONS.map(action=>({resource,action,code:`${resource}.${action}`,description:`Can ${action} ${resource}`})));
+for(const permission of permissionRows)await prisma.permission.upsert({where:{code:permission.code},create:permission,update:{resource:permission.resource,action:permission.action,description:permission.description}});
+const roles=[
+  {code:"SUPER_ADMIN",name:"Super Admin",description:"Full system access"},
+  {code:"ADMIN",name:"Admin",description:"Operational administrator"},
+  {code:"MODERATOR",name:"Moderator",description:"Operational content manager"},
+  {code:"TEACHER",name:"Teacher",description:"Teacher access"}
+];
+const allowed=(role:string,resource:string,action:string)=>role==="SUPER_ADMIN"||(role==="ADMIN"&&!(resource==="user-management"&&action==="delete"))||(role==="MODERATOR"&&((resource==="dashboard"||resource==="settings")&&action==="view"||["students","teachers","class-reports","exams","results"].includes(resource)&&action!=="delete"))||(role==="TEACHER"&&((resource==="dashboard"||resource==="students"||resource==="teachers"||resource==="results"||resource==="settings")&&action==="view"||resource==="class-reports"&&action!=="delete"||resource==="exams"&&(action==="view"||action==="add")));
+for(const definition of roles){
+  const role=await prisma.role.upsert({where:{code:definition.code},create:{...definition,isSystem:true},update:{name:definition.name,description:definition.description,isSystem:true}});
+  const permissions=await prisma.permission.findMany({where:{code:{in:permissionRows.filter(p=>allowed(definition.code,p.resource,p.action)).map(p=>p.code)}}});
+  await prisma.rolePermission.deleteMany({where:{roleId:role.id}});
+  await prisma.rolePermission.createMany({data:permissions.map(permission=>({roleId:role.id,permissionId:permission.id}))});
+}
+const superRole=await prisma.role.findUniqueOrThrow({where:{code:"SUPER_ADMIN"}});
+const normalizedEmail=env.SUPER_ADMIN_EMAIL.trim().toLowerCase(),normalizedUsername=env.SUPER_ADMIN_USERNAME.trim().toLowerCase();
+const existingAdmin=await prisma.user.findFirst({where:{OR:[{normalizedEmail},{normalizedUsername}]}});
+if(!existingAdmin)await prisma.user.create({data:{name:"Super Admin",email:env.SUPER_ADMIN_EMAIL,normalizedEmail,username:env.SUPER_ADMIN_USERNAME,normalizedUsername,passwordHash:await hashPassword(env.SUPER_ADMIN_PASSWORD),status:"ACTIVE",roleId:superRole.id}});
 
 const matchesDefinition = (
   stored: { totalMaximumMarks:number;sections:Array<{key:string;label:string;maximumMarks:number;passingMarks:number|null;sortOrder:number}>;fields:Array<{key:string;label:string;description:string|null;maximumMarks:number;sortOrder:number;section:{key:string}}> },

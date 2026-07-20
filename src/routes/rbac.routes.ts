@@ -1,0 +1,3 @@
+import {Router} from "express";import * as c from "../controllers/user.controller.js";import {authenticate,requirePermission} from "../middlewares/auth.js";import {asyncHandler} from "../utils/asyncHandler.js";
+export const roleRoutes=Router();roleRoutes.use(authenticate,requirePermission("user-management","view"));roleRoutes.get("/",asyncHandler(c.getRoles));roleRoutes.patch("/:id/permissions",requirePermission("user-management","edit"),asyncHandler(c.updateRolePermissions));
+export const permissionRoutes=Router();permissionRoutes.use(authenticate,requirePermission("user-management","view"));permissionRoutes.get("/",asyncHandler(c.getPermissions));

@@ -868,14 +868,6 @@ export type StudentNullableScalarRelationFilter = {
   isNot?: Prisma.StudentWhereInput | null
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type NullableBoolFieldUpdateOperationsInput = {
   set?: boolean | null
 }
@@ -886,10 +878,6 @@ export type NullableEnumStudentStatusFieldUpdateOperationsInput = {
 
 export type NullableEnumCourseLevelFieldUpdateOperationsInput = {
   set?: $Enums.CourseLevel | null
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
 }
 
 export type StudentCreateNestedOneWithoutCoursesInput = {

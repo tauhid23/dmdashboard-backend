@@ -47,6 +47,41 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
+ * Model Role
+ * 
+ */
+export type Role = Prisma.RoleModel
+/**
+ * Model Permission
+ * 
+ */
+export type Permission = Prisma.PermissionModel
+/**
+ * Model RolePermission
+ * 
+ */
+export type RolePermission = Prisma.RolePermissionModel
+/**
+ * Model UserPermissionOverride
+ * 
+ */
+export type UserPermissionOverride = Prisma.UserPermissionOverrideModel
+/**
+ * Model RefreshSession
+ * 
+ */
+export type RefreshSession = Prisma.RefreshSessionModel
+/**
+ * Model PasswordResetToken
+ * 
+ */
+export type PasswordResetToken = Prisma.PasswordResetTokenModel
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = Prisma.AuditLogModel
+/**
  * Model Student
  * 
  */
