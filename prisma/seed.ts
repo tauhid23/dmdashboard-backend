@@ -14,9 +14,10 @@ const roles=[
   {code:"SUPER_ADMIN",name:"Super Admin",description:"Full system access"},
   {code:"ADMIN",name:"Admin",description:"Operational administrator"},
   {code:"MODERATOR",name:"Moderator",description:"Operational content manager"},
-  {code:"TEACHER",name:"Teacher",description:"Teacher access"}
+  {code:"TEACHER",name:"Teacher",description:"Teacher access"},
+  {code:"STUDENT",name:"Student",description:"Student self-service access"}
 ];
-const allowed=(role:string,resource:string,action:string)=>role==="SUPER_ADMIN"||(role==="ADMIN"&&!(resource==="user-management"&&action==="delete"))||(role==="MODERATOR"&&((resource==="dashboard"||resource==="settings")&&action==="view"||["students","teachers","class-reports","exams","results"].includes(resource)&&action!=="delete"))||(role==="TEACHER"&&((resource==="dashboard"||resource==="students"||resource==="teachers"||resource==="results"||resource==="settings")&&action==="view"||resource==="class-reports"&&action!=="delete"||resource==="exams"&&(action==="view"||action==="add")));
+const allowed=(role:string,resource:string,action:string)=>role==="SUPER_ADMIN"||(role==="ADMIN"&&!(resource==="user-management"&&action==="delete"))||(role==="MODERATOR"&&((resource==="dashboard"||resource==="settings")&&action==="view"||["students","teachers","class-reports","exams","results"].includes(resource)&&action!=="delete"))||(role==="TEACHER"&&((resource==="dashboard"||resource==="students"||resource==="teachers"||resource==="results"||resource==="settings")&&action==="view"||resource==="class-reports"&&action!=="delete"||resource==="exams"&&(action==="view"||action==="add")))||(role==="STUDENT"&&(["dashboard","students","teachers","class-reports","exams","results","settings"].includes(resource)&&action==="view"));
 for(const definition of roles){
   const role=await prisma.role.upsert({where:{code:definition.code},create:{...definition,isSystem:true},update:{name:definition.name,description:definition.description,isSystem:true}});
   const permissions=await prisma.permission.findMany({where:{code:{in:permissionRows.filter(p=>allowed(definition.code,p.resource,p.action)).map(p=>p.code)}}});

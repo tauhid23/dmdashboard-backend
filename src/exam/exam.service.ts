@@ -1,8 +1,10 @@
 import type { Prisma } from "../generated/prisma/client.js";
 import { CourseLevel, ExamOutcome } from "../generated/prisma/enums.js";
 import { prisma } from "../config/prisma.js";
+import type { ActorScope } from "../auth/accessScope.js";
+import { assertStudentAccess, assertTeacherAccess, forbidden } from "../auth/accessScope.js";
 import { COURSE_RULES } from "./exam.rules.js";
-import { courseDisplay, nextCourseLevel } from "./course-progression.js";
+import { courseDisplay, courseLevelFromDisplay, nextCourseLevel } from "./course-progression.js";
 
 type MarkInput = { fieldKey: string; obtainedMarks: number };
 type SubmitInput = { studentId: string; examinerId?: string; teacherId?: string; courseLevel: CourseLevel; idempotencyKey: string; notes?: string | null; marks: MarkInput[]; createdById?: string };
@@ -56,15 +58,18 @@ const response = async (examAttemptId:string, promoted:boolean, previousLevel:Co
  return {examAttempt:withResultDetails(examAttempt),promotion:{promoted,previousLevel,currentLevel:student.currentCourseLevel,courseCompleted:student.courseCompleted},student};
 };
 
-export const submitExam = async (raw:unknown) => {
+export const submitExam = async (raw:unknown, scope?: ActorScope) => {
  const input=validatePayload(raw), existing=await prisma.examAttempt.findUnique({where:{idempotencyKey:input.idempotencyKey}});
+ if(scope&&!scope.isPrivileged){await assertStudentAccess(scope,input.studentId);if(input.examinerId)await assertTeacherAccess(scope,input.examinerId);}
  if(existing){if(existing.studentId!==input.studentId||existing.examinerId!==input.examinerId||existing.courseLevel!==input.courseLevel)throw httpError(409,"Idempotency key belongs to a different submission");return {statusCode:200,data:await response(existing.id,false,existing.courseLevel)};}
  try {
   const saved=await prisma.$transaction(async tx=>{
    const student=await tx.student.findUnique({where:{id:input.studentId}});if(!student)throw httpError(404,"Student not found");
    const examiner=await tx.teacher.findUnique({where:{id:input.examinerId}});if(!examiner)throw httpError(404,"Examiner not found");
    if(student.teacherId!==input.examinerId)throw httpError(403,"Examiner is not assigned to this student");
-   if(student.currentCourseLevel!==input.courseLevel)throw httpError(409,"Submitted courseLevel does not match the student's current course level");
+   const effectiveCourseLevel=student.currentCourseLevel??courseLevelFromDisplay(student.courseName,student.courseStage);
+   if(effectiveCourseLevel!==input.courseLevel)throw httpError(409,"Submitted courseLevel does not match the student's current course level");
+   if(!student.currentCourseLevel){const updated=await tx.student.updateMany({where:{id:student.id,currentCourseLevel:null},data:{currentCourseLevel:effectiveCourseLevel,courseCompleted:false,courseUpdatedAt:new Date()}});if(updated.count!==1)throw httpError(409,"Student level changed during submission");}
    const rule=await tx.examRule.findFirst({where:{courseLevel:input.courseLevel,enabled:true},orderBy:{version:"desc"},include:{sections:{orderBy:{sortOrder:"asc"}},fields:{orderBy:{sortOrder:"asc"},include:{section:true}}}});if(!rule)throw httpError(409,"No active exam rule exists for this course level");
    const result=calculateUsingRule({fields:rule.fields.map(field=>({id:field.id,key:field.key,label:field.label,description:field.description,maximumMarks:field.maximumMarks,sectionKey:field.section.key,sectionLabel:field.section.label,sortOrder:field.sortOrder,required:field.required})),sections:rule.sections.map(section=>({key:section.key,label:section.label,maximumMarks:section.maximumMarks,passingMarks:section.passingMarks,sortOrder:section.sortOrder}))},input.marks);
    const attemptNumber=await tx.examAttempt.count({where:{studentId:input.studentId,courseLevel:input.courseLevel}})+1;
@@ -75,13 +80,13 @@ export const submitExam = async (raw:unknown) => {
  } catch(error){const replay=await prisma.examAttempt.findUnique({where:{idempotencyKey:input.idempotencyKey}});if(replay)return {statusCode:200,data:await response(replay.id,false,replay.courseLevel)};throw error;}
 };
 
-export const listExams = async (query:Record<string,unknown>) => {const page=Math.max(1,Number(query.page)||1),limit=Math.min(100,Math.max(1,Number(query.limit)||20));const where:Prisma.ExamAttemptWhereInput={};for(const key of ["studentId","examinerId","courseLevel","outcome"] as const)if(typeof query[key]==="string")Object.assign(where,{[key]:query[key]});const [items,total]=await prisma.$transaction([prisma.examAttempt.findMany({where,include,orderBy:{submittedAt:"desc"},skip:(page-1)*limit,take:limit}),prisma.examAttempt.count({where})]);return {items,pagination:{page,limit,total,totalPages:Math.ceil(total/limit)}};};
+export const listExams = async (query:Record<string,unknown>,scope?:ActorScope) => {const page=Math.max(1,Number(query.page)||1),limit=Math.min(100,Math.max(1,Number(query.limit)||20));const where:Prisma.ExamAttemptWhereInput={};for(const key of ["studentId","examinerId","courseLevel","outcome"] as const)if(typeof query[key]==="string")Object.assign(where,{[key]:query[key]});if(scope&&!scope.isPrivileged){if(scope.studentId)where.studentId=scope.studentId;else if(scope.teacherId)where.examinerId=scope.teacherId;else where.id="__no_access__";}const [items,total]=await prisma.$transaction([prisma.examAttempt.findMany({where,include,orderBy:{submittedAt:"desc"},skip:(page-1)*limit,take:limit}),prisma.examAttempt.count({where})]);return {items,pagination:{page,limit,total,totalPages:Math.ceil(total/limit)}};};
 const ruleInclude={sections:{orderBy:{sortOrder:"asc" as const}},fields:{orderBy:{sortOrder:"asc" as const},include:{section:true}}} satisfies Prisma.ExamRuleInclude;
 type RuleWithDetails=Prisma.ExamRuleGetPayload<{include:typeof ruleInclude}>;
 const publicRule = (rule:RuleWithDetails) => ({...rule,fields:rule.fields.map(field=>({id:field.id,key:field.key,label:field.label,description:field.description,maximumMarks:field.maximumMarks,minimumMarks:field.minimumMarks,sectionKey:field.section.key,required:field.required,sortOrder:field.sortOrder})),sections:rule.sections.map(section=>({id:section.id,key:section.key,label:section.label,maximumMarks:section.maximumMarks,passingMarks:section.passingMarks,sortOrder:section.sortOrder}))});
 export const listActiveExamRules=async()=>{const rules=await prisma.examRule.findMany({where:{enabled:true},orderBy:{courseLevel:"asc"},include:ruleInclude});return rules.map(publicRule);};
 export const getActiveExamRule=async(courseLevel:CourseLevel)=>{const rule=await prisma.examRule.findFirst({where:{courseLevel,enabled:true},orderBy:{version:"desc"},include:ruleInclude});if(!rule)throw httpError(404,"Active exam rule not found");return publicRule(rule);};
-export const getExam = async (id:string) => {const item=await prisma.examAttempt.findUnique({where:{id},include});if(!item)throw httpError(404,"Exam attempt not found");return withResultDetails(item);};
+export const getExam = async (id:string,scope?:ActorScope) => {const item=await prisma.examAttempt.findUnique({where:{id},include});if(!item)throw httpError(404,"Exam attempt not found");if(scope&&!scope.isPrivileged&&item.studentId!==scope.studentId&&item.examinerId!==scope.teacherId)throw forbidden("You can only access exam records assigned to your account");return withResultDetails(item);};
 export const getStudentExamHistory=async(studentId:string,query:Record<string,unknown>)=>{
  const exists=await prisma.student.count({where:{id:studentId}});if(!exists)throw httpError(404,"Student not found");
  const page=Math.max(1,Number(query.page)||1),limit=Math.min(100,Math.max(1,Number(query.limit)||20));
@@ -101,6 +106,8 @@ export const getStudentCourseExamResults = async (studentId:string) => {
    id:true,
    name:true,
    image:true,
+   courseName:true,
+   courseStage:true,
    currentCourseLevel:true,
    courseCompleted:true,
    examAttempts:{
@@ -122,9 +129,10 @@ export const getStudentCourseExamResults = async (studentId:string) => {
      sections:{orderBy:{sectionKey:"asc"}}
     }
    }
-  }
+ }
  });
  if(!student)throw httpError(404,"Student not found");
+ const currentCourseLevel=student.currentCourseLevel??courseLevelFromDisplay(student.courseName,student.courseStage);
 
  const courseResults=new Map<CourseLevel,Array<(typeof student.examAttempts)[number]>>();
  for(const attempt of student.examAttempts){
@@ -177,7 +185,7 @@ export const getStudentCourseExamResults = async (studentId:string) => {
    id:student.id,
    name:student.name,
    image:student.image,
-   currentCourseLevel:student.currentCourseLevel,
+   currentCourseLevel,
    courseCompleted:student.courseCompleted
   },
   summary:{
@@ -207,6 +215,7 @@ export const getStudentExamDetails = async (id:string) => {
   }
  });
  if(!student)throw httpError(404,"Student not found");
+ const currentCourseLevel=student.currentCourseLevel??courseLevelFromDisplay(student.courseName,student.courseStage);
 
  const examAttempts=student.examAttempts.map(attempt=>({
   ...attempt,
@@ -218,7 +227,8 @@ export const getStudentExamDetails = async (id:string) => {
 
  return {
   ...student,
-  ...(student.currentCourseLevel?courseDisplay(student.currentCourseLevel):{courseDisplayName:null}),
+  currentCourseLevel,
+  ...(currentCourseLevel?courseDisplay(currentCourseLevel):{courseDisplayName:null}),
   examAttempts,
   latestExamAttempt:examAttempts[0]??null,
   examSummary:{

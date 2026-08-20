@@ -102,6 +102,21 @@ export type TeacherChange = Prisma.TeacherChangeModel
  */
 export type Teacher = Prisma.TeacherModel
 /**
+ * Model TeacherPayrollCategoryRate
+ * 
+ */
+export type TeacherPayrollCategoryRate = Prisma.TeacherPayrollCategoryRateModel
+/**
+ * Model ClassScheduleEvent
+ * 
+ */
+export type ClassScheduleEvent = Prisma.ClassScheduleEventModel
+/**
+ * Model ExamSchedule
+ * 
+ */
+export type ExamSchedule = Prisma.ExamScheduleModel
+/**
  * Model ExamAttempt
  * 
  */

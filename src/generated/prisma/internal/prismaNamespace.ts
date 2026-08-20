@@ -396,6 +396,9 @@ export const ModelName = {
   StudentCourse: 'StudentCourse',
   TeacherChange: 'TeacherChange',
   Teacher: 'Teacher',
+  TeacherPayrollCategoryRate: 'TeacherPayrollCategoryRate',
+  ClassScheduleEvent: 'ClassScheduleEvent',
+  ExamSchedule: 'ExamSchedule',
   ExamAttempt: 'ExamAttempt',
   ExamRule: 'ExamRule',
   ExamRuleSection: 'ExamRuleSection',
@@ -420,7 +423,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userPermissionOverride" | "refreshSession" | "passwordResetToken" | "auditLog" | "student" | "studentCourse" | "teacherChange" | "teacher" | "examAttempt" | "examRule" | "examRuleSection" | "examRuleField" | "examMark" | "examSectionResult" | "studentCourseHistory" | "classReport" | "studentLeftLog"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userPermissionOverride" | "refreshSession" | "passwordResetToken" | "auditLog" | "student" | "studentCourse" | "teacherChange" | "teacher" | "teacherPayrollCategoryRate" | "classScheduleEvent" | "examSchedule" | "examAttempt" | "examRule" | "examRuleSection" | "examRuleField" | "examMark" | "examSectionResult" | "studentCourseHistory" | "classReport" | "studentLeftLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1312,6 +1315,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TeacherPayrollCategoryRate: {
+      payload: Prisma.$TeacherPayrollCategoryRatePayload<ExtArgs>
+      fields: Prisma.TeacherPayrollCategoryRateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TeacherPayrollCategoryRateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollCategoryRatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TeacherPayrollCategoryRateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollCategoryRatePayload>
+        }
+        findFirst: {
+          args: Prisma.TeacherPayrollCategoryRateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollCategoryRatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TeacherPayrollCategoryRateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollCategoryRatePayload>
+        }
+        findMany: {
+          args: Prisma.TeacherPayrollCategoryRateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollCategoryRatePayload>[]
+        }
+        create: {
+          args: Prisma.TeacherPayrollCategoryRateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollCategoryRatePayload>
+        }
+        createMany: {
+          args: Prisma.TeacherPayrollCategoryRateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TeacherPayrollCategoryRateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollCategoryRatePayload>[]
+        }
+        delete: {
+          args: Prisma.TeacherPayrollCategoryRateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollCategoryRatePayload>
+        }
+        update: {
+          args: Prisma.TeacherPayrollCategoryRateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollCategoryRatePayload>
+        }
+        deleteMany: {
+          args: Prisma.TeacherPayrollCategoryRateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TeacherPayrollCategoryRateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TeacherPayrollCategoryRateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollCategoryRatePayload>[]
+        }
+        upsert: {
+          args: Prisma.TeacherPayrollCategoryRateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollCategoryRatePayload>
+        }
+        aggregate: {
+          args: Prisma.TeacherPayrollCategoryRateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTeacherPayrollCategoryRate>
+        }
+        groupBy: {
+          args: Prisma.TeacherPayrollCategoryRateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TeacherPayrollCategoryRateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TeacherPayrollCategoryRateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TeacherPayrollCategoryRateCountAggregateOutputType> | number
+        }
+      }
+    }
+    ClassScheduleEvent: {
+      payload: Prisma.$ClassScheduleEventPayload<ExtArgs>
+      fields: Prisma.ClassScheduleEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ClassScheduleEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassScheduleEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ClassScheduleEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassScheduleEventPayload>
+        }
+        findFirst: {
+          args: Prisma.ClassScheduleEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassScheduleEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ClassScheduleEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassScheduleEventPayload>
+        }
+        findMany: {
+          args: Prisma.ClassScheduleEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassScheduleEventPayload>[]
+        }
+        create: {
+          args: Prisma.ClassScheduleEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassScheduleEventPayload>
+        }
+        createMany: {
+          args: Prisma.ClassScheduleEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ClassScheduleEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassScheduleEventPayload>[]
+        }
+        delete: {
+          args: Prisma.ClassScheduleEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassScheduleEventPayload>
+        }
+        update: {
+          args: Prisma.ClassScheduleEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassScheduleEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.ClassScheduleEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ClassScheduleEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ClassScheduleEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassScheduleEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.ClassScheduleEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClassScheduleEventPayload>
+        }
+        aggregate: {
+          args: Prisma.ClassScheduleEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateClassScheduleEvent>
+        }
+        groupBy: {
+          args: Prisma.ClassScheduleEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClassScheduleEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ClassScheduleEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClassScheduleEventCountAggregateOutputType> | number
+        }
+      }
+    }
+    ExamSchedule: {
+      payload: Prisma.$ExamSchedulePayload<ExtArgs>
+      fields: Prisma.ExamScheduleFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ExamScheduleFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamSchedulePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ExamScheduleFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamSchedulePayload>
+        }
+        findFirst: {
+          args: Prisma.ExamScheduleFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamSchedulePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ExamScheduleFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamSchedulePayload>
+        }
+        findMany: {
+          args: Prisma.ExamScheduleFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamSchedulePayload>[]
+        }
+        create: {
+          args: Prisma.ExamScheduleCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamSchedulePayload>
+        }
+        createMany: {
+          args: Prisma.ExamScheduleCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ExamScheduleCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamSchedulePayload>[]
+        }
+        delete: {
+          args: Prisma.ExamScheduleDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamSchedulePayload>
+        }
+        update: {
+          args: Prisma.ExamScheduleUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamSchedulePayload>
+        }
+        deleteMany: {
+          args: Prisma.ExamScheduleDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ExamScheduleUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ExamScheduleUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamSchedulePayload>[]
+        }
+        upsert: {
+          args: Prisma.ExamScheduleUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamSchedulePayload>
+        }
+        aggregate: {
+          args: Prisma.ExamScheduleAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateExamSchedule>
+        }
+        groupBy: {
+          args: Prisma.ExamScheduleGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExamScheduleGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ExamScheduleCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExamScheduleCountAggregateOutputType> | number
+        }
+      }
+    }
     ExamAttempt: {
       payload: Prisma.$ExamAttemptPayload<ExtArgs>
       fields: Prisma.ExamAttemptFieldRefs
@@ -2032,7 +2257,9 @@ export const UserScalarFieldEnum = {
   deletedAt: 'deletedAt',
   sessionVersion: 'sessionVersion',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  teacherId: 'teacherId',
+  studentId: 'studentId'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -2189,6 +2416,7 @@ export const TeacherScalarFieldEnum = {
   joiningDate: 'joiningDate',
   status: 'status',
   strongArea: 'strongArea',
+  hourlyPayrollRateBdt: 'hourlyPayrollRateBdt',
   totalStudentsAssignedLifetime: 'totalStudentsAssignedLifetime',
   currentActiveStudents: 'currentActiveStudents',
   studentLeftLifetime: 'studentLeftLifetime',
@@ -2197,6 +2425,59 @@ export const TeacherScalarFieldEnum = {
 } as const
 
 export type TeacherScalarFieldEnum = (typeof TeacherScalarFieldEnum)[keyof typeof TeacherScalarFieldEnum]
+
+
+export const TeacherPayrollCategoryRateScalarFieldEnum = {
+  id: 'id',
+  teacherId: 'teacherId',
+  category: 'category',
+  hourlyRateBdt: 'hourlyRateBdt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TeacherPayrollCategoryRateScalarFieldEnum = (typeof TeacherPayrollCategoryRateScalarFieldEnum)[keyof typeof TeacherPayrollCategoryRateScalarFieldEnum]
+
+
+export const ClassScheduleEventScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  teacherId: 'teacherId',
+  category: 'category',
+  scheduledDate: 'scheduledDate',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  durationMinutes: 'durationMinutes',
+  status: 'status',
+  attendanceStatus: 'attendanceStatus',
+  makeupCredit: 'makeupCredit',
+  note: 'note',
+  recurrenceGroupId: 'recurrenceGroupId',
+  recurrenceSourceId: 'recurrenceSourceId',
+  isRecurring: 'isRecurring',
+  repeatDays: 'repeatDays',
+  repeatIndefinitely: 'repeatIndefinitely',
+  recurrenceEndDate: 'recurrenceEndDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClassScheduleEventScalarFieldEnum = (typeof ClassScheduleEventScalarFieldEnum)[keyof typeof ClassScheduleEventScalarFieldEnum]
+
+
+export const ExamScheduleScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  teacherId: 'teacherId',
+  courseName: 'courseName',
+  level: 'level',
+  scheduledAt: 'scheduledAt',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExamScheduleScalarFieldEnum = (typeof ExamScheduleScalarFieldEnum)[keyof typeof ExamScheduleScalarFieldEnum]
 
 
 export const ExamAttemptScalarFieldEnum = {
@@ -2537,6 +2818,34 @@ export type ListEnumTeacherStatusFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ExamScheduleStatus'
+ */
+export type EnumExamScheduleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExamScheduleStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ExamScheduleStatus[]'
+ */
+export type ListEnumExamScheduleStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExamScheduleStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'ExamStatus'
  */
 export type EnumExamStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExamStatus'>
@@ -2561,20 +2870,6 @@ export type EnumExamOutcomeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'ExamOutcome[]'
  */
 export type ListEnumExamOutcomeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExamOutcome[]'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 
@@ -2727,6 +3022,9 @@ export type GlobalOmitConfig = {
   studentCourse?: Prisma.StudentCourseOmit
   teacherChange?: Prisma.TeacherChangeOmit
   teacher?: Prisma.TeacherOmit
+  teacherPayrollCategoryRate?: Prisma.TeacherPayrollCategoryRateOmit
+  classScheduleEvent?: Prisma.ClassScheduleEventOmit
+  examSchedule?: Prisma.ExamScheduleOmit
   examAttempt?: Prisma.ExamAttemptOmit
   examRule?: Prisma.ExamRuleOmit
   examRuleSection?: Prisma.ExamRuleSectionOmit

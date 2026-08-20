@@ -63,6 +63,9 @@ export const ModelName = {
   StudentCourse: 'StudentCourse',
   TeacherChange: 'TeacherChange',
   Teacher: 'Teacher',
+  TeacherPayrollCategoryRate: 'TeacherPayrollCategoryRate',
+  ClassScheduleEvent: 'ClassScheduleEvent',
+  ExamSchedule: 'ExamSchedule',
   ExamAttempt: 'ExamAttempt',
   ExamRule: 'ExamRule',
   ExamRuleSection: 'ExamRuleSection',
@@ -105,7 +108,9 @@ export const UserScalarFieldEnum = {
   deletedAt: 'deletedAt',
   sessionVersion: 'sessionVersion',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  teacherId: 'teacherId',
+  studentId: 'studentId'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -262,6 +267,7 @@ export const TeacherScalarFieldEnum = {
   joiningDate: 'joiningDate',
   status: 'status',
   strongArea: 'strongArea',
+  hourlyPayrollRateBdt: 'hourlyPayrollRateBdt',
   totalStudentsAssignedLifetime: 'totalStudentsAssignedLifetime',
   currentActiveStudents: 'currentActiveStudents',
   studentLeftLifetime: 'studentLeftLifetime',
@@ -270,6 +276,59 @@ export const TeacherScalarFieldEnum = {
 } as const
 
 export type TeacherScalarFieldEnum = (typeof TeacherScalarFieldEnum)[keyof typeof TeacherScalarFieldEnum]
+
+
+export const TeacherPayrollCategoryRateScalarFieldEnum = {
+  id: 'id',
+  teacherId: 'teacherId',
+  category: 'category',
+  hourlyRateBdt: 'hourlyRateBdt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TeacherPayrollCategoryRateScalarFieldEnum = (typeof TeacherPayrollCategoryRateScalarFieldEnum)[keyof typeof TeacherPayrollCategoryRateScalarFieldEnum]
+
+
+export const ClassScheduleEventScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  teacherId: 'teacherId',
+  category: 'category',
+  scheduledDate: 'scheduledDate',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  durationMinutes: 'durationMinutes',
+  status: 'status',
+  attendanceStatus: 'attendanceStatus',
+  makeupCredit: 'makeupCredit',
+  note: 'note',
+  recurrenceGroupId: 'recurrenceGroupId',
+  recurrenceSourceId: 'recurrenceSourceId',
+  isRecurring: 'isRecurring',
+  repeatDays: 'repeatDays',
+  repeatIndefinitely: 'repeatIndefinitely',
+  recurrenceEndDate: 'recurrenceEndDate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClassScheduleEventScalarFieldEnum = (typeof ClassScheduleEventScalarFieldEnum)[keyof typeof ClassScheduleEventScalarFieldEnum]
+
+
+export const ExamScheduleScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  teacherId: 'teacherId',
+  courseName: 'courseName',
+  level: 'level',
+  scheduledAt: 'scheduledAt',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExamScheduleScalarFieldEnum = (typeof ExamScheduleScalarFieldEnum)[keyof typeof ExamScheduleScalarFieldEnum]
 
 
 export const ExamAttemptScalarFieldEnum = {

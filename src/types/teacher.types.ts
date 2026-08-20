@@ -2,6 +2,7 @@ export type TeacherStatusInput = "ACTIVE" | "INACTIVE";
 
 export type StudentLeftLogInput = {
   studentName?: string | null;
+  reason?: string | null;
   leavingReason?: string | null;
 };
 
@@ -11,9 +12,14 @@ export type CreateTeacherInput = {
   joiningDate?: string | null;
   status?: TeacherStatusInput | "" | null;
   strongArea?: string | null;
+  lifetimeStudents?: number | string | null;
+  totalStudentsAssigned?: number | string | null;
   totalStudentsAssignedLifetime?: number | string | null;
+  activeStudents?: number | string | null;
   currentActiveStudents?: number | string | null;
+  studentsLeft?: number | string | null;
   studentLeftLifetime?: number | string | null;
+  leaveRecords?: StudentLeftLogInput[];
   studentLeftDetails?: StudentLeftLogInput[];
   studentLeftLogs?: StudentLeftLogInput[];
 };

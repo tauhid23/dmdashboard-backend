@@ -44,6 +44,13 @@ enum ExamOutcome {
   NEEDS_IMPROVEMENT
 }
 
+enum ExamScheduleStatus {
+  UPCOMING
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
 enum PromotionReason {
   EXAM_PASSED
   MANUAL_ADJUSTMENT
@@ -71,6 +78,10 @@ model User {
   createdAt           DateTime               @default(now())
   updatedAt           DateTime               @updatedAt
   role                Role                   @relation(fields: [roleId], references: [id], onDelete: Restrict)
+  teacherId           String?                @unique
+  studentId           String?                @unique
+  teacher             Teacher?               @relation(fields: [teacherId], references: [id], onDelete: SetNull)
+  student             Student?               @relation(fields: [studentId], references: [id], onDelete: SetNull)
   sessions            RefreshSession[]
   passwordResetTokens PasswordResetToken[]
   permissionOverrides UserPermissionOverride[]
@@ -190,13 +201,16 @@ model Student {
   courses             StudentCourse[]
   teacherChanges      TeacherChange[]
   classReports        ClassReport[]
+  classScheduleEvents ClassScheduleEvent[]
   createdAt           DateTime               @default(now())
   updatedAt           DateTime               @updatedAt
   currentCourseLevel  CourseLevel?
   courseCompleted     Boolean                @default(false)
   courseUpdatedAt     DateTime?
   examAttempts        ExamAttempt[]
+  examSchedules       ExamSchedule[]
   courseHistory       StudentCourseHistory[]
+  userAccount         User?
 
   @@index([teacherId])
 }
@@ -234,6 +248,7 @@ model Teacher {
   joiningDate                   DateTime?
   status                        TeacherStatus?   @default(ACTIVE)
   strongArea                    String?
+  hourlyPayrollRateBdt          Decimal          @default(300.00) @db.Decimal(10, 2)
   totalStudentsAssignedLifetime Int?             @default(0)
   currentActiveStudents         Int?             @default(0)
   studentLeftLifetime           Int?             @default(0)
@@ -243,6 +258,73 @@ model Teacher {
   createdAt                     DateTime         @default(now())
   updatedAt                     DateTime         @updatedAt
   examAttempts                  ExamAttempt[]
+  examSchedules                 ExamSchedule[]
+  classScheduleEvents           ClassScheduleEvent[]
+  payrollCategoryRates          TeacherPayrollCategoryRate[]
+  userAccount                   User?
+}
+
+model TeacherPayrollCategoryRate {
+  id             String   @id @default(cuid())
+  teacherId      String
+  category       String
+  hourlyRateBdt  Decimal  @db.Decimal(10, 2)
+  teacher        Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([teacherId, category])
+  @@index([teacherId])
+}
+
+model ClassScheduleEvent {
+  id              String   @id @default(cuid())
+  studentId       String
+  teacherId       String
+  category        String
+  scheduledDate   DateTime
+  startTime       String
+  endTime         String
+  durationMinutes Int
+  status          String   @default("CONFIRMED")
+  attendanceStatus String  @default("UNRECORDED")
+  makeupCredit    Boolean  @default(false)
+  note            String?
+  recurrenceGroupId String?
+  recurrenceSourceId String?
+  isRecurring     Boolean  @default(false)
+  repeatDays      Int[]    @default([])
+  repeatIndefinitely Boolean @default(false)
+  recurrenceEndDate DateTime?
+  student         Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  teacher         Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([scheduledDate])
+  @@index([studentId, scheduledDate])
+  @@index([teacherId, scheduledDate])
+  @@index([status, scheduledDate])
+  @@index([recurrenceGroupId])
+  @@index([recurrenceSourceId])
+}
+
+model ExamSchedule {
+  id          String             @id @default(cuid())
+  studentId   String
+  teacherId   String
+  courseName  String
+  level       String
+  scheduledAt DateTime
+  status      ExamScheduleStatus @default(UPCOMING)
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  student     Student            @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  teacher     Teacher            @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, scheduledAt])
+  @@index([teacherId, scheduledAt])
+  @@index([status, scheduledAt])
 }
 
 model ExamAttempt {

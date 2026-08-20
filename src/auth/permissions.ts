@@ -17,7 +17,6 @@ export async function effectivePermissions(userId: string) {
   return result;
 }
 
-export const safeUser = async (user: { id:string;name:string;email:string;username:string;status:"ACTIVE"|"INACTIVE";mustChangePassword:boolean;lastLoginAt:Date|null;createdAt:Date;updatedAt:Date;role:{name:string} }) => ({
-  id:user.id,name:user.name,email:user.email,username:user.username,role:user.role.name,status:user.status === "ACTIVE" ? "Active" : "Inactive",permissions:await effectivePermissions(user.id),lastLoginAt:user.lastLoginAt,mustChangePassword:user.mustChangePassword,createdAt:user.createdAt,updatedAt:user.updatedAt
+export const safeUser = async (user: { id:string;name:string;email:string;username:string;status:"ACTIVE"|"INACTIVE";mustChangePassword:boolean;lastLoginAt:Date|null;createdAt:Date;updatedAt:Date;role:{name:string};teacherId?:string|null;studentId?:string|null }) => ({
+  id:user.id,name:user.name,email:user.email,username:user.username,role:user.role.name,status:user.status === "ACTIVE" ? "Active" : "Inactive",permissions:await effectivePermissions(user.id),lastLoginAt:user.lastLoginAt,mustChangePassword:user.mustChangePassword,createdAt:user.createdAt,updatedAt:user.updatedAt,teacherId:user.teacherId??null,studentId:user.studentId??null
 });
-

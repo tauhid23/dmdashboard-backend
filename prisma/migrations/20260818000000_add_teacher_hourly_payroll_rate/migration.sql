@@ -1,0 +1,2 @@
+ALTER TABLE "Teacher"
+ADD COLUMN "hourlyPayrollRateBdt" DECIMAL(10, 2) NOT NULL DEFAULT 300.00;

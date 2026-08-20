@@ -1,4 +1,6 @@
 import type { Request, Response } from "express";
+import type { AuthRequest } from "../auth/auth.types.js";
+import { getRequestScope } from "../auth/accessScope.js";
 
 import { uploadImageBuffer } from "../config/cloudinary.js";
 import * as teacherService from "../services/teacher.service.js";
@@ -49,9 +51,11 @@ export const createTeacher = async (req: Request, res: Response) => {
   }
 };
 
-export const getTeachers = async (_req: Request, res: Response) => {
+export const getTeachers = async (req: AuthRequest, res: Response) => {
   try {
-    const teachers = await teacherService.getTeachers();
+    const teachers = await teacherService.getTeachers(
+      await getRequestScope(req.auth?.id)
+    );
 
     res.status(200).json({
       success: true,
@@ -62,9 +66,11 @@ export const getTeachers = async (_req: Request, res: Response) => {
   }
 };
 
-export const getTeacherOptions = async (_req: Request, res: Response) => {
+export const getTeacherOptions = async (req: AuthRequest, res: Response) => {
   try {
-    const teachers = await teacherService.getTeacherOptions();
+    const teachers = await teacherService.getTeacherOptions(
+      await getRequestScope(req.auth?.id)
+    );
 
     res.status(200).json({
       success: true,
@@ -75,8 +81,10 @@ export const getTeacherOptions = async (_req: Request, res: Response) => {
   }
 };
 
-export const getTeacherById = async (req: Request, res: Response) => {
+export const getTeacherById = async (req: AuthRequest, res: Response) => {
   try {
+    const scope = await getRequestScope(req.auth?.id);
+    await teacherService.assertTeacherVisible(getTeacherId(req), scope);
     const teacher = await teacherService.getTeacherById(getTeacherId(req));
 
     res.status(200).json({
@@ -93,13 +101,89 @@ export const getTeacherClassReportAverage = async (
   res: Response
 ) => {
   try {
-    const average = await teacherService.getTeacherClassReportAverage(
-      getTeacherId(req)
-    );
+    const scope = await getRequestScope((req as AuthRequest).auth?.id);
+    await teacherService.assertTeacherVisible(getTeacherId(req), scope);
+    const average = await teacherService.getTeacherClassReportAverage(getTeacherId(req));
 
     res.status(200).json({
       success: true,
       data: average
+    });
+  } catch (error) {
+    handleControllerError(error, res);
+  }
+};
+
+export const getTeacherPayroll = async (req: Request, res: Response) => {
+  try {
+    const scope = await getRequestScope((req as AuthRequest).auth?.id);
+    await teacherService.assertTeacherVisible(getTeacherId(req), scope);
+    const month = typeof req.query.month === "string" ? req.query.month : undefined;
+    const payroll = await teacherService.getTeacherPayroll(getTeacherId(req), month);
+
+    res.status(200).json({
+      success: true,
+      data: payroll
+    });
+  } catch (error) {
+    handleControllerError(error, res);
+  }
+};
+
+export const updateTeacherPayrollSettings = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const settings = await teacherService.updateTeacherPayrollSettings(
+      req.auth!.id,
+      getTeacherId(req),
+      req.body
+    );
+
+    res.status(200).json({
+      success: true,
+      data: settings
+    });
+  } catch (error) {
+    handleControllerError(error, res);
+  }
+};
+
+export const upsertTeacherPayrollCategoryRate = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const rate = await teacherService.upsertTeacherPayrollCategoryRate(
+      req.auth!.id,
+      getTeacherId(req),
+      req.body
+    );
+
+    res.status(200).json({
+      success: true,
+      data: rate
+    });
+  } catch (error) {
+    handleControllerError(error, res);
+  }
+};
+
+export const deleteTeacherPayrollCategoryRate = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    await teacherService.deleteTeacherPayrollCategoryRate(
+      req.auth!.id,
+      getTeacherId(req),
+      String(req.params.rateId)
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Payroll category rate deleted successfully"
     });
   } catch (error) {
     handleControllerError(error, res);

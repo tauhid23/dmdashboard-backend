@@ -27,12 +27,14 @@ export type AggregateTeacher = {
 }
 
 export type TeacherAvgAggregateOutputType = {
+  hourlyPayrollRateBdt: runtime.Decimal | null
   totalStudentsAssignedLifetime: number | null
   currentActiveStudents: number | null
   studentLeftLifetime: number | null
 }
 
 export type TeacherSumAggregateOutputType = {
+  hourlyPayrollRateBdt: runtime.Decimal | null
   totalStudentsAssignedLifetime: number | null
   currentActiveStudents: number | null
   studentLeftLifetime: number | null
@@ -45,6 +47,7 @@ export type TeacherMinAggregateOutputType = {
   joiningDate: Date | null
   status: $Enums.TeacherStatus | null
   strongArea: string | null
+  hourlyPayrollRateBdt: runtime.Decimal | null
   totalStudentsAssignedLifetime: number | null
   currentActiveStudents: number | null
   studentLeftLifetime: number | null
@@ -59,6 +62,7 @@ export type TeacherMaxAggregateOutputType = {
   joiningDate: Date | null
   status: $Enums.TeacherStatus | null
   strongArea: string | null
+  hourlyPayrollRateBdt: runtime.Decimal | null
   totalStudentsAssignedLifetime: number | null
   currentActiveStudents: number | null
   studentLeftLifetime: number | null
@@ -73,6 +77,7 @@ export type TeacherCountAggregateOutputType = {
   joiningDate: number
   status: number
   strongArea: number
+  hourlyPayrollRateBdt: number
   totalStudentsAssignedLifetime: number
   currentActiveStudents: number
   studentLeftLifetime: number
@@ -83,12 +88,14 @@ export type TeacherCountAggregateOutputType = {
 
 
 export type TeacherAvgAggregateInputType = {
+  hourlyPayrollRateBdt?: true
   totalStudentsAssignedLifetime?: true
   currentActiveStudents?: true
   studentLeftLifetime?: true
 }
 
 export type TeacherSumAggregateInputType = {
+  hourlyPayrollRateBdt?: true
   totalStudentsAssignedLifetime?: true
   currentActiveStudents?: true
   studentLeftLifetime?: true
@@ -101,6 +108,7 @@ export type TeacherMinAggregateInputType = {
   joiningDate?: true
   status?: true
   strongArea?: true
+  hourlyPayrollRateBdt?: true
   totalStudentsAssignedLifetime?: true
   currentActiveStudents?: true
   studentLeftLifetime?: true
@@ -115,6 +123,7 @@ export type TeacherMaxAggregateInputType = {
   joiningDate?: true
   status?: true
   strongArea?: true
+  hourlyPayrollRateBdt?: true
   totalStudentsAssignedLifetime?: true
   currentActiveStudents?: true
   studentLeftLifetime?: true
@@ -129,6 +138,7 @@ export type TeacherCountAggregateInputType = {
   joiningDate?: true
   status?: true
   strongArea?: true
+  hourlyPayrollRateBdt?: true
   totalStudentsAssignedLifetime?: true
   currentActiveStudents?: true
   studentLeftLifetime?: true
@@ -230,6 +240,7 @@ export type TeacherGroupByOutputType = {
   joiningDate: Date | null
   status: $Enums.TeacherStatus | null
   strongArea: string | null
+  hourlyPayrollRateBdt: runtime.Decimal
   totalStudentsAssignedLifetime: number | null
   currentActiveStudents: number | null
   studentLeftLifetime: number | null
@@ -267,6 +278,7 @@ export type TeacherWhereInput = {
   joiningDate?: Prisma.DateTimeNullableFilter<"Teacher"> | Date | string | null
   status?: Prisma.EnumTeacherStatusNullableFilter<"Teacher"> | $Enums.TeacherStatus | null
   strongArea?: Prisma.StringNullableFilter<"Teacher"> | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFilter<"Teacher"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: Prisma.IntNullableFilter<"Teacher"> | number | null
   currentActiveStudents?: Prisma.IntNullableFilter<"Teacher"> | number | null
   studentLeftLifetime?: Prisma.IntNullableFilter<"Teacher"> | number | null
@@ -276,6 +288,10 @@ export type TeacherWhereInput = {
   classReports?: Prisma.ClassReportListRelationFilter
   studentLeftLogs?: Prisma.StudentLeftLogListRelationFilter
   examAttempts?: Prisma.ExamAttemptListRelationFilter
+  examSchedules?: Prisma.ExamScheduleListRelationFilter
+  classScheduleEvents?: Prisma.ClassScheduleEventListRelationFilter
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateListRelationFilter
+  userAccount?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type TeacherOrderByWithRelationInput = {
@@ -285,6 +301,7 @@ export type TeacherOrderByWithRelationInput = {
   joiningDate?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrderInput | Prisma.SortOrder
   strongArea?: Prisma.SortOrderInput | Prisma.SortOrder
+  hourlyPayrollRateBdt?: Prisma.SortOrder
   totalStudentsAssignedLifetime?: Prisma.SortOrderInput | Prisma.SortOrder
   currentActiveStudents?: Prisma.SortOrderInput | Prisma.SortOrder
   studentLeftLifetime?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -294,6 +311,10 @@ export type TeacherOrderByWithRelationInput = {
   classReports?: Prisma.ClassReportOrderByRelationAggregateInput
   studentLeftLogs?: Prisma.StudentLeftLogOrderByRelationAggregateInput
   examAttempts?: Prisma.ExamAttemptOrderByRelationAggregateInput
+  examSchedules?: Prisma.ExamScheduleOrderByRelationAggregateInput
+  classScheduleEvents?: Prisma.ClassScheduleEventOrderByRelationAggregateInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateOrderByRelationAggregateInput
+  userAccount?: Prisma.UserOrderByWithRelationInput
 }
 
 export type TeacherWhereUniqueInput = Prisma.AtLeast<{
@@ -306,6 +327,7 @@ export type TeacherWhereUniqueInput = Prisma.AtLeast<{
   joiningDate?: Prisma.DateTimeNullableFilter<"Teacher"> | Date | string | null
   status?: Prisma.EnumTeacherStatusNullableFilter<"Teacher"> | $Enums.TeacherStatus | null
   strongArea?: Prisma.StringNullableFilter<"Teacher"> | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFilter<"Teacher"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: Prisma.IntNullableFilter<"Teacher"> | number | null
   currentActiveStudents?: Prisma.IntNullableFilter<"Teacher"> | number | null
   studentLeftLifetime?: Prisma.IntNullableFilter<"Teacher"> | number | null
@@ -315,6 +337,10 @@ export type TeacherWhereUniqueInput = Prisma.AtLeast<{
   classReports?: Prisma.ClassReportListRelationFilter
   studentLeftLogs?: Prisma.StudentLeftLogListRelationFilter
   examAttempts?: Prisma.ExamAttemptListRelationFilter
+  examSchedules?: Prisma.ExamScheduleListRelationFilter
+  classScheduleEvents?: Prisma.ClassScheduleEventListRelationFilter
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateListRelationFilter
+  userAccount?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type TeacherOrderByWithAggregationInput = {
@@ -324,6 +350,7 @@ export type TeacherOrderByWithAggregationInput = {
   joiningDate?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrderInput | Prisma.SortOrder
   strongArea?: Prisma.SortOrderInput | Prisma.SortOrder
+  hourlyPayrollRateBdt?: Prisma.SortOrder
   totalStudentsAssignedLifetime?: Prisma.SortOrderInput | Prisma.SortOrder
   currentActiveStudents?: Prisma.SortOrderInput | Prisma.SortOrder
   studentLeftLifetime?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -346,6 +373,7 @@ export type TeacherScalarWhereWithAggregatesInput = {
   joiningDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Teacher"> | Date | string | null
   status?: Prisma.EnumTeacherStatusNullableWithAggregatesFilter<"Teacher"> | $Enums.TeacherStatus | null
   strongArea?: Prisma.StringNullableWithAggregatesFilter<"Teacher"> | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalWithAggregatesFilter<"Teacher"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: Prisma.IntNullableWithAggregatesFilter<"Teacher"> | number | null
   currentActiveStudents?: Prisma.IntNullableWithAggregatesFilter<"Teacher"> | number | null
   studentLeftLifetime?: Prisma.IntNullableWithAggregatesFilter<"Teacher"> | number | null
@@ -360,6 +388,7 @@ export type TeacherCreateInput = {
   joiningDate?: Date | string | null
   status?: $Enums.TeacherStatus | null
   strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: number | null
   currentActiveStudents?: number | null
   studentLeftLifetime?: number | null
@@ -369,6 +398,10 @@ export type TeacherCreateInput = {
   classReports?: Prisma.ClassReportCreateNestedManyWithoutTeacherInput
   studentLeftLogs?: Prisma.StudentLeftLogCreateNestedManyWithoutTeacherInput
   examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutExaminerInput
+  examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutTeacherInput
+  classScheduleEvents?: Prisma.ClassScheduleEventCreateNestedManyWithoutTeacherInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateCreateNestedManyWithoutTeacherInput
+  userAccount?: Prisma.UserCreateNestedOneWithoutTeacherInput
 }
 
 export type TeacherUncheckedCreateInput = {
@@ -378,6 +411,7 @@ export type TeacherUncheckedCreateInput = {
   joiningDate?: Date | string | null
   status?: $Enums.TeacherStatus | null
   strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: number | null
   currentActiveStudents?: number | null
   studentLeftLifetime?: number | null
@@ -387,6 +421,10 @@ export type TeacherUncheckedCreateInput = {
   classReports?: Prisma.ClassReportUncheckedCreateNestedManyWithoutTeacherInput
   studentLeftLogs?: Prisma.StudentLeftLogUncheckedCreateNestedManyWithoutTeacherInput
   examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutExaminerInput
+  examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutTeacherInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedCreateNestedManyWithoutTeacherInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUncheckedCreateNestedManyWithoutTeacherInput
+  userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutTeacherInput
 }
 
 export type TeacherUpdateInput = {
@@ -396,6 +434,7 @@ export type TeacherUpdateInput = {
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
   strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -405,6 +444,10 @@ export type TeacherUpdateInput = {
   classReports?: Prisma.ClassReportUpdateManyWithoutTeacherNestedInput
   studentLeftLogs?: Prisma.StudentLeftLogUpdateManyWithoutTeacherNestedInput
   examAttempts?: Prisma.ExamAttemptUpdateManyWithoutExaminerNestedInput
+  examSchedules?: Prisma.ExamScheduleUpdateManyWithoutTeacherNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUpdateManyWithoutTeacherNestedInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUpdateManyWithoutTeacherNestedInput
+  userAccount?: Prisma.UserUpdateOneWithoutTeacherNestedInput
 }
 
 export type TeacherUncheckedUpdateInput = {
@@ -414,6 +457,7 @@ export type TeacherUncheckedUpdateInput = {
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
   strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -423,6 +467,10 @@ export type TeacherUncheckedUpdateInput = {
   classReports?: Prisma.ClassReportUncheckedUpdateManyWithoutTeacherNestedInput
   studentLeftLogs?: Prisma.StudentLeftLogUncheckedUpdateManyWithoutTeacherNestedInput
   examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutExaminerNestedInput
+  examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutTeacherNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedUpdateManyWithoutTeacherNestedInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUncheckedUpdateManyWithoutTeacherNestedInput
+  userAccount?: Prisma.UserUncheckedUpdateOneWithoutTeacherNestedInput
 }
 
 export type TeacherCreateManyInput = {
@@ -432,6 +480,7 @@ export type TeacherCreateManyInput = {
   joiningDate?: Date | string | null
   status?: $Enums.TeacherStatus | null
   strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: number | null
   currentActiveStudents?: number | null
   studentLeftLifetime?: number | null
@@ -446,6 +495,7 @@ export type TeacherUpdateManyMutationInput = {
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
   strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -460,6 +510,7 @@ export type TeacherUncheckedUpdateManyInput = {
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
   strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -479,6 +530,7 @@ export type TeacherCountOrderByAggregateInput = {
   joiningDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
   strongArea?: Prisma.SortOrder
+  hourlyPayrollRateBdt?: Prisma.SortOrder
   totalStudentsAssignedLifetime?: Prisma.SortOrder
   currentActiveStudents?: Prisma.SortOrder
   studentLeftLifetime?: Prisma.SortOrder
@@ -487,6 +539,7 @@ export type TeacherCountOrderByAggregateInput = {
 }
 
 export type TeacherAvgOrderByAggregateInput = {
+  hourlyPayrollRateBdt?: Prisma.SortOrder
   totalStudentsAssignedLifetime?: Prisma.SortOrder
   currentActiveStudents?: Prisma.SortOrder
   studentLeftLifetime?: Prisma.SortOrder
@@ -499,6 +552,7 @@ export type TeacherMaxOrderByAggregateInput = {
   joiningDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
   strongArea?: Prisma.SortOrder
+  hourlyPayrollRateBdt?: Prisma.SortOrder
   totalStudentsAssignedLifetime?: Prisma.SortOrder
   currentActiveStudents?: Prisma.SortOrder
   studentLeftLifetime?: Prisma.SortOrder
@@ -513,6 +567,7 @@ export type TeacherMinOrderByAggregateInput = {
   joiningDate?: Prisma.SortOrder
   status?: Prisma.SortOrder
   strongArea?: Prisma.SortOrder
+  hourlyPayrollRateBdt?: Prisma.SortOrder
   totalStudentsAssignedLifetime?: Prisma.SortOrder
   currentActiveStudents?: Prisma.SortOrder
   studentLeftLifetime?: Prisma.SortOrder
@@ -521,6 +576,7 @@ export type TeacherMinOrderByAggregateInput = {
 }
 
 export type TeacherSumOrderByAggregateInput = {
+  hourlyPayrollRateBdt?: Prisma.SortOrder
   totalStudentsAssignedLifetime?: Prisma.SortOrder
   currentActiveStudents?: Prisma.SortOrder
   studentLeftLifetime?: Prisma.SortOrder
@@ -529,6 +585,22 @@ export type TeacherSumOrderByAggregateInput = {
 export type TeacherScalarRelationFilter = {
   is?: Prisma.TeacherWhereInput
   isNot?: Prisma.TeacherWhereInput
+}
+
+export type TeacherCreateNestedOneWithoutUserAccountInput = {
+  create?: Prisma.XOR<Prisma.TeacherCreateWithoutUserAccountInput, Prisma.TeacherUncheckedCreateWithoutUserAccountInput>
+  connectOrCreate?: Prisma.TeacherCreateOrConnectWithoutUserAccountInput
+  connect?: Prisma.TeacherWhereUniqueInput
+}
+
+export type TeacherUpdateOneWithoutUserAccountNestedInput = {
+  create?: Prisma.XOR<Prisma.TeacherCreateWithoutUserAccountInput, Prisma.TeacherUncheckedCreateWithoutUserAccountInput>
+  connectOrCreate?: Prisma.TeacherCreateOrConnectWithoutUserAccountInput
+  upsert?: Prisma.TeacherUpsertWithoutUserAccountInput
+  disconnect?: Prisma.TeacherWhereInput | boolean
+  delete?: Prisma.TeacherWhereInput | boolean
+  connect?: Prisma.TeacherWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TeacherUpdateToOneWithWhereWithoutUserAccountInput, Prisma.TeacherUpdateWithoutUserAccountInput>, Prisma.TeacherUncheckedUpdateWithoutUserAccountInput>
 }
 
 export type TeacherCreateNestedOneWithoutStudentsInput = {
@@ -551,12 +623,62 @@ export type NullableEnumTeacherStatusFieldUpdateOperationsInput = {
   set?: $Enums.TeacherStatus | null
 }
 
+export type DecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
 export type NullableIntFieldUpdateOperationsInput = {
   set?: number | null
   increment?: number
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type TeacherCreateNestedOneWithoutPayrollCategoryRatesInput = {
+  create?: Prisma.XOR<Prisma.TeacherCreateWithoutPayrollCategoryRatesInput, Prisma.TeacherUncheckedCreateWithoutPayrollCategoryRatesInput>
+  connectOrCreate?: Prisma.TeacherCreateOrConnectWithoutPayrollCategoryRatesInput
+  connect?: Prisma.TeacherWhereUniqueInput
+}
+
+export type TeacherUpdateOneRequiredWithoutPayrollCategoryRatesNestedInput = {
+  create?: Prisma.XOR<Prisma.TeacherCreateWithoutPayrollCategoryRatesInput, Prisma.TeacherUncheckedCreateWithoutPayrollCategoryRatesInput>
+  connectOrCreate?: Prisma.TeacherCreateOrConnectWithoutPayrollCategoryRatesInput
+  upsert?: Prisma.TeacherUpsertWithoutPayrollCategoryRatesInput
+  connect?: Prisma.TeacherWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TeacherUpdateToOneWithWhereWithoutPayrollCategoryRatesInput, Prisma.TeacherUpdateWithoutPayrollCategoryRatesInput>, Prisma.TeacherUncheckedUpdateWithoutPayrollCategoryRatesInput>
+}
+
+export type TeacherCreateNestedOneWithoutClassScheduleEventsInput = {
+  create?: Prisma.XOR<Prisma.TeacherCreateWithoutClassScheduleEventsInput, Prisma.TeacherUncheckedCreateWithoutClassScheduleEventsInput>
+  connectOrCreate?: Prisma.TeacherCreateOrConnectWithoutClassScheduleEventsInput
+  connect?: Prisma.TeacherWhereUniqueInput
+}
+
+export type TeacherUpdateOneRequiredWithoutClassScheduleEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.TeacherCreateWithoutClassScheduleEventsInput, Prisma.TeacherUncheckedCreateWithoutClassScheduleEventsInput>
+  connectOrCreate?: Prisma.TeacherCreateOrConnectWithoutClassScheduleEventsInput
+  upsert?: Prisma.TeacherUpsertWithoutClassScheduleEventsInput
+  connect?: Prisma.TeacherWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TeacherUpdateToOneWithWhereWithoutClassScheduleEventsInput, Prisma.TeacherUpdateWithoutClassScheduleEventsInput>, Prisma.TeacherUncheckedUpdateWithoutClassScheduleEventsInput>
+}
+
+export type TeacherCreateNestedOneWithoutExamSchedulesInput = {
+  create?: Prisma.XOR<Prisma.TeacherCreateWithoutExamSchedulesInput, Prisma.TeacherUncheckedCreateWithoutExamSchedulesInput>
+  connectOrCreate?: Prisma.TeacherCreateOrConnectWithoutExamSchedulesInput
+  connect?: Prisma.TeacherWhereUniqueInput
+}
+
+export type TeacherUpdateOneRequiredWithoutExamSchedulesNestedInput = {
+  create?: Prisma.XOR<Prisma.TeacherCreateWithoutExamSchedulesInput, Prisma.TeacherUncheckedCreateWithoutExamSchedulesInput>
+  connectOrCreate?: Prisma.TeacherCreateOrConnectWithoutExamSchedulesInput
+  upsert?: Prisma.TeacherUpsertWithoutExamSchedulesInput
+  connect?: Prisma.TeacherWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TeacherUpdateToOneWithWhereWithoutExamSchedulesInput, Prisma.TeacherUpdateWithoutExamSchedulesInput>, Prisma.TeacherUncheckedUpdateWithoutExamSchedulesInput>
 }
 
 export type TeacherCreateNestedOneWithoutExamAttemptsInput = {
@@ -603,6 +725,110 @@ export type TeacherUpdateOneRequiredWithoutStudentLeftLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TeacherUpdateToOneWithWhereWithoutStudentLeftLogsInput, Prisma.TeacherUpdateWithoutStudentLeftLogsInput>, Prisma.TeacherUncheckedUpdateWithoutStudentLeftLogsInput>
 }
 
+export type TeacherCreateWithoutUserAccountInput = {
+  id?: string
+  name?: string | null
+  imageUrl?: string | null
+  joiningDate?: Date | string | null
+  status?: $Enums.TeacherStatus | null
+  strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalStudentsAssignedLifetime?: number | null
+  currentActiveStudents?: number | null
+  studentLeftLifetime?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  students?: Prisma.StudentCreateNestedManyWithoutTeacherInput
+  classReports?: Prisma.ClassReportCreateNestedManyWithoutTeacherInput
+  studentLeftLogs?: Prisma.StudentLeftLogCreateNestedManyWithoutTeacherInput
+  examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutExaminerInput
+  examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutTeacherInput
+  classScheduleEvents?: Prisma.ClassScheduleEventCreateNestedManyWithoutTeacherInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateCreateNestedManyWithoutTeacherInput
+}
+
+export type TeacherUncheckedCreateWithoutUserAccountInput = {
+  id?: string
+  name?: string | null
+  imageUrl?: string | null
+  joiningDate?: Date | string | null
+  status?: $Enums.TeacherStatus | null
+  strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalStudentsAssignedLifetime?: number | null
+  currentActiveStudents?: number | null
+  studentLeftLifetime?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  students?: Prisma.StudentUncheckedCreateNestedManyWithoutTeacherInput
+  classReports?: Prisma.ClassReportUncheckedCreateNestedManyWithoutTeacherInput
+  studentLeftLogs?: Prisma.StudentLeftLogUncheckedCreateNestedManyWithoutTeacherInput
+  examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutExaminerInput
+  examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutTeacherInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedCreateNestedManyWithoutTeacherInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUncheckedCreateNestedManyWithoutTeacherInput
+}
+
+export type TeacherCreateOrConnectWithoutUserAccountInput = {
+  where: Prisma.TeacherWhereUniqueInput
+  create: Prisma.XOR<Prisma.TeacherCreateWithoutUserAccountInput, Prisma.TeacherUncheckedCreateWithoutUserAccountInput>
+}
+
+export type TeacherUpsertWithoutUserAccountInput = {
+  update: Prisma.XOR<Prisma.TeacherUpdateWithoutUserAccountInput, Prisma.TeacherUncheckedUpdateWithoutUserAccountInput>
+  create: Prisma.XOR<Prisma.TeacherCreateWithoutUserAccountInput, Prisma.TeacherUncheckedCreateWithoutUserAccountInput>
+  where?: Prisma.TeacherWhereInput
+}
+
+export type TeacherUpdateToOneWithWhereWithoutUserAccountInput = {
+  where?: Prisma.TeacherWhereInput
+  data: Prisma.XOR<Prisma.TeacherUpdateWithoutUserAccountInput, Prisma.TeacherUncheckedUpdateWithoutUserAccountInput>
+}
+
+export type TeacherUpdateWithoutUserAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
+  strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  students?: Prisma.StudentUpdateManyWithoutTeacherNestedInput
+  classReports?: Prisma.ClassReportUpdateManyWithoutTeacherNestedInput
+  studentLeftLogs?: Prisma.StudentLeftLogUpdateManyWithoutTeacherNestedInput
+  examAttempts?: Prisma.ExamAttemptUpdateManyWithoutExaminerNestedInput
+  examSchedules?: Prisma.ExamScheduleUpdateManyWithoutTeacherNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUpdateManyWithoutTeacherNestedInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUpdateManyWithoutTeacherNestedInput
+}
+
+export type TeacherUncheckedUpdateWithoutUserAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
+  strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  students?: Prisma.StudentUncheckedUpdateManyWithoutTeacherNestedInput
+  classReports?: Prisma.ClassReportUncheckedUpdateManyWithoutTeacherNestedInput
+  studentLeftLogs?: Prisma.StudentLeftLogUncheckedUpdateManyWithoutTeacherNestedInput
+  examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutExaminerNestedInput
+  examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutTeacherNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedUpdateManyWithoutTeacherNestedInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUncheckedUpdateManyWithoutTeacherNestedInput
+}
+
 export type TeacherCreateWithoutStudentsInput = {
   id?: string
   name?: string | null
@@ -610,6 +836,7 @@ export type TeacherCreateWithoutStudentsInput = {
   joiningDate?: Date | string | null
   status?: $Enums.TeacherStatus | null
   strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: number | null
   currentActiveStudents?: number | null
   studentLeftLifetime?: number | null
@@ -618,6 +845,10 @@ export type TeacherCreateWithoutStudentsInput = {
   classReports?: Prisma.ClassReportCreateNestedManyWithoutTeacherInput
   studentLeftLogs?: Prisma.StudentLeftLogCreateNestedManyWithoutTeacherInput
   examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutExaminerInput
+  examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutTeacherInput
+  classScheduleEvents?: Prisma.ClassScheduleEventCreateNestedManyWithoutTeacherInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateCreateNestedManyWithoutTeacherInput
+  userAccount?: Prisma.UserCreateNestedOneWithoutTeacherInput
 }
 
 export type TeacherUncheckedCreateWithoutStudentsInput = {
@@ -627,6 +858,7 @@ export type TeacherUncheckedCreateWithoutStudentsInput = {
   joiningDate?: Date | string | null
   status?: $Enums.TeacherStatus | null
   strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: number | null
   currentActiveStudents?: number | null
   studentLeftLifetime?: number | null
@@ -635,6 +867,10 @@ export type TeacherUncheckedCreateWithoutStudentsInput = {
   classReports?: Prisma.ClassReportUncheckedCreateNestedManyWithoutTeacherInput
   studentLeftLogs?: Prisma.StudentLeftLogUncheckedCreateNestedManyWithoutTeacherInput
   examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutExaminerInput
+  examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutTeacherInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedCreateNestedManyWithoutTeacherInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUncheckedCreateNestedManyWithoutTeacherInput
+  userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutTeacherInput
 }
 
 export type TeacherCreateOrConnectWithoutStudentsInput = {
@@ -660,6 +896,7 @@ export type TeacherUpdateWithoutStudentsInput = {
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
   strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -668,6 +905,10 @@ export type TeacherUpdateWithoutStudentsInput = {
   classReports?: Prisma.ClassReportUpdateManyWithoutTeacherNestedInput
   studentLeftLogs?: Prisma.StudentLeftLogUpdateManyWithoutTeacherNestedInput
   examAttempts?: Prisma.ExamAttemptUpdateManyWithoutExaminerNestedInput
+  examSchedules?: Prisma.ExamScheduleUpdateManyWithoutTeacherNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUpdateManyWithoutTeacherNestedInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUpdateManyWithoutTeacherNestedInput
+  userAccount?: Prisma.UserUpdateOneWithoutTeacherNestedInput
 }
 
 export type TeacherUncheckedUpdateWithoutStudentsInput = {
@@ -677,6 +918,7 @@ export type TeacherUncheckedUpdateWithoutStudentsInput = {
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
   strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -685,6 +927,322 @@ export type TeacherUncheckedUpdateWithoutStudentsInput = {
   classReports?: Prisma.ClassReportUncheckedUpdateManyWithoutTeacherNestedInput
   studentLeftLogs?: Prisma.StudentLeftLogUncheckedUpdateManyWithoutTeacherNestedInput
   examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutExaminerNestedInput
+  examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutTeacherNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedUpdateManyWithoutTeacherNestedInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUncheckedUpdateManyWithoutTeacherNestedInput
+  userAccount?: Prisma.UserUncheckedUpdateOneWithoutTeacherNestedInput
+}
+
+export type TeacherCreateWithoutPayrollCategoryRatesInput = {
+  id?: string
+  name?: string | null
+  imageUrl?: string | null
+  joiningDate?: Date | string | null
+  status?: $Enums.TeacherStatus | null
+  strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalStudentsAssignedLifetime?: number | null
+  currentActiveStudents?: number | null
+  studentLeftLifetime?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  students?: Prisma.StudentCreateNestedManyWithoutTeacherInput
+  classReports?: Prisma.ClassReportCreateNestedManyWithoutTeacherInput
+  studentLeftLogs?: Prisma.StudentLeftLogCreateNestedManyWithoutTeacherInput
+  examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutExaminerInput
+  examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutTeacherInput
+  classScheduleEvents?: Prisma.ClassScheduleEventCreateNestedManyWithoutTeacherInput
+  userAccount?: Prisma.UserCreateNestedOneWithoutTeacherInput
+}
+
+export type TeacherUncheckedCreateWithoutPayrollCategoryRatesInput = {
+  id?: string
+  name?: string | null
+  imageUrl?: string | null
+  joiningDate?: Date | string | null
+  status?: $Enums.TeacherStatus | null
+  strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalStudentsAssignedLifetime?: number | null
+  currentActiveStudents?: number | null
+  studentLeftLifetime?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  students?: Prisma.StudentUncheckedCreateNestedManyWithoutTeacherInput
+  classReports?: Prisma.ClassReportUncheckedCreateNestedManyWithoutTeacherInput
+  studentLeftLogs?: Prisma.StudentLeftLogUncheckedCreateNestedManyWithoutTeacherInput
+  examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutExaminerInput
+  examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutTeacherInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedCreateNestedManyWithoutTeacherInput
+  userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutTeacherInput
+}
+
+export type TeacherCreateOrConnectWithoutPayrollCategoryRatesInput = {
+  where: Prisma.TeacherWhereUniqueInput
+  create: Prisma.XOR<Prisma.TeacherCreateWithoutPayrollCategoryRatesInput, Prisma.TeacherUncheckedCreateWithoutPayrollCategoryRatesInput>
+}
+
+export type TeacherUpsertWithoutPayrollCategoryRatesInput = {
+  update: Prisma.XOR<Prisma.TeacherUpdateWithoutPayrollCategoryRatesInput, Prisma.TeacherUncheckedUpdateWithoutPayrollCategoryRatesInput>
+  create: Prisma.XOR<Prisma.TeacherCreateWithoutPayrollCategoryRatesInput, Prisma.TeacherUncheckedCreateWithoutPayrollCategoryRatesInput>
+  where?: Prisma.TeacherWhereInput
+}
+
+export type TeacherUpdateToOneWithWhereWithoutPayrollCategoryRatesInput = {
+  where?: Prisma.TeacherWhereInput
+  data: Prisma.XOR<Prisma.TeacherUpdateWithoutPayrollCategoryRatesInput, Prisma.TeacherUncheckedUpdateWithoutPayrollCategoryRatesInput>
+}
+
+export type TeacherUpdateWithoutPayrollCategoryRatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
+  strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  students?: Prisma.StudentUpdateManyWithoutTeacherNestedInput
+  classReports?: Prisma.ClassReportUpdateManyWithoutTeacherNestedInput
+  studentLeftLogs?: Prisma.StudentLeftLogUpdateManyWithoutTeacherNestedInput
+  examAttempts?: Prisma.ExamAttemptUpdateManyWithoutExaminerNestedInput
+  examSchedules?: Prisma.ExamScheduleUpdateManyWithoutTeacherNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUpdateManyWithoutTeacherNestedInput
+  userAccount?: Prisma.UserUpdateOneWithoutTeacherNestedInput
+}
+
+export type TeacherUncheckedUpdateWithoutPayrollCategoryRatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
+  strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  students?: Prisma.StudentUncheckedUpdateManyWithoutTeacherNestedInput
+  classReports?: Prisma.ClassReportUncheckedUpdateManyWithoutTeacherNestedInput
+  studentLeftLogs?: Prisma.StudentLeftLogUncheckedUpdateManyWithoutTeacherNestedInput
+  examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutExaminerNestedInput
+  examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutTeacherNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedUpdateManyWithoutTeacherNestedInput
+  userAccount?: Prisma.UserUncheckedUpdateOneWithoutTeacherNestedInput
+}
+
+export type TeacherCreateWithoutClassScheduleEventsInput = {
+  id?: string
+  name?: string | null
+  imageUrl?: string | null
+  joiningDate?: Date | string | null
+  status?: $Enums.TeacherStatus | null
+  strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalStudentsAssignedLifetime?: number | null
+  currentActiveStudents?: number | null
+  studentLeftLifetime?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  students?: Prisma.StudentCreateNestedManyWithoutTeacherInput
+  classReports?: Prisma.ClassReportCreateNestedManyWithoutTeacherInput
+  studentLeftLogs?: Prisma.StudentLeftLogCreateNestedManyWithoutTeacherInput
+  examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutExaminerInput
+  examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutTeacherInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateCreateNestedManyWithoutTeacherInput
+  userAccount?: Prisma.UserCreateNestedOneWithoutTeacherInput
+}
+
+export type TeacherUncheckedCreateWithoutClassScheduleEventsInput = {
+  id?: string
+  name?: string | null
+  imageUrl?: string | null
+  joiningDate?: Date | string | null
+  status?: $Enums.TeacherStatus | null
+  strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalStudentsAssignedLifetime?: number | null
+  currentActiveStudents?: number | null
+  studentLeftLifetime?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  students?: Prisma.StudentUncheckedCreateNestedManyWithoutTeacherInput
+  classReports?: Prisma.ClassReportUncheckedCreateNestedManyWithoutTeacherInput
+  studentLeftLogs?: Prisma.StudentLeftLogUncheckedCreateNestedManyWithoutTeacherInput
+  examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutExaminerInput
+  examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutTeacherInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUncheckedCreateNestedManyWithoutTeacherInput
+  userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutTeacherInput
+}
+
+export type TeacherCreateOrConnectWithoutClassScheduleEventsInput = {
+  where: Prisma.TeacherWhereUniqueInput
+  create: Prisma.XOR<Prisma.TeacherCreateWithoutClassScheduleEventsInput, Prisma.TeacherUncheckedCreateWithoutClassScheduleEventsInput>
+}
+
+export type TeacherUpsertWithoutClassScheduleEventsInput = {
+  update: Prisma.XOR<Prisma.TeacherUpdateWithoutClassScheduleEventsInput, Prisma.TeacherUncheckedUpdateWithoutClassScheduleEventsInput>
+  create: Prisma.XOR<Prisma.TeacherCreateWithoutClassScheduleEventsInput, Prisma.TeacherUncheckedCreateWithoutClassScheduleEventsInput>
+  where?: Prisma.TeacherWhereInput
+}
+
+export type TeacherUpdateToOneWithWhereWithoutClassScheduleEventsInput = {
+  where?: Prisma.TeacherWhereInput
+  data: Prisma.XOR<Prisma.TeacherUpdateWithoutClassScheduleEventsInput, Prisma.TeacherUncheckedUpdateWithoutClassScheduleEventsInput>
+}
+
+export type TeacherUpdateWithoutClassScheduleEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
+  strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  students?: Prisma.StudentUpdateManyWithoutTeacherNestedInput
+  classReports?: Prisma.ClassReportUpdateManyWithoutTeacherNestedInput
+  studentLeftLogs?: Prisma.StudentLeftLogUpdateManyWithoutTeacherNestedInput
+  examAttempts?: Prisma.ExamAttemptUpdateManyWithoutExaminerNestedInput
+  examSchedules?: Prisma.ExamScheduleUpdateManyWithoutTeacherNestedInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUpdateManyWithoutTeacherNestedInput
+  userAccount?: Prisma.UserUpdateOneWithoutTeacherNestedInput
+}
+
+export type TeacherUncheckedUpdateWithoutClassScheduleEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
+  strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  students?: Prisma.StudentUncheckedUpdateManyWithoutTeacherNestedInput
+  classReports?: Prisma.ClassReportUncheckedUpdateManyWithoutTeacherNestedInput
+  studentLeftLogs?: Prisma.StudentLeftLogUncheckedUpdateManyWithoutTeacherNestedInput
+  examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutExaminerNestedInput
+  examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutTeacherNestedInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUncheckedUpdateManyWithoutTeacherNestedInput
+  userAccount?: Prisma.UserUncheckedUpdateOneWithoutTeacherNestedInput
+}
+
+export type TeacherCreateWithoutExamSchedulesInput = {
+  id?: string
+  name?: string | null
+  imageUrl?: string | null
+  joiningDate?: Date | string | null
+  status?: $Enums.TeacherStatus | null
+  strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalStudentsAssignedLifetime?: number | null
+  currentActiveStudents?: number | null
+  studentLeftLifetime?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  students?: Prisma.StudentCreateNestedManyWithoutTeacherInput
+  classReports?: Prisma.ClassReportCreateNestedManyWithoutTeacherInput
+  studentLeftLogs?: Prisma.StudentLeftLogCreateNestedManyWithoutTeacherInput
+  examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutExaminerInput
+  classScheduleEvents?: Prisma.ClassScheduleEventCreateNestedManyWithoutTeacherInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateCreateNestedManyWithoutTeacherInput
+  userAccount?: Prisma.UserCreateNestedOneWithoutTeacherInput
+}
+
+export type TeacherUncheckedCreateWithoutExamSchedulesInput = {
+  id?: string
+  name?: string | null
+  imageUrl?: string | null
+  joiningDate?: Date | string | null
+  status?: $Enums.TeacherStatus | null
+  strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalStudentsAssignedLifetime?: number | null
+  currentActiveStudents?: number | null
+  studentLeftLifetime?: number | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  students?: Prisma.StudentUncheckedCreateNestedManyWithoutTeacherInput
+  classReports?: Prisma.ClassReportUncheckedCreateNestedManyWithoutTeacherInput
+  studentLeftLogs?: Prisma.StudentLeftLogUncheckedCreateNestedManyWithoutTeacherInput
+  examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutExaminerInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedCreateNestedManyWithoutTeacherInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUncheckedCreateNestedManyWithoutTeacherInput
+  userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutTeacherInput
+}
+
+export type TeacherCreateOrConnectWithoutExamSchedulesInput = {
+  where: Prisma.TeacherWhereUniqueInput
+  create: Prisma.XOR<Prisma.TeacherCreateWithoutExamSchedulesInput, Prisma.TeacherUncheckedCreateWithoutExamSchedulesInput>
+}
+
+export type TeacherUpsertWithoutExamSchedulesInput = {
+  update: Prisma.XOR<Prisma.TeacherUpdateWithoutExamSchedulesInput, Prisma.TeacherUncheckedUpdateWithoutExamSchedulesInput>
+  create: Prisma.XOR<Prisma.TeacherCreateWithoutExamSchedulesInput, Prisma.TeacherUncheckedCreateWithoutExamSchedulesInput>
+  where?: Prisma.TeacherWhereInput
+}
+
+export type TeacherUpdateToOneWithWhereWithoutExamSchedulesInput = {
+  where?: Prisma.TeacherWhereInput
+  data: Prisma.XOR<Prisma.TeacherUpdateWithoutExamSchedulesInput, Prisma.TeacherUncheckedUpdateWithoutExamSchedulesInput>
+}
+
+export type TeacherUpdateWithoutExamSchedulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
+  strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  students?: Prisma.StudentUpdateManyWithoutTeacherNestedInput
+  classReports?: Prisma.ClassReportUpdateManyWithoutTeacherNestedInput
+  studentLeftLogs?: Prisma.StudentLeftLogUpdateManyWithoutTeacherNestedInput
+  examAttempts?: Prisma.ExamAttemptUpdateManyWithoutExaminerNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUpdateManyWithoutTeacherNestedInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUpdateManyWithoutTeacherNestedInput
+  userAccount?: Prisma.UserUpdateOneWithoutTeacherNestedInput
+}
+
+export type TeacherUncheckedUpdateWithoutExamSchedulesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
+  strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  students?: Prisma.StudentUncheckedUpdateManyWithoutTeacherNestedInput
+  classReports?: Prisma.ClassReportUncheckedUpdateManyWithoutTeacherNestedInput
+  studentLeftLogs?: Prisma.StudentLeftLogUncheckedUpdateManyWithoutTeacherNestedInput
+  examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutExaminerNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedUpdateManyWithoutTeacherNestedInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUncheckedUpdateManyWithoutTeacherNestedInput
+  userAccount?: Prisma.UserUncheckedUpdateOneWithoutTeacherNestedInput
 }
 
 export type TeacherCreateWithoutExamAttemptsInput = {
@@ -694,6 +1252,7 @@ export type TeacherCreateWithoutExamAttemptsInput = {
   joiningDate?: Date | string | null
   status?: $Enums.TeacherStatus | null
   strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: number | null
   currentActiveStudents?: number | null
   studentLeftLifetime?: number | null
@@ -702,6 +1261,10 @@ export type TeacherCreateWithoutExamAttemptsInput = {
   students?: Prisma.StudentCreateNestedManyWithoutTeacherInput
   classReports?: Prisma.ClassReportCreateNestedManyWithoutTeacherInput
   studentLeftLogs?: Prisma.StudentLeftLogCreateNestedManyWithoutTeacherInput
+  examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutTeacherInput
+  classScheduleEvents?: Prisma.ClassScheduleEventCreateNestedManyWithoutTeacherInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateCreateNestedManyWithoutTeacherInput
+  userAccount?: Prisma.UserCreateNestedOneWithoutTeacherInput
 }
 
 export type TeacherUncheckedCreateWithoutExamAttemptsInput = {
@@ -711,6 +1274,7 @@ export type TeacherUncheckedCreateWithoutExamAttemptsInput = {
   joiningDate?: Date | string | null
   status?: $Enums.TeacherStatus | null
   strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: number | null
   currentActiveStudents?: number | null
   studentLeftLifetime?: number | null
@@ -719,6 +1283,10 @@ export type TeacherUncheckedCreateWithoutExamAttemptsInput = {
   students?: Prisma.StudentUncheckedCreateNestedManyWithoutTeacherInput
   classReports?: Prisma.ClassReportUncheckedCreateNestedManyWithoutTeacherInput
   studentLeftLogs?: Prisma.StudentLeftLogUncheckedCreateNestedManyWithoutTeacherInput
+  examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutTeacherInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedCreateNestedManyWithoutTeacherInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUncheckedCreateNestedManyWithoutTeacherInput
+  userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutTeacherInput
 }
 
 export type TeacherCreateOrConnectWithoutExamAttemptsInput = {
@@ -744,6 +1312,7 @@ export type TeacherUpdateWithoutExamAttemptsInput = {
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
   strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -752,6 +1321,10 @@ export type TeacherUpdateWithoutExamAttemptsInput = {
   students?: Prisma.StudentUpdateManyWithoutTeacherNestedInput
   classReports?: Prisma.ClassReportUpdateManyWithoutTeacherNestedInput
   studentLeftLogs?: Prisma.StudentLeftLogUpdateManyWithoutTeacherNestedInput
+  examSchedules?: Prisma.ExamScheduleUpdateManyWithoutTeacherNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUpdateManyWithoutTeacherNestedInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUpdateManyWithoutTeacherNestedInput
+  userAccount?: Prisma.UserUpdateOneWithoutTeacherNestedInput
 }
 
 export type TeacherUncheckedUpdateWithoutExamAttemptsInput = {
@@ -761,6 +1334,7 @@ export type TeacherUncheckedUpdateWithoutExamAttemptsInput = {
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
   strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -769,6 +1343,10 @@ export type TeacherUncheckedUpdateWithoutExamAttemptsInput = {
   students?: Prisma.StudentUncheckedUpdateManyWithoutTeacherNestedInput
   classReports?: Prisma.ClassReportUncheckedUpdateManyWithoutTeacherNestedInput
   studentLeftLogs?: Prisma.StudentLeftLogUncheckedUpdateManyWithoutTeacherNestedInput
+  examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutTeacherNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedUpdateManyWithoutTeacherNestedInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUncheckedUpdateManyWithoutTeacherNestedInput
+  userAccount?: Prisma.UserUncheckedUpdateOneWithoutTeacherNestedInput
 }
 
 export type TeacherCreateWithoutClassReportsInput = {
@@ -778,6 +1356,7 @@ export type TeacherCreateWithoutClassReportsInput = {
   joiningDate?: Date | string | null
   status?: $Enums.TeacherStatus | null
   strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: number | null
   currentActiveStudents?: number | null
   studentLeftLifetime?: number | null
@@ -786,6 +1365,10 @@ export type TeacherCreateWithoutClassReportsInput = {
   students?: Prisma.StudentCreateNestedManyWithoutTeacherInput
   studentLeftLogs?: Prisma.StudentLeftLogCreateNestedManyWithoutTeacherInput
   examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutExaminerInput
+  examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutTeacherInput
+  classScheduleEvents?: Prisma.ClassScheduleEventCreateNestedManyWithoutTeacherInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateCreateNestedManyWithoutTeacherInput
+  userAccount?: Prisma.UserCreateNestedOneWithoutTeacherInput
 }
 
 export type TeacherUncheckedCreateWithoutClassReportsInput = {
@@ -795,6 +1378,7 @@ export type TeacherUncheckedCreateWithoutClassReportsInput = {
   joiningDate?: Date | string | null
   status?: $Enums.TeacherStatus | null
   strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: number | null
   currentActiveStudents?: number | null
   studentLeftLifetime?: number | null
@@ -803,6 +1387,10 @@ export type TeacherUncheckedCreateWithoutClassReportsInput = {
   students?: Prisma.StudentUncheckedCreateNestedManyWithoutTeacherInput
   studentLeftLogs?: Prisma.StudentLeftLogUncheckedCreateNestedManyWithoutTeacherInput
   examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutExaminerInput
+  examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutTeacherInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedCreateNestedManyWithoutTeacherInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUncheckedCreateNestedManyWithoutTeacherInput
+  userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutTeacherInput
 }
 
 export type TeacherCreateOrConnectWithoutClassReportsInput = {
@@ -828,6 +1416,7 @@ export type TeacherUpdateWithoutClassReportsInput = {
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
   strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -836,6 +1425,10 @@ export type TeacherUpdateWithoutClassReportsInput = {
   students?: Prisma.StudentUpdateManyWithoutTeacherNestedInput
   studentLeftLogs?: Prisma.StudentLeftLogUpdateManyWithoutTeacherNestedInput
   examAttempts?: Prisma.ExamAttemptUpdateManyWithoutExaminerNestedInput
+  examSchedules?: Prisma.ExamScheduleUpdateManyWithoutTeacherNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUpdateManyWithoutTeacherNestedInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUpdateManyWithoutTeacherNestedInput
+  userAccount?: Prisma.UserUpdateOneWithoutTeacherNestedInput
 }
 
 export type TeacherUncheckedUpdateWithoutClassReportsInput = {
@@ -845,6 +1438,7 @@ export type TeacherUncheckedUpdateWithoutClassReportsInput = {
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
   strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -853,6 +1447,10 @@ export type TeacherUncheckedUpdateWithoutClassReportsInput = {
   students?: Prisma.StudentUncheckedUpdateManyWithoutTeacherNestedInput
   studentLeftLogs?: Prisma.StudentLeftLogUncheckedUpdateManyWithoutTeacherNestedInput
   examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutExaminerNestedInput
+  examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutTeacherNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedUpdateManyWithoutTeacherNestedInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUncheckedUpdateManyWithoutTeacherNestedInput
+  userAccount?: Prisma.UserUncheckedUpdateOneWithoutTeacherNestedInput
 }
 
 export type TeacherCreateWithoutStudentLeftLogsInput = {
@@ -862,6 +1460,7 @@ export type TeacherCreateWithoutStudentLeftLogsInput = {
   joiningDate?: Date | string | null
   status?: $Enums.TeacherStatus | null
   strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: number | null
   currentActiveStudents?: number | null
   studentLeftLifetime?: number | null
@@ -870,6 +1469,10 @@ export type TeacherCreateWithoutStudentLeftLogsInput = {
   students?: Prisma.StudentCreateNestedManyWithoutTeacherInput
   classReports?: Prisma.ClassReportCreateNestedManyWithoutTeacherInput
   examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutExaminerInput
+  examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutTeacherInput
+  classScheduleEvents?: Prisma.ClassScheduleEventCreateNestedManyWithoutTeacherInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateCreateNestedManyWithoutTeacherInput
+  userAccount?: Prisma.UserCreateNestedOneWithoutTeacherInput
 }
 
 export type TeacherUncheckedCreateWithoutStudentLeftLogsInput = {
@@ -879,6 +1482,7 @@ export type TeacherUncheckedCreateWithoutStudentLeftLogsInput = {
   joiningDate?: Date | string | null
   status?: $Enums.TeacherStatus | null
   strongArea?: string | null
+  hourlyPayrollRateBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: number | null
   currentActiveStudents?: number | null
   studentLeftLifetime?: number | null
@@ -887,6 +1491,10 @@ export type TeacherUncheckedCreateWithoutStudentLeftLogsInput = {
   students?: Prisma.StudentUncheckedCreateNestedManyWithoutTeacherInput
   classReports?: Prisma.ClassReportUncheckedCreateNestedManyWithoutTeacherInput
   examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutExaminerInput
+  examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutTeacherInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedCreateNestedManyWithoutTeacherInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUncheckedCreateNestedManyWithoutTeacherInput
+  userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutTeacherInput
 }
 
 export type TeacherCreateOrConnectWithoutStudentLeftLogsInput = {
@@ -912,6 +1520,7 @@ export type TeacherUpdateWithoutStudentLeftLogsInput = {
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
   strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -920,6 +1529,10 @@ export type TeacherUpdateWithoutStudentLeftLogsInput = {
   students?: Prisma.StudentUpdateManyWithoutTeacherNestedInput
   classReports?: Prisma.ClassReportUpdateManyWithoutTeacherNestedInput
   examAttempts?: Prisma.ExamAttemptUpdateManyWithoutExaminerNestedInput
+  examSchedules?: Prisma.ExamScheduleUpdateManyWithoutTeacherNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUpdateManyWithoutTeacherNestedInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUpdateManyWithoutTeacherNestedInput
+  userAccount?: Prisma.UserUpdateOneWithoutTeacherNestedInput
 }
 
 export type TeacherUncheckedUpdateWithoutStudentLeftLogsInput = {
@@ -929,6 +1542,7 @@ export type TeacherUncheckedUpdateWithoutStudentLeftLogsInput = {
   joiningDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.NullableEnumTeacherStatusFieldUpdateOperationsInput | $Enums.TeacherStatus | null
   strongArea?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  hourlyPayrollRateBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   totalStudentsAssignedLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   currentActiveStudents?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   studentLeftLifetime?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -937,6 +1551,10 @@ export type TeacherUncheckedUpdateWithoutStudentLeftLogsInput = {
   students?: Prisma.StudentUncheckedUpdateManyWithoutTeacherNestedInput
   classReports?: Prisma.ClassReportUncheckedUpdateManyWithoutTeacherNestedInput
   examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutExaminerNestedInput
+  examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutTeacherNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedUpdateManyWithoutTeacherNestedInput
+  payrollCategoryRates?: Prisma.TeacherPayrollCategoryRateUncheckedUpdateManyWithoutTeacherNestedInput
+  userAccount?: Prisma.UserUncheckedUpdateOneWithoutTeacherNestedInput
 }
 
 
@@ -949,6 +1567,9 @@ export type TeacherCountOutputType = {
   classReports: number
   studentLeftLogs: number
   examAttempts: number
+  examSchedules: number
+  classScheduleEvents: number
+  payrollCategoryRates: number
 }
 
 export type TeacherCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -956,6 +1577,9 @@ export type TeacherCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   classReports?: boolean | TeacherCountOutputTypeCountClassReportsArgs
   studentLeftLogs?: boolean | TeacherCountOutputTypeCountStudentLeftLogsArgs
   examAttempts?: boolean | TeacherCountOutputTypeCountExamAttemptsArgs
+  examSchedules?: boolean | TeacherCountOutputTypeCountExamSchedulesArgs
+  classScheduleEvents?: boolean | TeacherCountOutputTypeCountClassScheduleEventsArgs
+  payrollCategoryRates?: boolean | TeacherCountOutputTypeCountPayrollCategoryRatesArgs
 }
 
 /**
@@ -996,6 +1620,27 @@ export type TeacherCountOutputTypeCountExamAttemptsArgs<ExtArgs extends runtime.
   where?: Prisma.ExamAttemptWhereInput
 }
 
+/**
+ * TeacherCountOutputType without action
+ */
+export type TeacherCountOutputTypeCountExamSchedulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ExamScheduleWhereInput
+}
+
+/**
+ * TeacherCountOutputType without action
+ */
+export type TeacherCountOutputTypeCountClassScheduleEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ClassScheduleEventWhereInput
+}
+
+/**
+ * TeacherCountOutputType without action
+ */
+export type TeacherCountOutputTypeCountPayrollCategoryRatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TeacherPayrollCategoryRateWhereInput
+}
+
 
 export type TeacherSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1004,6 +1649,7 @@ export type TeacherSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   joiningDate?: boolean
   status?: boolean
   strongArea?: boolean
+  hourlyPayrollRateBdt?: boolean
   totalStudentsAssignedLifetime?: boolean
   currentActiveStudents?: boolean
   studentLeftLifetime?: boolean
@@ -1013,6 +1659,10 @@ export type TeacherSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   classReports?: boolean | Prisma.Teacher$classReportsArgs<ExtArgs>
   studentLeftLogs?: boolean | Prisma.Teacher$studentLeftLogsArgs<ExtArgs>
   examAttempts?: boolean | Prisma.Teacher$examAttemptsArgs<ExtArgs>
+  examSchedules?: boolean | Prisma.Teacher$examSchedulesArgs<ExtArgs>
+  classScheduleEvents?: boolean | Prisma.Teacher$classScheduleEventsArgs<ExtArgs>
+  payrollCategoryRates?: boolean | Prisma.Teacher$payrollCategoryRatesArgs<ExtArgs>
+  userAccount?: boolean | Prisma.Teacher$userAccountArgs<ExtArgs>
   _count?: boolean | Prisma.TeacherCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["teacher"]>
 
@@ -1023,6 +1673,7 @@ export type TeacherSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   joiningDate?: boolean
   status?: boolean
   strongArea?: boolean
+  hourlyPayrollRateBdt?: boolean
   totalStudentsAssignedLifetime?: boolean
   currentActiveStudents?: boolean
   studentLeftLifetime?: boolean
@@ -1037,6 +1688,7 @@ export type TeacherSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   joiningDate?: boolean
   status?: boolean
   strongArea?: boolean
+  hourlyPayrollRateBdt?: boolean
   totalStudentsAssignedLifetime?: boolean
   currentActiveStudents?: boolean
   studentLeftLifetime?: boolean
@@ -1051,6 +1703,7 @@ export type TeacherSelectScalar = {
   joiningDate?: boolean
   status?: boolean
   strongArea?: boolean
+  hourlyPayrollRateBdt?: boolean
   totalStudentsAssignedLifetime?: boolean
   currentActiveStudents?: boolean
   studentLeftLifetime?: boolean
@@ -1058,12 +1711,16 @@ export type TeacherSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TeacherOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "imageUrl" | "joiningDate" | "status" | "strongArea" | "totalStudentsAssignedLifetime" | "currentActiveStudents" | "studentLeftLifetime" | "createdAt" | "updatedAt", ExtArgs["result"]["teacher"]>
+export type TeacherOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "imageUrl" | "joiningDate" | "status" | "strongArea" | "hourlyPayrollRateBdt" | "totalStudentsAssignedLifetime" | "currentActiveStudents" | "studentLeftLifetime" | "createdAt" | "updatedAt", ExtArgs["result"]["teacher"]>
 export type TeacherInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   students?: boolean | Prisma.Teacher$studentsArgs<ExtArgs>
   classReports?: boolean | Prisma.Teacher$classReportsArgs<ExtArgs>
   studentLeftLogs?: boolean | Prisma.Teacher$studentLeftLogsArgs<ExtArgs>
   examAttempts?: boolean | Prisma.Teacher$examAttemptsArgs<ExtArgs>
+  examSchedules?: boolean | Prisma.Teacher$examSchedulesArgs<ExtArgs>
+  classScheduleEvents?: boolean | Prisma.Teacher$classScheduleEventsArgs<ExtArgs>
+  payrollCategoryRates?: boolean | Prisma.Teacher$payrollCategoryRatesArgs<ExtArgs>
+  userAccount?: boolean | Prisma.Teacher$userAccountArgs<ExtArgs>
   _count?: boolean | Prisma.TeacherCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TeacherIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1076,6 +1733,10 @@ export type $TeacherPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     classReports: Prisma.$ClassReportPayload<ExtArgs>[]
     studentLeftLogs: Prisma.$StudentLeftLogPayload<ExtArgs>[]
     examAttempts: Prisma.$ExamAttemptPayload<ExtArgs>[]
+    examSchedules: Prisma.$ExamSchedulePayload<ExtArgs>[]
+    classScheduleEvents: Prisma.$ClassScheduleEventPayload<ExtArgs>[]
+    payrollCategoryRates: Prisma.$TeacherPayrollCategoryRatePayload<ExtArgs>[]
+    userAccount: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1084,6 +1745,7 @@ export type $TeacherPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     joiningDate: Date | null
     status: $Enums.TeacherStatus | null
     strongArea: string | null
+    hourlyPayrollRateBdt: runtime.Decimal
     totalStudentsAssignedLifetime: number | null
     currentActiveStudents: number | null
     studentLeftLifetime: number | null
@@ -1487,6 +2149,10 @@ export interface Prisma__TeacherClient<T, Null = never, ExtArgs extends runtime.
   classReports<T extends Prisma.Teacher$classReportsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Teacher$classReportsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClassReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   studentLeftLogs<T extends Prisma.Teacher$studentLeftLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Teacher$studentLeftLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentLeftLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   examAttempts<T extends Prisma.Teacher$examAttemptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Teacher$examAttemptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExamAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  examSchedules<T extends Prisma.Teacher$examSchedulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Teacher$examSchedulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExamSchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  classScheduleEvents<T extends Prisma.Teacher$classScheduleEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Teacher$classScheduleEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClassScheduleEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payrollCategoryRates<T extends Prisma.Teacher$payrollCategoryRatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Teacher$payrollCategoryRatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TeacherPayrollCategoryRatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  userAccount<T extends Prisma.Teacher$userAccountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Teacher$userAccountArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1522,6 +2188,7 @@ export interface TeacherFieldRefs {
   readonly joiningDate: Prisma.FieldRef<"Teacher", 'DateTime'>
   readonly status: Prisma.FieldRef<"Teacher", 'TeacherStatus'>
   readonly strongArea: Prisma.FieldRef<"Teacher", 'String'>
+  readonly hourlyPayrollRateBdt: Prisma.FieldRef<"Teacher", 'Decimal'>
   readonly totalStudentsAssignedLifetime: Prisma.FieldRef<"Teacher", 'Int'>
   readonly currentActiveStudents: Prisma.FieldRef<"Teacher", 'Int'>
   readonly studentLeftLifetime: Prisma.FieldRef<"Teacher", 'Int'>
@@ -2013,6 +2680,97 @@ export type Teacher$examAttemptsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.ExamAttemptScalarFieldEnum | Prisma.ExamAttemptScalarFieldEnum[]
+}
+
+/**
+ * Teacher.examSchedules
+ */
+export type Teacher$examSchedulesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ExamSchedule
+   */
+  select?: Prisma.ExamScheduleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ExamSchedule
+   */
+  omit?: Prisma.ExamScheduleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExamScheduleInclude<ExtArgs> | null
+  where?: Prisma.ExamScheduleWhereInput
+  orderBy?: Prisma.ExamScheduleOrderByWithRelationInput | Prisma.ExamScheduleOrderByWithRelationInput[]
+  cursor?: Prisma.ExamScheduleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ExamScheduleScalarFieldEnum | Prisma.ExamScheduleScalarFieldEnum[]
+}
+
+/**
+ * Teacher.classScheduleEvents
+ */
+export type Teacher$classScheduleEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClassScheduleEvent
+   */
+  select?: Prisma.ClassScheduleEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ClassScheduleEvent
+   */
+  omit?: Prisma.ClassScheduleEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClassScheduleEventInclude<ExtArgs> | null
+  where?: Prisma.ClassScheduleEventWhereInput
+  orderBy?: Prisma.ClassScheduleEventOrderByWithRelationInput | Prisma.ClassScheduleEventOrderByWithRelationInput[]
+  cursor?: Prisma.ClassScheduleEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ClassScheduleEventScalarFieldEnum | Prisma.ClassScheduleEventScalarFieldEnum[]
+}
+
+/**
+ * Teacher.payrollCategoryRates
+ */
+export type Teacher$payrollCategoryRatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TeacherPayrollCategoryRate
+   */
+  select?: Prisma.TeacherPayrollCategoryRateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TeacherPayrollCategoryRate
+   */
+  omit?: Prisma.TeacherPayrollCategoryRateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TeacherPayrollCategoryRateInclude<ExtArgs> | null
+  where?: Prisma.TeacherPayrollCategoryRateWhereInput
+  orderBy?: Prisma.TeacherPayrollCategoryRateOrderByWithRelationInput | Prisma.TeacherPayrollCategoryRateOrderByWithRelationInput[]
+  cursor?: Prisma.TeacherPayrollCategoryRateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TeacherPayrollCategoryRateScalarFieldEnum | Prisma.TeacherPayrollCategoryRateScalarFieldEnum[]
+}
+
+/**
+ * Teacher.userAccount
+ */
+export type Teacher$userAccountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

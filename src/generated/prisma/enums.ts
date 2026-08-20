@@ -61,6 +61,16 @@ export const ExamOutcome = {
 export type ExamOutcome = (typeof ExamOutcome)[keyof typeof ExamOutcome]
 
 
+export const ExamScheduleStatus = {
+  UPCOMING: 'UPCOMING',
+  ONGOING: 'ONGOING',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type ExamScheduleStatus = (typeof ExamScheduleStatus)[keyof typeof ExamScheduleStatus]
+
+
 export const PromotionReason = {
   EXAM_PASSED: 'EXAM_PASSED',
   MANUAL_ADJUSTMENT: 'MANUAL_ADJUSTMENT'

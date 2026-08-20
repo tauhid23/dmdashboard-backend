@@ -1,5 +1,12 @@
 import type { Prisma } from "../generated/prisma/client.js";
 import { prisma } from "../config/prisma.js";
+import type { ActorScope } from "../auth/accessScope.js";
+import {
+  assertStudentAccess,
+  assertTeacherAccess,
+  classReportAccessWhere,
+  forbidden
+} from "../auth/accessScope.js";
 import type {
   ClassReportFilters,
   CreateClassReportInput,
@@ -221,7 +228,10 @@ const hasTeacherReportFilter = (): Prisma.ClassReportWhereInput => ({
   ]
 });
 
-export const buildClassReportWhere = (filters?: ClassReportFilters) => {
+export const buildClassReportWhere = (
+  filters?: ClassReportFilters,
+  scope?: ActorScope
+) => {
   const andFilters: Prisma.ClassReportWhereInput[] = [];
 
   if (filters?.search) {
@@ -262,8 +272,31 @@ export const buildClassReportWhere = (filters?: ClassReportFilters) => {
   if (filters?.reportType === "full") {
     andFilters.push(hasStudentReportFilter(), hasTeacherReportFilter());
   }
+  const scopeWhere = scope ? classReportAccessWhere(scope) : undefined;
+  if (scopeWhere) {
+    andFilters.push(scopeWhere as Prisma.ClassReportWhereInput);
+  }
 
   return andFilters.length > 0 ? { AND: andFilters } : undefined;
+};
+
+const assertClassReportAccess = (
+  report: { teacherId: string | null; studentId: string | null },
+  scope?: ActorScope
+) => {
+  if (!scope || scope.isPrivileged) return;
+  if (scope.teacherId && report.teacherId === scope.teacherId) return;
+  if (scope.studentId && report.studentId === scope.studentId) return;
+  throw forbidden("You can only access reports assigned to your account");
+};
+
+const assertClassReportPayloadAccess = async (
+  payload: CreateClassReportInput | UpdateClassReportInput,
+  scope?: ActorScope
+) => {
+  if (!scope || scope.isPrivileged) return;
+  if (payload.teacherId) await assertTeacherAccess(scope, payload.teacherId);
+  if (payload.studentId) await assertStudentAccess(scope, payload.studentId);
 };
 
 const getNestedValue = <TKey extends string>(
@@ -708,8 +741,11 @@ const scoreTeacherField = (
   return null;
 };
 
-export const getClassReports = async (filters?: ClassReportFilters) => {
-  const where = buildClassReportWhere(filters);
+export const getClassReports = async (
+  filters?: ClassReportFilters,
+  scope?: ActorScope
+) => {
+  const where = buildClassReportWhere(filters, scope);
 
   return prisma.classReport.findMany({
     ...(where ? { where } : {}),
@@ -771,20 +807,27 @@ export const formatFullClassReport = (report: IncludedClassReport) => {
   };
 };
 
-export const getFullClassReports = async (filters?: ClassReportFilters) => {
-  const reports = await getClassReports({ ...filters, reportType: "full" });
+export const getFullClassReports = async (
+  filters?: ClassReportFilters,
+  scope?: ActorScope
+) => {
+  const reports = await getClassReports({ ...filters, reportType: "full" }, scope);
 
   return reports.map(formatFullClassReport);
 };
 
-export const createClassReport = async (payload: CreateClassReportInput) => {
+export const createClassReport = async (
+  payload: CreateClassReportInput,
+  scope?: ActorScope
+) => {
+  await assertClassReportPayloadAccess(payload, scope);
   return prisma.classReport.create({
     data: mapClassReportData(payload),
     include: classReportInclude
   });
 };
 
-export const getClassReportById = async (id: string) => {
+export const getClassReportById = async (id: string, scope?: ActorScope) => {
   const classReport = await prisma.classReport.findUnique({
     where: { id },
     include: classReportInclude
@@ -793,15 +836,18 @@ export const getClassReportById = async (id: string) => {
   if (!classReport) {
     throw createHttpError(404, "Class report not found");
   }
+  assertClassReportAccess(classReport, scope);
 
   return classReport;
 };
 
 export const updateClassReport = async (
   id: string,
-  payload: UpdateClassReportInput
+  payload: UpdateClassReportInput,
+  scope?: ActorScope
 ) => {
-  await getClassReportById(id);
+  await getClassReportById(id, scope);
+  await assertClassReportPayloadAccess(payload, scope);
 
   return prisma.classReport.update({
     where: { id },
@@ -810,8 +856,8 @@ export const updateClassReport = async (
   });
 };
 
-export const deleteClassReport = async (id: string) => {
-  await getClassReportById(id);
+export const deleteClassReport = async (id: string, scope?: ActorScope) => {
+  await getClassReportById(id, scope);
 
   await prisma.classReport.delete({
     where: { id }
@@ -933,8 +979,16 @@ const addReportToTeacherAverageBucket = (
 
 export const getTeacherClassReportAverage = async (
   teacherId: string,
-  year = new Date().getFullYear()
+  year = new Date().getFullYear(),
+  scope?: ActorScope
 ) => {
+  await assertTeacherAccess(scope ?? {
+    userId: "",
+    roleCode: "SYSTEM",
+    teacherId: teacherId,
+    studentId: null,
+    isPrivileged: true
+  }, teacherId);
   const yearStart = new Date(Date.UTC(year, 0, 1));
   const nextYearStart = new Date(Date.UTC(year + 1, 0, 1));
   const reports = await prisma.classReport.findMany({

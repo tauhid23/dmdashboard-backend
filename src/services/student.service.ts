@@ -2,6 +2,9 @@ import { StudentStatus } from "../generated/prisma/enums.js";
 import type { StudentStatus as PrismaStudentStatus } from "../generated/prisma/enums.js";
 import type { Prisma } from "../generated/prisma/client.js";
 import { prisma } from "../config/prisma.js";
+import type { ActorScope } from "../auth/accessScope.js";
+import { assertStudentAccess, studentAccessWhere } from "../auth/accessScope.js";
+import { courseLevelFromDisplay } from "../exam/course-progression.js";
 import type {
   CreateStudentInput,
   StudentFilters,
@@ -127,7 +130,7 @@ const compactTeacherChanges = (
   return teacherChanges;
 };
 
-const buildStudentWhere = (filters?: StudentFilters) => {
+const buildStudentWhere = (filters?: StudentFilters, scope?: ActorScope) => {
   const teacherId = filters?.teacherId?.trim();
   const teacherName = filters?.teacherName?.trim();
   const where: Prisma.StudentWhereInput = {};
@@ -140,12 +143,18 @@ const buildStudentWhere = (filters?: StudentFilters) => {
     where.teacherName = teacherName;
   }
 
+  const scopeWhere = scope ? studentAccessWhere(scope) : undefined;
+  if (scopeWhere) {
+    return { AND: [where, scopeWhere] } as Prisma.StudentWhereInput;
+  }
+
   return Object.keys(where).length > 0 ? where : undefined;
 };
 
 export const createStudent = async (payload: CreateStudentInput) => {
   const courses = compactCourses(payload);
   const teacherChanges = compactTeacherChanges(payload);
+  const currentCourseLevel = courseLevelFromDisplay(payload.courseName, payload.courseStage);
 
   return prisma.student.create({
     data: {
@@ -203,6 +212,13 @@ export const createStudent = async (payload: CreateStudentInput) => {
       ...(payload.status !== undefined
         ? { status: parseOptionalStatus(payload.status) }
         : {}),
+      ...(currentCourseLevel
+        ? {
+            currentCourseLevel,
+            courseCompleted: false,
+            courseUpdatedAt: new Date()
+          }
+        : {}),
       ...(courses.length > 0
         ? {
             courses: {
@@ -222,8 +238,8 @@ export const createStudent = async (payload: CreateStudentInput) => {
   });
 };
 
-export const getStudents = async (filters?: StudentFilters) => {
-  const where = buildStudentWhere(filters);
+export const getStudents = async (filters?: StudentFilters, scope?: ActorScope) => {
+  const where = buildStudentWhere(filters, scope);
 
   return prisma.student.findMany({
     ...(where ? { where } : {}),
@@ -234,8 +250,8 @@ export const getStudents = async (filters?: StudentFilters) => {
   });
 };
 
-export const getStudentOptions = async (filters?: StudentFilters) => {
-  const where = buildStudentWhere(filters);
+export const getStudentOptions = async (filters?: StudentFilters, scope?: ActorScope) => {
+  const where = buildStudentWhere(filters, scope);
 
   const students = await prisma.student.findMany({
     ...(where ? { where } : {}),
@@ -264,11 +280,18 @@ export const getStudentById = async (id: string) => {
   return student;
 };
 
+export const assertStudentVisible = (id: string, scope: ActorScope) =>
+  assertStudentAccess(scope, id);
+
 export const updateStudent = async (id: string, payload: UpdateStudentInput) => {
-  await getStudentById(id);
+  const existingStudent = await getStudentById(id);
 
   const courses = compactCourses(payload);
   const teacherChanges = compactTeacherChanges(payload);
+  const currentCourseLevel = courseLevelFromDisplay(
+    payload.courseName !== undefined ? payload.courseName : existingStudent.courseName,
+    payload.courseStage !== undefined ? payload.courseStage : existingStudent.courseStage
+  );
 
   return prisma.student.update({
     where: { id },
@@ -326,6 +349,13 @@ export const updateStudent = async (id: string, payload: UpdateStudentInput) => 
         : {}),
       ...(payload.status !== undefined
         ? { status: parseOptionalStatus(payload.status) }
+        : {}),
+      ...(currentCourseLevel && currentCourseLevel !== existingStudent.currentCourseLevel
+        ? {
+            currentCourseLevel,
+            courseCompleted: false,
+            courseUpdatedAt: new Date()
+          }
         : {}),
       ...(courses.length > 0
         ? {

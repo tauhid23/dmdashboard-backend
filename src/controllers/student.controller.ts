@@ -1,4 +1,6 @@
 import type { Request, Response } from "express";
+import type { AuthRequest } from "../auth/auth.types.js";
+import { getRequestScope } from "../auth/accessScope.js";
 
 import { uploadImageBuffer } from "../config/cloudinary.js";
 import * as studentService from "../services/student.service.js";
@@ -50,8 +52,11 @@ export const createStudent = async (req: Request, res: Response) => {
   });
 };
 
-export const getStudents = async (req: Request, res: Response) => {
-  const students = await studentService.getStudents(getStudentFilters(req));
+export const getStudents = async (req: AuthRequest, res: Response) => {
+  const students = await studentService.getStudents(
+    getStudentFilters(req),
+    await getRequestScope(req.auth?.id)
+  );
 
   res.status(200).json({
     success: true,
@@ -59,8 +64,11 @@ export const getStudents = async (req: Request, res: Response) => {
   });
 };
 
-export const getStudentOptions = async (req: Request, res: Response) => {
-  const students = await studentService.getStudentOptions(getStudentFilters(req));
+export const getStudentOptions = async (req: AuthRequest, res: Response) => {
+  const students = await studentService.getStudentOptions(
+    getStudentFilters(req),
+    await getRequestScope(req.auth?.id)
+  );
 
   res.status(200).json({
     success: true,
@@ -68,7 +76,9 @@ export const getStudentOptions = async (req: Request, res: Response) => {
   });
 };
 
-export const getStudentById = async (req: Request, res: Response) => {
+export const getStudentById = async (req: AuthRequest, res: Response) => {
+  const scope = await getRequestScope(req.auth?.id);
+  await studentService.assertStudentVisible(getStudentId(req), scope);
   const student = await getStudentExamDetails(getStudentId(req));
 
   res.status(200).json({

@@ -4,6 +4,7 @@ import { hashPassword, hashToken, randomToken, verifyPassword } from "./security
 
 const error=(statusCode:number,message:string,code:string,errors?:unknown)=>Object.assign(new Error(message),{statusCode,code,errors});
 const includeRole={role:true} as const;
+const userInclude = includeRole as unknown as { role: true; teacherId: true; studentId: true };
 export const revokeSessions = async (userId:string) => prisma.$transaction([prisma.refreshSession.updateMany({where:{userId,revokedAt:null},data:{revokedAt:new Date()}}),prisma.user.update({where:{id:userId},data:{sessionVersion:{increment:1}}})]);
 
 export async function login(identifier:string,password:string,metadata:{ip?:string;userAgent?:string}) {
@@ -30,4 +31,3 @@ export async function forgotPassword(identifier:string){const normalized=identif
 export async function resetPassword(token:string,password:string){validatePassword(password);const item=await prisma.passwordResetToken.findUnique({where:{tokenHash:hashToken(token)}});if(!item||item.usedAt||item.expiresAt<=new Date())throw error(422,"Reset token is invalid or expired","INVALID_RESET_TOKEN");await prisma.$transaction([prisma.passwordResetToken.update({where:{id:item.id},data:{usedAt:new Date()}}),prisma.user.update({where:{id:item.userId},data:{passwordHash:await hashPassword(password),mustChangePassword:false}})]);await revokeSessions(item.userId);}
 export function validatePassword(value:string){if(value.length<12)throw error(422,"Validation failed","VALIDATION_ERROR",{password:["Password must be at least 12 characters"]});}
 export { effectivePermissions };
-

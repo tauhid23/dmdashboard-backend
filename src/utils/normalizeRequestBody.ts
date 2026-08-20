@@ -52,6 +52,11 @@ export const normalizeTeacherRequestBody = (
   body: BodyRecord
 ): CreateTeacherInput => ({
   ...body,
+  totalStudentsAssignedLifetime:
+    body.totalStudentsAssignedLifetime ?? body.totalStudentsAssigned ?? body.lifetimeStudents,
+  currentActiveStudents: body.currentActiveStudents ?? body.activeStudents,
+  studentLeftLifetime: body.studentLeftLifetime ?? body.studentsLeft,
+  leaveRecords: parseJsonField(body.leaveRecords),
   studentLeftDetails: parseJsonField(body.studentLeftDetails),
-  studentLeftLogs: parseJsonField(body.studentLeftLogs)
+  studentLeftLogs: parseJsonField(body.studentLeftLogs ?? body.leaveRecords)
 } as CreateTeacherInput);
