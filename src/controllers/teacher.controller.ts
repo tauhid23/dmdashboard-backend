@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import type { AuthRequest } from "../auth/auth.types.js";
-import { getRequestScope } from "../auth/accessScope.js";
+import { assertPrivilegedAccess, getRequestScope } from "../auth/accessScope.js";
 
 import { uploadImageBuffer } from "../config/cloudinary.js";
 import * as teacherService from "../services/teacher.service.js";
@@ -30,8 +30,12 @@ const handleControllerError = (error: unknown, res: Response) => {
   });
 };
 
-export const createTeacher = async (req: Request, res: Response) => {
+export const createTeacher = async (req: AuthRequest, res: Response) => {
   try {
+    assertPrivilegedAccess(
+      await getRequestScope(req.auth?.id),
+      "Only staff users can create teacher profiles"
+    );
     const payload = normalizeTeacherRequestBody(req.body);
     const imageFile = getUploadedImageFile(req);
 
@@ -130,6 +134,25 @@ export const getTeacherPayroll = async (req: Request, res: Response) => {
   }
 };
 
+export const createTeacherPayrollPayment = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    assertPrivilegedAccess(
+      await getRequestScope(req.auth?.id),
+      "Only staff users can record teacher payroll payments"
+    );
+    const payment = await teacherService.createTeacherPayrollPayment(
+      getTeacherId(req),
+      req.body
+    );
+    res.status(201).json({ success: true, data: payment });
+  } catch (error) {
+    handleControllerError(error, res);
+  }
+};
+
 export const updateTeacherPayrollSettings = async (
   req: AuthRequest,
   res: Response
@@ -190,8 +213,12 @@ export const deleteTeacherPayrollCategoryRate = async (
   }
 };
 
-export const updateTeacher = async (req: Request, res: Response) => {
+export const updateTeacher = async (req: AuthRequest, res: Response) => {
   try {
+    assertPrivilegedAccess(
+      await getRequestScope(req.auth?.id),
+      "Only staff users can edit teacher profiles"
+    );
     const payload = normalizeTeacherRequestBody(req.body);
     const imageFile = getUploadedImageFile(req);
 
@@ -214,8 +241,12 @@ export const updateTeacher = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteTeacher = async (req: Request, res: Response) => {
+export const deleteTeacher = async (req: AuthRequest, res: Response) => {
   try {
+    assertPrivilegedAccess(
+      await getRequestScope(req.auth?.id),
+      "Only staff users can delete teacher profiles"
+    );
     await teacherService.deleteTeacher(getTeacherId(req));
 
     res.status(200).json({

@@ -59,11 +59,13 @@ export const ModelName = {
   RefreshSession: 'RefreshSession',
   PasswordResetToken: 'PasswordResetToken',
   AuditLog: 'AuditLog',
+  AppSetting: 'AppSetting',
   Student: 'Student',
   StudentCourse: 'StudentCourse',
   TeacherChange: 'TeacherChange',
   Teacher: 'Teacher',
   TeacherPayrollCategoryRate: 'TeacherPayrollCategoryRate',
+  TeacherPayrollPayment: 'TeacherPayrollPayment',
   ClassScheduleEvent: 'ClassScheduleEvent',
   ExamSchedule: 'ExamSchedule',
   ExamAttempt: 'ExamAttempt',
@@ -200,6 +202,17 @@ export const AuditLogScalarFieldEnum = {
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
+export const AppSettingScalarFieldEnum = {
+  key: 'key',
+  value: 'value',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AppSettingScalarFieldEnum = (typeof AppSettingScalarFieldEnum)[keyof typeof AppSettingScalarFieldEnum]
+
+
 export const StudentScalarFieldEnum = {
   id: 'id',
   image: 'image',
@@ -288,6 +301,22 @@ export const TeacherPayrollCategoryRateScalarFieldEnum = {
 } as const
 
 export type TeacherPayrollCategoryRateScalarFieldEnum = (typeof TeacherPayrollCategoryRateScalarFieldEnum)[keyof typeof TeacherPayrollCategoryRateScalarFieldEnum]
+
+
+export const TeacherPayrollPaymentScalarFieldEnum = {
+  id: 'id',
+  teacherId: 'teacherId',
+  month: 'month',
+  amountBdt: 'amountBdt',
+  paymentDate: 'paymentDate',
+  method: 'method',
+  reference: 'reference',
+  note: 'note',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TeacherPayrollPaymentScalarFieldEnum = (typeof TeacherPayrollPaymentScalarFieldEnum)[keyof typeof TeacherPayrollPaymentScalarFieldEnum]
 
 
 export const ClassScheduleEventScalarFieldEnum = {
@@ -516,6 +545,13 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {

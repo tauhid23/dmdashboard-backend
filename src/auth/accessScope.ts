@@ -1,6 +1,6 @@
 import { prisma } from "../config/prisma.js";
 
-const privilegedRoleCodes = new Set(["SUPER_ADMIN", "ADMIN"]);
+const privilegedRoleCodes = new Set(["SUPER_ADMIN", "ADMIN", "MODERATOR"]);
 
 export type ActorScope = {
   userId: string;
@@ -12,6 +12,15 @@ export type ActorScope = {
 
 export const forbidden = (message = "You do not have access to this record") =>
   Object.assign(new Error(message), { statusCode: 403, code: "FORBIDDEN" });
+
+export const assertPrivilegedAccess = (
+  scope: ActorScope,
+  message = "Only staff users can manage this record"
+) => {
+  if (scope.isPrivileged) return;
+
+  throw forbidden(message);
+};
 
 export const getActorScope = async (userId: string): Promise<ActorScope> => {
   const user = await (prisma.user.findUnique as unknown as (args: unknown) => Promise<{

@@ -392,11 +392,13 @@ export const ModelName = {
   RefreshSession: 'RefreshSession',
   PasswordResetToken: 'PasswordResetToken',
   AuditLog: 'AuditLog',
+  AppSetting: 'AppSetting',
   Student: 'Student',
   StudentCourse: 'StudentCourse',
   TeacherChange: 'TeacherChange',
   Teacher: 'Teacher',
   TeacherPayrollCategoryRate: 'TeacherPayrollCategoryRate',
+  TeacherPayrollPayment: 'TeacherPayrollPayment',
   ClassScheduleEvent: 'ClassScheduleEvent',
   ExamSchedule: 'ExamSchedule',
   ExamAttempt: 'ExamAttempt',
@@ -423,7 +425,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userPermissionOverride" | "refreshSession" | "passwordResetToken" | "auditLog" | "student" | "studentCourse" | "teacherChange" | "teacher" | "teacherPayrollCategoryRate" | "classScheduleEvent" | "examSchedule" | "examAttempt" | "examRule" | "examRuleSection" | "examRuleField" | "examMark" | "examSectionResult" | "studentCourseHistory" | "classReport" | "studentLeftLog"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userPermissionOverride" | "refreshSession" | "passwordResetToken" | "auditLog" | "appSetting" | "student" | "studentCourse" | "teacherChange" | "teacher" | "teacherPayrollCategoryRate" | "teacherPayrollPayment" | "classScheduleEvent" | "examSchedule" | "examAttempt" | "examRule" | "examRuleSection" | "examRuleField" | "examMark" | "examSectionResult" | "studentCourseHistory" | "classReport" | "studentLeftLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1019,6 +1021,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AppSetting: {
+      payload: Prisma.$AppSettingPayload<ExtArgs>
+      fields: Prisma.AppSettingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AppSettingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppSettingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AppSettingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppSettingPayload>
+        }
+        findFirst: {
+          args: Prisma.AppSettingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppSettingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AppSettingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppSettingPayload>
+        }
+        findMany: {
+          args: Prisma.AppSettingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppSettingPayload>[]
+        }
+        create: {
+          args: Prisma.AppSettingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppSettingPayload>
+        }
+        createMany: {
+          args: Prisma.AppSettingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AppSettingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppSettingPayload>[]
+        }
+        delete: {
+          args: Prisma.AppSettingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppSettingPayload>
+        }
+        update: {
+          args: Prisma.AppSettingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppSettingPayload>
+        }
+        deleteMany: {
+          args: Prisma.AppSettingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AppSettingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AppSettingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppSettingPayload>[]
+        }
+        upsert: {
+          args: Prisma.AppSettingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AppSettingPayload>
+        }
+        aggregate: {
+          args: Prisma.AppSettingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAppSetting>
+        }
+        groupBy: {
+          args: Prisma.AppSettingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AppSettingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AppSettingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AppSettingCountAggregateOutputType> | number
+        }
+      }
+    }
     Student: {
       payload: Prisma.$StudentPayload<ExtArgs>
       fields: Prisma.StudentFieldRefs
@@ -1386,6 +1462,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TeacherPayrollCategoryRateCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TeacherPayrollCategoryRateCountAggregateOutputType> | number
+        }
+      }
+    }
+    TeacherPayrollPayment: {
+      payload: Prisma.$TeacherPayrollPaymentPayload<ExtArgs>
+      fields: Prisma.TeacherPayrollPaymentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TeacherPayrollPaymentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollPaymentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TeacherPayrollPaymentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollPaymentPayload>
+        }
+        findFirst: {
+          args: Prisma.TeacherPayrollPaymentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollPaymentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TeacherPayrollPaymentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollPaymentPayload>
+        }
+        findMany: {
+          args: Prisma.TeacherPayrollPaymentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollPaymentPayload>[]
+        }
+        create: {
+          args: Prisma.TeacherPayrollPaymentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollPaymentPayload>
+        }
+        createMany: {
+          args: Prisma.TeacherPayrollPaymentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TeacherPayrollPaymentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollPaymentPayload>[]
+        }
+        delete: {
+          args: Prisma.TeacherPayrollPaymentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollPaymentPayload>
+        }
+        update: {
+          args: Prisma.TeacherPayrollPaymentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollPaymentPayload>
+        }
+        deleteMany: {
+          args: Prisma.TeacherPayrollPaymentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TeacherPayrollPaymentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TeacherPayrollPaymentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollPaymentPayload>[]
+        }
+        upsert: {
+          args: Prisma.TeacherPayrollPaymentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TeacherPayrollPaymentPayload>
+        }
+        aggregate: {
+          args: Prisma.TeacherPayrollPaymentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTeacherPayrollPayment>
+        }
+        groupBy: {
+          args: Prisma.TeacherPayrollPaymentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TeacherPayrollPaymentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TeacherPayrollPaymentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TeacherPayrollPaymentCountAggregateOutputType> | number
         }
       }
     }
@@ -2349,6 +2499,17 @@ export const AuditLogScalarFieldEnum = {
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
+export const AppSettingScalarFieldEnum = {
+  key: 'key',
+  value: 'value',
+  updatedBy: 'updatedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AppSettingScalarFieldEnum = (typeof AppSettingScalarFieldEnum)[keyof typeof AppSettingScalarFieldEnum]
+
+
 export const StudentScalarFieldEnum = {
   id: 'id',
   image: 'image',
@@ -2437,6 +2598,22 @@ export const TeacherPayrollCategoryRateScalarFieldEnum = {
 } as const
 
 export type TeacherPayrollCategoryRateScalarFieldEnum = (typeof TeacherPayrollCategoryRateScalarFieldEnum)[keyof typeof TeacherPayrollCategoryRateScalarFieldEnum]
+
+
+export const TeacherPayrollPaymentScalarFieldEnum = {
+  id: 'id',
+  teacherId: 'teacherId',
+  month: 'month',
+  amountBdt: 'amountBdt',
+  paymentDate: 'paymentDate',
+  method: 'method',
+  reference: 'reference',
+  note: 'note',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TeacherPayrollPaymentScalarFieldEnum = (typeof TeacherPayrollPaymentScalarFieldEnum)[keyof typeof TeacherPayrollPaymentScalarFieldEnum]
 
 
 export const ClassScheduleEventScalarFieldEnum = {
@@ -2665,6 +2842,13 @@ export const NullableJsonNullValueInput = {
 } as const
 
 export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -3018,11 +3202,13 @@ export type GlobalOmitConfig = {
   refreshSession?: Prisma.RefreshSessionOmit
   passwordResetToken?: Prisma.PasswordResetTokenOmit
   auditLog?: Prisma.AuditLogOmit
+  appSetting?: Prisma.AppSettingOmit
   student?: Prisma.StudentOmit
   studentCourse?: Prisma.StudentCourseOmit
   teacherChange?: Prisma.TeacherChangeOmit
   teacher?: Prisma.TeacherOmit
   teacherPayrollCategoryRate?: Prisma.TeacherPayrollCategoryRateOmit
+  teacherPayrollPayment?: Prisma.TeacherPayrollPaymentOmit
   classScheduleEvent?: Prisma.ClassScheduleEventOmit
   examSchedule?: Prisma.ExamScheduleOmit
   examAttempt?: Prisma.ExamAttemptOmit

@@ -6,7 +6,7 @@ Base URL: `http://localhost:5000/api` (the `/api/v1` alias also works). Every fr
 
 | Method | Route | Body | Success |
 |---|---|---|---|
-| POST | `/auth/login` | `{ "identifier": "admin@admin.com", "password": "admin@1234" }` | `{ "user": SafeUser }` plus HttpOnly cookies |
+| POST | `/auth/login` | `{ "identifier": "admin@admin.com", "password": "SuperAdmin1" }` | `{ "user": SafeUser }` plus HttpOnly cookies |
 | POST | `/auth/logout` | none | `204` |
 | POST | `/auth/refresh` | none | `{ "user": SafeUser }`, rotated cookies |
 | GET | `/auth/me` | none | `{ "user": SafeUser }` |

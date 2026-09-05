@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import type { AuthRequest } from "../auth/auth.types.js";
-import { getRequestScope } from "../auth/accessScope.js";
+import { assertPrivilegedAccess, getRequestScope } from "../auth/accessScope.js";
 
 import { uploadImageBuffer } from "../config/cloudinary.js";
 import * as studentService from "../services/student.service.js";
@@ -35,7 +35,11 @@ const getStudentFilters = (req: Request) => ({
   teacherName: getQueryString(req.query.teacherName)
 });
 
-export const createStudent = async (req: Request, res: Response) => {
+export const createStudent = async (req: AuthRequest, res: Response) => {
+  assertPrivilegedAccess(
+    await getRequestScope(req.auth?.id),
+    "Only staff users can create student profiles"
+  );
   const payload = normalizeStudentRequestBody(req.body);
   const imageFile = getUploadedImageFile(req);
 
@@ -87,7 +91,11 @@ export const getStudentById = async (req: AuthRequest, res: Response) => {
   });
 };
 
-export const updateStudent = async (req: Request, res: Response) => {
+export const updateStudent = async (req: AuthRequest, res: Response) => {
+  assertPrivilegedAccess(
+    await getRequestScope(req.auth?.id),
+    "Only staff users can edit student profiles"
+  );
   const payload = normalizeStudentRequestBody(req.body);
   const imageFile = getUploadedImageFile(req);
 
@@ -104,7 +112,11 @@ export const updateStudent = async (req: Request, res: Response) => {
   });
 };
 
-export const deleteStudent = async (req: Request, res: Response) => {
+export const deleteStudent = async (req: AuthRequest, res: Response) => {
+  assertPrivilegedAccess(
+    await getRequestScope(req.auth?.id),
+    "Only staff users can delete student profiles"
+  );
   await studentService.deleteStudent(getStudentId(req));
 
   res.status(200).json({

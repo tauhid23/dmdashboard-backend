@@ -1,6 +1,7 @@
 import { prisma } from "../config/prisma.js";
 import { effectivePermissions, safeUser } from "./permissions.js";
 import { hashPassword, hashToken, randomToken, verifyPassword } from "./security.js";
+import { getSettings } from "../services/settings.service.js";
 
 const error=(statusCode:number,message:string,code:string,errors?:unknown)=>Object.assign(new Error(message),{statusCode,code,errors});
 const includeRole={role:true} as const;
@@ -27,7 +28,32 @@ export async function refresh(token:string) {
 export async function me(userId:string){const user=await prisma.user.findUnique({where:{id:userId},include:includeRole});if(!user)throw error(404,"User not found","NOT_FOUND");return safeUser(user);}
 export async function logout(token?:string){if(token)await prisma.refreshSession.updateMany({where:{tokenHash:hashToken(token),revokedAt:null},data:{revokedAt:new Date()}});}
 export async function changePassword(userId:string,currentPassword:string,newPassword:string){const user=await prisma.user.findUnique({where:{id:userId}});if(!user||!await verifyPassword(currentPassword,user.passwordHash))throw error(401,"Current password is incorrect","INVALID_PASSWORD");validatePassword(newPassword);await prisma.user.update({where:{id:userId},data:{passwordHash:await hashPassword(newPassword),mustChangePassword:false}});await revokeSessions(userId);}
-export async function forgotPassword(identifier:string){const normalized=identifier.trim().toLowerCase();const user=await prisma.user.findFirst({where:{deletedAt:null,OR:[{normalizedEmail:normalized},{normalizedUsername:normalized}]}});if(!user)return null;const token=randomToken();await prisma.passwordResetToken.create({data:{userId:user.id,tokenHash:hashToken(token),expiresAt:new Date(Date.now()+3600000)}});return process.env.NODE_ENV==="production"?null:token;}
+export async function updateProfile(userId:string,payload:any){const name=typeof payload.name==="string"?payload.name.trim():"";const email=typeof payload.email==="string"?payload.email.trim():"";if(!name||!email)throw error(422,"Validation failed","VALIDATION_ERROR",{name:["Name is required"],email:["Email is required"]});if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw error(422,"Validation failed","VALIDATION_ERROR",{email:["Enter a valid email address"]});const duplicate=await prisma.user.findFirst({where:{id:{not:userId},deletedAt:null,normalizedEmail:email.toLowerCase()}});if(duplicate)throw error(409,"Email is already in use","DUPLICATE_USER",{email:["Email is already in use"]});const user=await prisma.user.update({where:{id:userId},data:{name,email,normalizedEmail:email.toLowerCase()},include:includeRole});return safeUser(user);}
+export async function forgotPassword(identifier:string){const settings=await getSettings();if(!settings.security.allowPasswordReset)return null;const normalized=identifier.trim().toLowerCase();const user=await prisma.user.findFirst({where:{deletedAt:null,OR:[{normalizedEmail:normalized},{normalizedUsername:normalized}]}});if(!user)return null;const token=randomToken();await prisma.passwordResetToken.create({data:{userId:user.id,tokenHash:hashToken(token),expiresAt:new Date(Date.now()+3600000)}});return process.env.NODE_ENV==="production"?null:token;}
 export async function resetPassword(token:string,password:string){validatePassword(password);const item=await prisma.passwordResetToken.findUnique({where:{tokenHash:hashToken(token)}});if(!item||item.usedAt||item.expiresAt<=new Date())throw error(422,"Reset token is invalid or expired","INVALID_RESET_TOKEN");await prisma.$transaction([prisma.passwordResetToken.update({where:{id:item.id},data:{usedAt:new Date()}}),prisma.user.update({where:{id:item.userId},data:{passwordHash:await hashPassword(password),mustChangePassword:false}})]);await revokeSessions(item.userId);}
-export function validatePassword(value:string){if(value.length<12)throw error(422,"Validation failed","VALIDATION_ERROR",{password:["Password must be at least 12 characters"]});}
+export const passwordPolicy = {
+  minLength: 6,
+  description: "Password must be at least 6 characters and include one uppercase letter and one number."
+} as const;
+
+export function getPasswordPolicyErrors(value: string) {
+  const errors: string[] = [];
+
+  if (value.length < passwordPolicy.minLength) {
+    errors.push(`Password must be at least ${passwordPolicy.minLength} characters`);
+  }
+  if (!/[A-Z]/.test(value)) {
+    errors.push("Password must include at least one uppercase letter");
+  }
+  if (!/\d/.test(value)) {
+    errors.push("Password must include at least one number");
+  }
+
+  return errors;
+}
+
+export function validatePassword(value:string){
+  const errors = getPasswordPolicyErrors(value);
+  if(errors.length)throw error(422,"Validation failed","VALIDATION_ERROR",{password:errors});
+}
 export { effectivePermissions };

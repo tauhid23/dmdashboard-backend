@@ -43,7 +43,7 @@ export const env = {
   FRONTEND_ORIGIN: process.env.FRONTEND_ORIGIN ?? "http://localhost:5173",
   SUPER_ADMIN_EMAIL: process.env.SUPER_ADMIN_EMAIL ?? "admin@admin.com",
   SUPER_ADMIN_USERNAME: process.env.SUPER_ADMIN_USERNAME ?? "admin@admin.com",
-  SUPER_ADMIN_PASSWORD: requiredEnv("SUPER_ADMIN_PASSWORD", process.env.NODE_ENV === "production" ? undefined : "admin@1234"),
+  SUPER_ADMIN_PASSWORD: requiredEnv("SUPER_ADMIN_PASSWORD", process.env.NODE_ENV === "production" ? undefined : "SuperAdmin1"),
   EMAIL_ENABLED: emailEnabled,
   SMTP_HOST: emailEnabled ? requiredEnv("SMTP_HOST") : process.env.SMTP_HOST,
   SMTP_PORT: numberEnv("SMTP_PORT", 587),

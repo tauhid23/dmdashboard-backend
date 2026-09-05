@@ -58,6 +58,11 @@ export type PasswordResetToken = Prisma.PasswordResetTokenModel
  */
 export type AuditLog = Prisma.AuditLogModel
 /**
+ * Model AppSetting
+ * 
+ */
+export type AppSetting = Prisma.AppSettingModel
+/**
  * Model Student
  * 
  */
@@ -82,6 +87,11 @@ export type Teacher = Prisma.TeacherModel
  * 
  */
 export type TeacherPayrollCategoryRate = Prisma.TeacherPayrollCategoryRateModel
+/**
+ * Model TeacherPayrollPayment
+ * 
+ */
+export type TeacherPayrollPayment = Prisma.TeacherPayrollPaymentModel
 /**
  * Model ClassScheduleEvent
  * 

@@ -16,6 +16,11 @@ router.get(
   asyncHandler(teacherController.getTeacherClassReportAverage)
 );
 router.get("/:id/payroll", asyncHandler(teacherController.getTeacherPayroll));
+router.post(
+  "/:id/payroll-payments",
+  requirePermission("teachers", "edit"),
+  asyncHandler(teacherController.createTeacherPayrollPayment)
+);
 router.patch(
   "/:id/payroll-settings",
   requirePermission("teachers","edit"),

@@ -25,3 +25,12 @@ export type CreateTeacherInput = {
 };
 
 export type UpdateTeacherInput = Partial<CreateTeacherInput>;
+
+export type CreateTeacherPayrollPaymentInput = {
+  months: string[];
+  amountBdt: number | string;
+  paymentDate: string;
+  method: string;
+  reference?: string | null;
+  note?: string | null;
+};

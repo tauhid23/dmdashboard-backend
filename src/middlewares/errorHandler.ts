@@ -8,7 +8,9 @@ const isMissingDatabaseColumnError = (err: unknown) => {
 
   const message = typeof err.message === "string" ? err.message : "";
   return (
+    err.code === "P2021" ||
     err.code === "P2022" ||
+    message.includes("table") && message.includes("does not exist") ||
     (message.includes("column") && message.includes("does not exist"))
   );
 };

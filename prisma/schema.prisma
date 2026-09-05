@@ -173,6 +173,14 @@ model AuditLog {
   @@index([targetUserId, createdAt])
 }
 
+model AppSetting {
+  key       String   @id
+  value     Json
+  updatedBy String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Student {
   id                  String                 @id @default(cuid())
   image               String?
@@ -261,6 +269,7 @@ model Teacher {
   examSchedules                 ExamSchedule[]
   classScheduleEvents           ClassScheduleEvent[]
   payrollCategoryRates          TeacherPayrollCategoryRate[]
+  payrollPayments               TeacherPayrollPayment[]
   userAccount                   User?
 }
 
@@ -275,6 +284,23 @@ model TeacherPayrollCategoryRate {
 
   @@unique([teacherId, category])
   @@index([teacherId])
+}
+
+model TeacherPayrollPayment {
+  id            String   @id @default(cuid())
+  teacherId     String
+  month         String
+  amountBdt     Decimal  @db.Decimal(10, 2)
+  paymentDate   DateTime
+  method        String
+  reference     String?
+  note          String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  teacher       Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+
+  @@index([teacherId, month])
+  @@index([paymentDate])
 }
 
 model ClassScheduleEvent {

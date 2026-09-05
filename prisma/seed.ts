@@ -3,6 +3,7 @@ import { prisma } from "../src/config/prisma.js";
 import { COURSE_RULES, validateExamRules, type ExamRule as RuleDefinition } from "../src/exam/exam.rules.js";
 import { courseDisplay } from "../src/exam/course-progression.js";
 import { hashPassword } from "../src/auth/security.js";
+import { validatePassword } from "../src/auth/auth.service.js";
 import { env } from "../src/config/env.js";
 import { ACTIONS, RESOURCES } from "../src/auth/auth.types.js";
 
@@ -27,7 +28,7 @@ for(const definition of roles){
 const superRole=await prisma.role.findUniqueOrThrow({where:{code:"SUPER_ADMIN"}});
 const normalizedEmail=env.SUPER_ADMIN_EMAIL.trim().toLowerCase(),normalizedUsername=env.SUPER_ADMIN_USERNAME.trim().toLowerCase();
 const existingAdmin=await prisma.user.findFirst({where:{OR:[{normalizedEmail},{normalizedUsername}]}});
-if(!existingAdmin)await prisma.user.create({data:{name:"Super Admin",email:env.SUPER_ADMIN_EMAIL,normalizedEmail,username:env.SUPER_ADMIN_USERNAME,normalizedUsername,passwordHash:await hashPassword(env.SUPER_ADMIN_PASSWORD),status:"ACTIVE",roleId:superRole.id}});
+if(!existingAdmin){validatePassword(env.SUPER_ADMIN_PASSWORD);await prisma.user.create({data:{name:"Super Admin",email:env.SUPER_ADMIN_EMAIL,normalizedEmail,username:env.SUPER_ADMIN_USERNAME,normalizedUsername,passwordHash:await hashPassword(env.SUPER_ADMIN_PASSWORD),status:"ACTIVE",roleId:superRole.id}});}
 
 const matchesDefinition = (
   stored: { totalMaximumMarks:number;sections:Array<{key:string;label:string;maximumMarks:number;passingMarks:number|null;sortOrder:number}>;fields:Array<{key:string;label:string;description:string|null;maximumMarks:number;sortOrder:number;section:{key:string}}> },

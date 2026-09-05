@@ -8,6 +8,7 @@ import { getTeacherClassReportAverage } from "./classReport.service.js";
 import type {
   CreateTeacherInput,
   StudentLeftLogInput,
+  CreateTeacherPayrollPaymentInput,
   TeacherStatusInput,
   UpdateTeacherInput
 } from "../types/teacher.types.js";
@@ -140,6 +141,39 @@ const parsePayrollMonth = (month?: string) => {
     startDate: toDateKey(start),
     endDate: toDateKey(end)
   };
+};
+
+const parsePayrollMonths = (value: unknown) => {
+  const rawMonths = Array.isArray(value)
+    ? value
+    : typeof value === "string"
+      ? [value]
+      : [];
+  const months = rawMonths
+    .filter((month): month is string => typeof month === "string")
+    .map((month) => month.trim());
+  const uniqueMonths = [...new Set(months)];
+
+  if (
+    !uniqueMonths.length ||
+    uniqueMonths.some((month) => !/^\d{4}-(0[1-9]|1[0-2])$/.test(month))
+  ) {
+    throw createHttpError(400, "months must contain valid YYYY-MM values");
+  }
+
+  return uniqueMonths;
+};
+
+const parsePayrollPaymentDate = (value: unknown, fallbackMonth: string) => {
+  const fallbackDate = parsePayrollMonth(fallbackMonth).endDate;
+  const dateValue =
+    typeof value === "string" && value.trim() ? value.trim() : fallbackDate;
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateValue)) {
+    throw createHttpError(400, "paymentDate must use YYYY-MM-DD format");
+  }
+
+  return parseDate(`${dateValue}T00:00:00`, "paymentDate");
 };
 
 const nextMonthKey = (month: string) => {
@@ -380,6 +414,9 @@ export const getTeacherPayroll = async (id: string, month?: string) => {
     include: {
       payrollCategoryRates: {
         orderBy: { category: "asc" }
+      },
+      payrollPayments: {
+        orderBy: { paymentDate: "desc" }
       }
     }
   });
@@ -397,6 +434,17 @@ export const getTeacherPayroll = async (id: string, month?: string) => {
     category: rate.category,
     hourlyRateBdt: decimalToNumber(rate.hourlyRateBdt)
   }));
+  const payments = (teacher.payrollPayments ?? [])
+    .filter((payment) => payment.month === selectedMonth.key)
+    .map((payment) => ({
+      id: payment.id,
+      month: payment.month,
+      amountBdt: decimalToNumber(payment.amountBdt, 0),
+      paidOn: toDateKey(payment.paymentDate),
+      method: payment.method,
+      reference: payment.reference ?? "",
+      note: payment.note ?? ""
+    }));
   const rateByCategory = new Map(
     categoryRates.map((rate) => [rate.category.trim().toLowerCase(), rate])
   );
@@ -480,12 +528,41 @@ export const getTeacherPayroll = async (id: string, month?: string) => {
       }, 0)
       .toFixed(2)
   );
+    const ledgerRows = [
+      ...chronologicalRows.rows,
+      ...payments.map((payment) => ({
+        id: `payment-${payment.id}`,
+        date: payment.paidOn,
+        time: "00:00",
+        description: `Payment - ${payment.method}`,
+        durationMinutes: 0,
+        incomeBdt: 0,
+        paymentBdt: payment.amountBdt,
+        balanceBdt: 0,
+        attachments: payment.reference || "-",
+        studentName: "-",
+        source: payment.note || "Teacher payroll payment",
+        status: "Paid"
+      }))
+    ].sort((left, right) => `${left.date}T${left.time}`.localeCompare(`${right.date}T${right.time}`));
+    let runningBalance = 0;
+    const rows = ledgerRows.map((row) => {
+      runningBalance = Number((runningBalance + row.incomeBdt - row.paymentBdt).toFixed(2));
+      return { ...row, balanceBdt: runningBalance };
+    });
+
+  const paidBdt = Number(
+    payments.reduce((total, payment) => total + payment.amountBdt, 0).toFixed(2)
+  );
 
   return {
     teacherId: id,
     month: selectedMonth.key,
     hourlyRateBdt,
     totalBdt: chronologicalRows.balance,
+    paidBdt,
+    balanceOwingBdt: Number(Math.max(chronologicalRows.balance - paidBdt, 0).toFixed(2)),
+    payments,
     classCount: chronologicalRows.rows.length,
     totalMinutes: chronologicalRows.rows.reduce(
       (total, row) => total + row.durationMinutes,
@@ -496,8 +573,53 @@ export const getTeacherPayroll = async (id: string, month?: string) => {
       estimatedAmountBdt: nextMonthEstimateBdt
     },
     categoryRates,
-    rows: chronologicalRows.rows.reverse()
+    rows: rows.reverse()
   };
+};
+
+export const createTeacherPayrollPayment = async (
+  teacherId: string,
+  raw: unknown
+) => {
+  await getTeacherById(teacherId);
+  const body = (typeof raw === "object" && raw !== null
+    ? raw
+    : {}) as Partial<CreateTeacherPayrollPaymentInput>;
+  const months = parsePayrollMonths(body.months);
+  const amount = typeof body.amountBdt === "string" ? Number(body.amountBdt) : body.amountBdt;
+
+  if (typeof amount !== "number" || !Number.isFinite(amount) || amount <= 0) {
+    throw createHttpError(400, "amountBdt must be greater than zero");
+  }
+  const method = typeof body.method === "string" ? body.method.trim() : "";
+  if (!method) throw createHttpError(400, "method is required");
+  const paymentDate = parsePayrollPaymentDate(body.paymentDate, months.at(-1)!);
+
+  const created = await prisma.$transaction(
+    months.map((month) =>
+      prisma.teacherPayrollPayment.create({
+        data: {
+          teacherId,
+          month,
+          amountBdt: amount.toFixed(2),
+          paymentDate,
+          method,
+          reference: typeof body.reference === "string" ? body.reference.trim() || null : null,
+          note: typeof body.note === "string" ? body.note.trim() || null : null
+        }
+      })
+    )
+  );
+
+  return created.map((payment) => ({
+    id: payment.id,
+    month: payment.month,
+    amountBdt: decimalToNumber(payment.amountBdt, 0),
+    paidOn: toDateKey(payment.paymentDate),
+    method: payment.method,
+    reference: payment.reference ?? "",
+    note: payment.note ?? ""
+  }));
 };
 
 export const updateTeacherPayrollSettings = async (
