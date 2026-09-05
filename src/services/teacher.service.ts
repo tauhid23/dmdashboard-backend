@@ -182,6 +182,14 @@ const nextMonthKey = (month: string) => {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}`;
 };
 
+const normalizePayrollEntryType = (value: unknown) =>
+  value === "adjustment" ? "adjustment" : "payment";
+
+const payrollEntryTypeFromMethod = (method: string) =>
+  method.trim().toLowerCase() === "payroll adjustment"
+    ? "adjustment"
+    : "payment";
+
 export const isPayrollEligibleAttendance = (attendanceStatus?: string | null) => {
   if (!attendanceStatus) return false;
 
@@ -442,6 +450,7 @@ export const getTeacherPayroll = async (id: string, month?: string) => {
       amountBdt: decimalToNumber(payment.amountBdt, 0),
       paidOn: toDateKey(payment.paymentDate),
       method: payment.method,
+      entryType: payrollEntryTypeFromMethod(payment.method),
       reference: payment.reference ?? "",
       note: payment.note ?? ""
     }));
@@ -476,6 +485,7 @@ export const getTeacherPayroll = async (id: string, month?: string) => {
         date: string;
         time: string;
         description: string;
+        entryType: "class" | "payment" | "adjustment";
         durationMinutes: number;
         incomeBdt: number;
         paymentBdt: number;
@@ -500,6 +510,7 @@ export const getTeacherPayroll = async (id: string, month?: string) => {
           date: event.date,
           time: event.start,
           description: event.category || "Class session",
+          entryType: "class",
           durationMinutes: event.duration,
           incomeBdt,
           paymentBdt: 0,
@@ -534,15 +545,23 @@ export const getTeacherPayroll = async (id: string, month?: string) => {
         id: `payment-${payment.id}`,
         date: payment.paidOn,
         time: "00:00",
-        description: `Payment - ${payment.method}`,
+        description:
+          payment.entryType === "adjustment"
+            ? "Payroll adjustment"
+            : `Payment - ${payment.method}`,
+        entryType: payment.entryType,
         durationMinutes: 0,
-        incomeBdt: 0,
-        paymentBdt: payment.amountBdt,
+        incomeBdt: payment.entryType === "adjustment" ? payment.amountBdt : 0,
+        paymentBdt: payment.entryType === "payment" ? payment.amountBdt : 0,
         balanceBdt: 0,
         attachments: payment.reference || "-",
         studentName: "-",
-        source: payment.note || "Teacher payroll payment",
-        status: "Paid"
+        source:
+          payment.note ||
+          (payment.entryType === "adjustment"
+            ? "Manual payroll adjustment"
+            : "Teacher payroll payment"),
+        status: payment.entryType === "adjustment" ? "Adjusted" : "Paid"
       }))
     ].sort((left, right) => `${left.date}T${left.time}`.localeCompare(`${right.date}T${right.time}`));
     let runningBalance = 0;
@@ -552,16 +571,26 @@ export const getTeacherPayroll = async (id: string, month?: string) => {
     });
 
   const paidBdt = Number(
-    payments.reduce((total, payment) => total + payment.amountBdt, 0).toFixed(2)
+    payments
+      .filter((payment) => payment.entryType === "payment")
+      .reduce((total, payment) => total + payment.amountBdt, 0)
+      .toFixed(2)
   );
+  const manualAdjustmentBdt = Number(
+    payments
+      .filter((payment) => payment.entryType === "adjustment")
+      .reduce((total, payment) => total + payment.amountBdt, 0)
+      .toFixed(2)
+  );
+  const totalBdt = Number((chronologicalRows.balance + manualAdjustmentBdt).toFixed(2));
 
   return {
     teacherId: id,
     month: selectedMonth.key,
     hourlyRateBdt,
-    totalBdt: chronologicalRows.balance,
+    totalBdt,
     paidBdt,
-    balanceOwingBdt: Number(Math.max(chronologicalRows.balance - paidBdt, 0).toFixed(2)),
+    balanceOwingBdt: Number(Math.max(totalBdt - paidBdt, 0).toFixed(2)),
     payments,
     classCount: chronologicalRows.rows.length,
     totalMinutes: chronologicalRows.rows.reduce(
@@ -591,7 +620,13 @@ export const createTeacherPayrollPayment = async (
   if (typeof amount !== "number" || !Number.isFinite(amount) || amount <= 0) {
     throw createHttpError(400, "amountBdt must be greater than zero");
   }
-  const method = typeof body.method === "string" ? body.method.trim() : "";
+  const entryType = normalizePayrollEntryType(body.entryType);
+  const method =
+    entryType === "adjustment"
+      ? "Payroll adjustment"
+      : typeof body.method === "string"
+        ? body.method.trim()
+        : "";
   if (!method) throw createHttpError(400, "method is required");
   const paymentDate = parsePayrollPaymentDate(body.paymentDate, months.at(-1)!);
 
@@ -617,6 +652,7 @@ export const createTeacherPayrollPayment = async (
     amountBdt: decimalToNumber(payment.amountBdt, 0),
     paidOn: toDateKey(payment.paymentDate),
     method: payment.method,
+    entryType: payrollEntryTypeFromMethod(payment.method),
     reference: payment.reference ?? "",
     note: payment.note ?? ""
   }));

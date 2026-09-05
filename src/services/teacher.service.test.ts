@@ -139,7 +139,74 @@ void test("getTeacherPayroll lists recorded payments only in their payroll month
     ["payment-august-payment"]
   );
   assert.equal(payroll.rows[0].date, "2026-08-31");
+  assert.equal(payroll.rows[0].entryType, "payment");
   assert.equal(payroll.rows[0].paymentBdt, 300);
   assert.equal(payroll.rows[0].attachments, "RCPT-8");
   assert.equal(payroll.rows[0].source, "August salary");
+});
+
+void test("getTeacherPayroll counts manual adjustments as added payroll amount", async (context) => {
+  const originalTeacherFindUnique = prisma.teacher.findUnique;
+  const originalClassScheduleEventFindMany = prisma.classScheduleEvent.findMany;
+
+  prisma.teacher.findUnique = (async () => ({
+    id: "teacher-1",
+    hourlyPayrollRateBdt: "300.00",
+    payrollCategoryRates: [],
+    payrollPayments: [
+      {
+        id: "august-adjustment",
+        month: "2026-08",
+        amountBdt: "150.00",
+        paymentDate: new Date("2026-08-15T00:00:00"),
+        method: "Payroll adjustment",
+        reference: null,
+        note: "Admin bonus"
+      },
+      {
+        id: "august-payment",
+        month: "2026-08",
+        amountBdt: "100.00",
+        paymentDate: new Date("2026-08-31T00:00:00"),
+        method: "Cash",
+        reference: null,
+        note: "Partial salary"
+      }
+    ]
+  })) as unknown as typeof prisma.teacher.findUnique;
+
+  prisma.classScheduleEvent.findMany = (async (args: unknown) => {
+    const where = (args as { where?: Record<string, unknown> }).where ?? {};
+    if (where.isRecurring) return [];
+
+    const scheduledDate = where.scheduledDate as
+      | { gte?: Date; lte?: Date }
+      | undefined;
+    const month = scheduledDate?.gte?.getMonth();
+
+    if (month === 7) {
+      return [makeScheduleEvent({ id: "paid-event" })];
+    }
+
+    return [];
+  }) as unknown as typeof prisma.classScheduleEvent.findMany;
+
+  context.after(() => {
+    prisma.teacher.findUnique = originalTeacherFindUnique;
+    prisma.classScheduleEvent.findMany = originalClassScheduleEventFindMany;
+  });
+
+  const payroll = await getTeacherPayroll("teacher-1", "2026-08");
+
+  assert.equal(payroll.totalBdt, 450);
+  assert.equal(payroll.paidBdt, 100);
+  assert.equal(payroll.balanceOwingBdt, 350);
+  assert.deepEqual(
+    payroll.rows.map((row) => [row.id, row.entryType, row.incomeBdt, row.paymentBdt]),
+    [
+      ["payment-august-payment", "payment", 0, 100],
+      ["payment-august-adjustment", "adjustment", 150, 0],
+      ["paid-event", "class", 300, 0]
+    ]
+  );
 });
