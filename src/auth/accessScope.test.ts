@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  assertAdminAccess,
   assertPrivilegedAccess,
   studentAccessWhere,
   teacherAccessWhere,
@@ -39,5 +40,18 @@ void test("linked teacher accounts cannot manage master profile records", () => 
   assert.throws(
     () => assertPrivilegedAccess(scope({ teacherId: "teacher-1" })),
     /Only staff users can manage this record/
+  );
+});
+
+void test("only admin roles can add payroll income or payments", () => {
+  assert.doesNotThrow(() =>
+    assertAdminAccess(scope({ roleCode: "ADMIN", isPrivileged: true }))
+  );
+  assert.doesNotThrow(() =>
+    assertAdminAccess(scope({ roleCode: "SUPER_ADMIN", isPrivileged: true }))
+  );
+  assert.throws(
+    () => assertAdminAccess(scope({ roleCode: "MODERATOR", isPrivileged: true })),
+    /Only administrators/
   );
 });

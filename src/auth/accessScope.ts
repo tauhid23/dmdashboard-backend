@@ -1,6 +1,7 @@
 import { prisma } from "../config/prisma.js";
 
 const privilegedRoleCodes = new Set(["SUPER_ADMIN", "ADMIN", "MODERATOR"]);
+const adminRoleCodes = new Set(["SUPER_ADMIN", "ADMIN"]);
 
 export type ActorScope = {
   userId: string;
@@ -18,6 +19,15 @@ export const assertPrivilegedAccess = (
   message = "Only staff users can manage this record"
 ) => {
   if (scope.isPrivileged) return;
+
+  throw forbidden(message);
+};
+
+export const assertAdminAccess = (
+  scope: ActorScope,
+  message = "Only administrators can manage this record"
+) => {
+  if (adminRoleCodes.has(scope.roleCode.trim().toUpperCase())) return;
 
   throw forbidden(message);
 };

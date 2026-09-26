@@ -13,6 +13,8 @@ import type {
   TeacherChangeInput,
   UpdateStudentInput
 } from "../types/student.types.js";
+import { calculateBillingPlan } from "../billing/studentBilling.service.js";
+import type { BillingCycle } from "../billing/packageCatalog.js";
 
 const studentInclude = {
   courses: true,
@@ -74,6 +76,65 @@ const stringifyOptional = (value: number | string | null) => {
   }
 
   return String(value);
+};
+
+const parseOptionalClassStartTime = (value: unknown) => {
+  if (value === null || value === "") {
+    return null;
+  }
+
+  if (typeof value !== "string") {
+    throw createHttpError(400, "classStartTime must use 24-hour HH:mm format");
+  }
+
+  const time = value.trim();
+  if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(time)) {
+    throw createHttpError(400, "classStartTime must use 24-hour HH:mm format");
+  }
+
+  return time;
+};
+
+const parseOptionalClassDuration = (value: unknown) => {
+  if (value === null || String(value).trim() === "") {
+    return null;
+  }
+
+  const duration = Number(value);
+  if (![30, 45, 60].includes(duration)) {
+    throw createHttpError(400, "classDurationMinutes must be 30, 45, or 60");
+  }
+
+  return duration;
+};
+
+const parseClassDays = (value: unknown) => {
+  if (!Array.isArray(value)) {
+    throw createHttpError(400, "classDays must be an array");
+  }
+
+  const days = [...new Set(value)];
+  if (days.length === 0) {
+    throw createHttpError(400, "Choose at least one class day");
+  }
+
+  if (
+    days.some(
+      (day) => !Number.isInteger(day) || day < 0 || day > 6
+    )
+  ) {
+    throw createHttpError(400, "classDays must contain day numbers from 0 to 6");
+  }
+
+  return days.sort((first, second) => first - second);
+};
+
+const parseBillingCycle = (value: unknown): BillingCycle => {
+  const cycle = String(value ?? "MONTHLY").trim().toUpperCase();
+  if (cycle !== "MONTHLY" && cycle !== "QUARTERLY") {
+    throw createHttpError(400, "billingCycle must be MONTHLY or QUARTERLY");
+  }
+  return cycle;
 };
 
 const compactCourses = (payload: CreateStudentInput | UpdateStudentInput) => {
@@ -155,6 +216,14 @@ export const createStudent = async (payload: CreateStudentInput) => {
   const courses = compactCourses(payload);
   const teacherChanges = compactTeacherChanges(payload);
   const currentCourseLevel = courseLevelFromDisplay(payload.courseName, payload.courseStage);
+  const classDays = payload.classDays !== undefined ? parseClassDays(payload.classDays) : [];
+  const duration = payload.classDurationMinutes !== undefined
+    ? parseOptionalClassDuration(payload.classDurationMinutes)
+    : null;
+  const billingCycle = parseBillingCycle(payload.billingCycle);
+  const billingPlan = duration && classDays.length
+    ? calculateBillingPlan({ durationMinutes: duration, classDays, groupClass: payload.groupClass ?? false, billingCycle })
+    : null;
 
   return prisma.student.create({
     data: {
@@ -167,6 +236,20 @@ export const createStudent = async (payload: CreateStudentInput) => {
       ...(payload.weeklySchedule !== undefined
         ? { weeklySchedule: stringifyOptional(payload.weeklySchedule) }
         : {}),
+      ...(payload.classStartDate !== undefined
+        ? { classStartDate: parseOptionalDate(payload.classStartDate, "classStartDate") }
+        : {}),
+      ...(payload.classStartTime !== undefined
+        ? { classStartTime: parseOptionalClassStartTime(payload.classStartTime) }
+        : {}),
+      ...(payload.classDurationMinutes !== undefined
+        ? { classDurationMinutes: duration }
+        : {}),
+      ...(payload.classDays !== undefined
+        ? { classDays }
+        : {}),
+      billingCycle,
+      ...(billingPlan ? { ...billingPlan, billingManualOverride: false } : {}),
       ...(payload.parentName !== undefined ? { parentName: payload.parentName } : {}),
       ...(payload.parentEmail !== undefined
         ? { parentEmail: payload.parentEmail }
@@ -267,6 +350,33 @@ export const getStudentOptions = async (filters?: StudentFilters, scope?: ActorS
   return [{ id: "", name: "Select option" }, ...students];
 };
 
+export const getParentOptions = async (searchValue?: string) => {
+  const search = searchValue?.trim();
+  const students = await prisma.student.findMany({
+    where: {
+      OR: [
+        { parentName: { not: null, ...(search ? { contains: search, mode: "insensitive" as const } : {}) } },
+        ...(search ? [{ parentEmail: { contains: search, mode: "insensitive" as const } }] : [])
+      ]
+    },
+    select: { parentName: true, parentEmail: true, parentPhone: true, name: true },
+    orderBy: { parentName: "asc" },
+    take: 100
+  });
+  const families = new Map<string, { id: string; name: string; email: string; phone: string; students: string[] }>();
+  for (const student of students) {
+    if (!student.parentName && !student.parentEmail) continue;
+    const key = student.parentEmail?.trim().toLowerCase() || `${student.parentName?.trim().toLowerCase()}|${student.parentPhone ?? ""}`;
+    const existing = families.get(key);
+    if (existing) {
+      if (student.name && !existing.students.includes(student.name)) existing.students.push(student.name);
+    } else {
+      families.set(key, { id: key, name: student.parentName ?? "Parent", email: student.parentEmail ?? "", phone: student.parentPhone ?? "", students: student.name ? [student.name] : [] });
+    }
+  }
+  return [...families.values()].slice(0, 20);
+};
+
 export const getStudentById = async (id: string) => {
   const student = await prisma.student.findUnique({
     where: { id },
@@ -292,6 +402,16 @@ export const updateStudent = async (id: string, payload: UpdateStudentInput) => 
     payload.courseName !== undefined ? payload.courseName : existingStudent.courseName,
     payload.courseStage !== undefined ? payload.courseStage : existingStudent.courseStage
   );
+  const classDays = payload.classDays !== undefined ? parseClassDays(payload.classDays) : existingStudent.classDays;
+  const duration = payload.classDurationMinutes !== undefined
+    ? parseOptionalClassDuration(payload.classDurationMinutes)
+    : existingStudent.classDurationMinutes;
+  const groupClass = payload.groupClass !== undefined ? payload.groupClass : existingStudent.groupClass ?? false;
+  const billingCycle = parseBillingCycle(payload.billingCycle ?? existingStudent.billingCycle);
+  const manualOverride = payload.billingManualOverride ?? existingStudent.billingManualOverride;
+  const billingPlan = !manualOverride && duration && classDays.length
+    ? calculateBillingPlan({ durationMinutes: duration, classDays, groupClass, billingCycle })
+    : null;
 
   return prisma.student.update({
     where: { id },
@@ -305,6 +425,23 @@ export const updateStudent = async (id: string, payload: UpdateStudentInput) => 
       ...(payload.weeklySchedule !== undefined
         ? { weeklySchedule: stringifyOptional(payload.weeklySchedule) }
         : {}),
+      ...(payload.classStartDate !== undefined
+        ? { classStartDate: parseOptionalDate(payload.classStartDate, "classStartDate") }
+        : {}),
+      ...(payload.classStartTime !== undefined
+        ? { classStartTime: parseOptionalClassStartTime(payload.classStartTime) }
+        : {}),
+      ...(payload.classDurationMinutes !== undefined
+        ? { classDurationMinutes: duration }
+        : {}),
+      ...(payload.classDays !== undefined
+        ? { classDays }
+        : {}),
+      billingCycle,
+      billingManualOverride: manualOverride,
+      ...(manualOverride && payload.billingAmountBdt !== undefined
+        ? { billingAmountBdt: Number(payload.billingAmountBdt) }
+        : billingPlan ?? {}),
       ...(payload.parentName !== undefined ? { parentName: payload.parentName } : {}),
       ...(payload.parentEmail !== undefined
         ? { parentEmail: payload.parentEmail }

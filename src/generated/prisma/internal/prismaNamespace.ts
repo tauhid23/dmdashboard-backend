@@ -394,6 +394,8 @@ export const ModelName = {
   AuditLog: 'AuditLog',
   AppSetting: 'AppSetting',
   Student: 'Student',
+  StudentBillingTransaction: 'StudentBillingTransaction',
+  StudentInvoice: 'StudentInvoice',
   StudentCourse: 'StudentCourse',
   TeacherChange: 'TeacherChange',
   Teacher: 'Teacher',
@@ -425,7 +427,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userPermissionOverride" | "refreshSession" | "passwordResetToken" | "auditLog" | "appSetting" | "student" | "studentCourse" | "teacherChange" | "teacher" | "teacherPayrollCategoryRate" | "teacherPayrollPayment" | "classScheduleEvent" | "examSchedule" | "examAttempt" | "examRule" | "examRuleSection" | "examRuleField" | "examMark" | "examSectionResult" | "studentCourseHistory" | "classReport" | "studentLeftLog"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userPermissionOverride" | "refreshSession" | "passwordResetToken" | "auditLog" | "appSetting" | "student" | "studentBillingTransaction" | "studentInvoice" | "studentCourse" | "teacherChange" | "teacher" | "teacherPayrollCategoryRate" | "teacherPayrollPayment" | "classScheduleEvent" | "examSchedule" | "examAttempt" | "examRule" | "examRuleSection" | "examRuleField" | "examMark" | "examSectionResult" | "studentCourseHistory" | "classReport" | "studentLeftLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1166,6 +1168,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.StudentCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.StudentCountAggregateOutputType> | number
+        }
+      }
+    }
+    StudentBillingTransaction: {
+      payload: Prisma.$StudentBillingTransactionPayload<ExtArgs>
+      fields: Prisma.StudentBillingTransactionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StudentBillingTransactionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentBillingTransactionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StudentBillingTransactionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentBillingTransactionPayload>
+        }
+        findFirst: {
+          args: Prisma.StudentBillingTransactionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentBillingTransactionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StudentBillingTransactionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentBillingTransactionPayload>
+        }
+        findMany: {
+          args: Prisma.StudentBillingTransactionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentBillingTransactionPayload>[]
+        }
+        create: {
+          args: Prisma.StudentBillingTransactionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentBillingTransactionPayload>
+        }
+        createMany: {
+          args: Prisma.StudentBillingTransactionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StudentBillingTransactionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentBillingTransactionPayload>[]
+        }
+        delete: {
+          args: Prisma.StudentBillingTransactionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentBillingTransactionPayload>
+        }
+        update: {
+          args: Prisma.StudentBillingTransactionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentBillingTransactionPayload>
+        }
+        deleteMany: {
+          args: Prisma.StudentBillingTransactionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StudentBillingTransactionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StudentBillingTransactionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentBillingTransactionPayload>[]
+        }
+        upsert: {
+          args: Prisma.StudentBillingTransactionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentBillingTransactionPayload>
+        }
+        aggregate: {
+          args: Prisma.StudentBillingTransactionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStudentBillingTransaction>
+        }
+        groupBy: {
+          args: Prisma.StudentBillingTransactionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentBillingTransactionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StudentBillingTransactionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentBillingTransactionCountAggregateOutputType> | number
+        }
+      }
+    }
+    StudentInvoice: {
+      payload: Prisma.$StudentInvoicePayload<ExtArgs>
+      fields: Prisma.StudentInvoiceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StudentInvoiceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentInvoicePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StudentInvoiceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentInvoicePayload>
+        }
+        findFirst: {
+          args: Prisma.StudentInvoiceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentInvoicePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StudentInvoiceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentInvoicePayload>
+        }
+        findMany: {
+          args: Prisma.StudentInvoiceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentInvoicePayload>[]
+        }
+        create: {
+          args: Prisma.StudentInvoiceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentInvoicePayload>
+        }
+        createMany: {
+          args: Prisma.StudentInvoiceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StudentInvoiceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentInvoicePayload>[]
+        }
+        delete: {
+          args: Prisma.StudentInvoiceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentInvoicePayload>
+        }
+        update: {
+          args: Prisma.StudentInvoiceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentInvoicePayload>
+        }
+        deleteMany: {
+          args: Prisma.StudentInvoiceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StudentInvoiceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StudentInvoiceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentInvoicePayload>[]
+        }
+        upsert: {
+          args: Prisma.StudentInvoiceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentInvoicePayload>
+        }
+        aggregate: {
+          args: Prisma.StudentInvoiceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStudentInvoice>
+        }
+        groupBy: {
+          args: Prisma.StudentInvoiceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentInvoiceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StudentInvoiceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentInvoiceCountAggregateOutputType> | number
         }
       }
     }
@@ -2517,6 +2667,18 @@ export const StudentScalarFieldEnum = {
   country: 'country',
   studentSince: 'studentSince',
   weeklySchedule: 'weeklySchedule',
+  classStartDate: 'classStartDate',
+  classStartTime: 'classStartTime',
+  classDurationMinutes: 'classDurationMinutes',
+  classDays: 'classDays',
+  packageCode: 'packageCode',
+  weeklyHours: 'weeklyHours',
+  billingCycle: 'billingCycle',
+  monthlyPriceBdt: 'monthlyPriceBdt',
+  quarterlyPriceBdt: 'quarterlyPriceBdt',
+  billingAmountBdt: 'billingAmountBdt',
+  billingManualOverride: 'billingManualOverride',
+  scheduleConfirmed: 'scheduleConfirmed',
   parentName: 'parentName',
   parentEmail: 'parentEmail',
   parentPhone: 'parentPhone',
@@ -2542,6 +2704,44 @@ export const StudentScalarFieldEnum = {
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
+
+
+export const StudentBillingTransactionScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  type: 'type',
+  amountBdt: 'amountBdt',
+  date: 'date',
+  description: 'description',
+  category: 'category',
+  recurring: 'recurring',
+  frequency: 'frequency',
+  repeatsEvery: 'repeatsEvery',
+  automationKey: 'automationKey',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudentBillingTransactionScalarFieldEnum = (typeof StudentBillingTransactionScalarFieldEnum)[keyof typeof StudentBillingTransactionScalarFieldEnum]
+
+
+export const StudentInvoiceScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  invoiceNumber: 'invoiceNumber',
+  invoiceDate: 'invoiceDate',
+  rangeStart: 'rangeStart',
+  rangeEnd: 'rangeEnd',
+  dueDate: 'dueDate',
+  amountBdt: 'amountBdt',
+  paidAmountBdt: 'paidAmountBdt',
+  status: 'status',
+  emailedAt: 'emailedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudentInvoiceScalarFieldEnum = (typeof StudentInvoiceScalarFieldEnum)[keyof typeof StudentInvoiceScalarFieldEnum]
 
 
 export const StudentCourseScalarFieldEnum = {
@@ -2960,6 +3160,20 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
  * Reference to a field of type 'StudentStatus'
  */
 export type EnumStudentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'StudentStatus'>
@@ -2998,20 +3212,6 @@ export type EnumTeacherStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'TeacherStatus[]'
  */
 export type ListEnumTeacherStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TeacherStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal'
- */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-/**
- * Reference to a field of type 'Decimal[]'
- */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 
@@ -3204,6 +3404,8 @@ export type GlobalOmitConfig = {
   auditLog?: Prisma.AuditLogOmit
   appSetting?: Prisma.AppSettingOmit
   student?: Prisma.StudentOmit
+  studentBillingTransaction?: Prisma.StudentBillingTransactionOmit
+  studentInvoice?: Prisma.StudentInvoiceOmit
   studentCourse?: Prisma.StudentCourseOmit
   teacherChange?: Prisma.TeacherChangeOmit
   teacher?: Prisma.TeacherOmit

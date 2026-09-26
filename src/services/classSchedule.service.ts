@@ -3,6 +3,7 @@ import type { Prisma } from "../generated/prisma/client.js";
 import { prisma } from "../config/prisma.js";
 import type { ActorScope } from "../auth/accessScope.js";
 import { forbidden, scheduleAccessWhere } from "../auth/accessScope.js";
+import { recalculateStudentBillingFromSchedule } from "../billing/studentBilling.service.js";
 import type {
   ClassAttendanceStatus,
   ClassScheduleFilters,
@@ -420,6 +421,8 @@ export const createEvents = async (raw: unknown, scope?: ActorScope) => {
     )
   );
 
+  await Promise.all(input.attendeeIds.map(recalculateStudentBillingFromSchedule));
+
   return events.map(publicEvent);
 };
 
@@ -615,6 +618,8 @@ export const updateEvent = async (
   });
   assertEventAccess(event, scope);
 
+  await Promise.all([...new Set([existing.studentId, studentId])].map(recalculateStudentBillingFromSchedule));
+
   return publicEvent(event);
 };
 
@@ -666,10 +671,15 @@ export const deleteEvent = async (
   });
   if (!event) throw httpError(404, "Class schedule event not found");
   assertEventAccess(event, actorScope);
+  const affectedStudentIds = event.recurrenceGroupId
+    ? [...new Set((await prisma.classScheduleEvent.findMany({ where: { recurrenceGroupId: event.recurrenceGroupId }, select: { studentId: true } })).map((item) => item.studentId))]
+    : [event.studentId];
+  const recalculateAffectedBilling = () => Promise.all(affectedStudentIds.map(recalculateStudentBillingFromSchedule));
 
   if (scope !== "future") {
     await moveRecurringSourceForward(event);
     await prisma.classScheduleEvent.delete({ where: { id } });
+    await recalculateAffectedBilling();
     return;
   }
 
@@ -702,6 +712,7 @@ export const deleteEvent = async (
         }
       })
     ]);
+    await recalculateAffectedBilling();
     return;
   }
 
@@ -721,8 +732,10 @@ export const deleteEvent = async (
         }
       })
     ]);
+    await recalculateAffectedBilling();
     return;
   }
 
   await prisma.classScheduleEvent.delete({ where: { id } });
+  await recalculateAffectedBilling();
 };

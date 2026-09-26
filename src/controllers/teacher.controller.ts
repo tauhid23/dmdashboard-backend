@@ -1,6 +1,10 @@
 import type { Request, Response } from "express";
 import type { AuthRequest } from "../auth/auth.types.js";
-import { assertPrivilegedAccess, getRequestScope } from "../auth/accessScope.js";
+import {
+  assertAdminAccess,
+  assertPrivilegedAccess,
+  getRequestScope
+} from "../auth/accessScope.js";
 
 import { uploadImageBuffer } from "../config/cloudinary.js";
 import * as teacherService from "../services/teacher.service.js";
@@ -123,7 +127,20 @@ export const getTeacherPayroll = async (req: Request, res: Response) => {
     const scope = await getRequestScope((req as AuthRequest).auth?.id);
     await teacherService.assertTeacherVisible(getTeacherId(req), scope);
     const month = typeof req.query.month === "string" ? req.query.month : undefined;
-    const payroll = await teacherService.getTeacherPayroll(getTeacherId(req), month);
+    const estimateMonth =
+      typeof req.query.estimateMonth === "string"
+        ? req.query.estimateMonth
+        : undefined;
+    const estimateThroughDate =
+      typeof req.query.estimateThroughDate === "string"
+        ? req.query.estimateThroughDate
+        : undefined;
+    const payroll = await teacherService.getTeacherPayroll(
+      getTeacherId(req),
+      month,
+      estimateMonth,
+      estimateThroughDate
+    );
 
     res.status(200).json({
       success: true,
@@ -139,9 +156,9 @@ export const createTeacherPayrollPayment = async (
   res: Response
 ) => {
   try {
-    assertPrivilegedAccess(
+    assertAdminAccess(
       await getRequestScope(req.auth?.id),
-      "Only staff users can record teacher payroll payments"
+      "Only administrators can add teacher payroll income or payments"
     );
     const payment = await teacherService.createTeacherPayrollPayment(
       getTeacherId(req),

@@ -62,33 +62,33 @@ enum UserStatus {
 }
 
 model User {
-  id                  String                 @id @default(cuid())
+  id                  String                   @id @default(cuid())
   name                String
   email               String
-  normalizedEmail     String                 @unique
+  normalizedEmail     String                   @unique
   username            String
-  normalizedUsername  String                 @unique
+  normalizedUsername  String                   @unique
   passwordHash        String
-  status              UserStatus             @default(ACTIVE)
+  status              UserStatus               @default(ACTIVE)
   roleId              String
-  mustChangePassword  Boolean                @default(false)
+  mustChangePassword  Boolean                  @default(false)
   lastLoginAt         DateTime?
   deletedAt           DateTime?
-  sessionVersion      Int                    @default(0)
-  createdAt           DateTime               @default(now())
-  updatedAt           DateTime               @updatedAt
-  role                Role                   @relation(fields: [roleId], references: [id], onDelete: Restrict)
-  teacherId           String?                @unique
-  studentId           String?                @unique
-  teacher             Teacher?               @relation(fields: [teacherId], references: [id], onDelete: SetNull)
-  student             Student?               @relation(fields: [studentId], references: [id], onDelete: SetNull)
+  sessionVersion      Int                      @default(0)
+  createdAt           DateTime                 @default(now())
+  updatedAt           DateTime                 @updatedAt
+  role                Role                     @relation(fields: [roleId], references: [id], onDelete: Restrict)
+  teacherId           String?                  @unique
+  studentId           String?                  @unique
+  teacher             Teacher?                 @relation(fields: [teacherId], references: [id], onDelete: SetNull)
+  student             Student?                 @relation(fields: [studentId], references: [id], onDelete: SetNull)
   sessions            RefreshSession[]
   passwordResetTokens PasswordResetToken[]
   permissionOverrides UserPermissionOverride[]
-  auditLogsAsActor    AuditLog[]              @relation("AuditActor")
-  auditLogsAsTarget   AuditLog[]              @relation("AuditTarget")
-  createdExamAttempts ExamAttempt[]          @relation("ExamCreatedBy")
-  courseChanges       StudentCourseHistory[] @relation("CourseChangedBy")
+  auditLogsAsActor    AuditLog[]               @relation("AuditActor")
+  auditLogsAsTarget   AuditLog[]               @relation("AuditTarget")
+  createdExamAttempts ExamAttempt[]            @relation("ExamCreatedBy")
+  courseChanges       StudentCourseHistory[]   @relation("CourseChangedBy")
 }
 
 model Role {
@@ -104,13 +104,14 @@ model Role {
 }
 
 model Permission {
-  id          String           @id @default(cuid())
-  resource    String
-  action      String
-  code        String           @unique
-  description String?
-  roles       RolePermission[]
+  id            String                   @id @default(cuid())
+  resource      String
+  action        String
+  code          String                   @unique
+  description   String?
+  roles         RolePermission[]
   userOverrides UserPermissionOverride[]
+
   @@unique([resource, action])
 }
 
@@ -119,6 +120,7 @@ model RolePermission {
   permissionId String
   role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
   permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
   @@id([roleId, permissionId])
 }
 
@@ -128,20 +130,22 @@ model UserPermissionOverride {
   allowed      Boolean
   user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
   @@id([userId, permissionId])
 }
 
 model RefreshSession {
-  id          String    @id @default(cuid())
-  userId      String
-  tokenHash   String    @unique
-  expiresAt   DateTime
-  revokedAt   DateTime?
-  createdAt   DateTime  @default(now())
-  lastUsedAt  DateTime?
-  ipAddress   String?
-  userAgent   String?
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String    @id @default(cuid())
+  userId     String
+  tokenHash  String    @unique
+  expiresAt  DateTime
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
+  lastUsedAt DateTime?
+  ipAddress  String?
+  userAgent  String?
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId])
 }
 
@@ -153,6 +157,7 @@ model PasswordResetToken {
   usedAt    DateTime?
   createdAt DateTime  @default(now())
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId])
 }
 
@@ -169,6 +174,7 @@ model AuditLog {
   createdAt    DateTime @default(now())
   actor        User?    @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
   targetUser   User?    @relation("AuditTarget", fields: [targetUserId], references: [id], onDelete: SetNull)
+
   @@index([actorId, createdAt])
   @@index([targetUserId, createdAt])
 }
@@ -182,45 +188,99 @@ model AppSetting {
 }
 
 model Student {
-  id                  String                 @id @default(cuid())
-  image               String?
-  name                String?
-  country             String?
-  studentSince        DateTime?
-  weeklySchedule      String?
-  parentName          String?
-  parentEmail         String?
-  parentPhone         String?
-  courseName          String?
-  courseStage         String?
-  teacherId           String?
-  teacherName         String?
-  groupClass          Boolean?               @default(false)
-  groupSchedule       String?
-  groupClassSchedule  String?
-  groupTeacher        String?
-  groupSubject        String?
-  subject             String?
-  teacherChanged      Boolean?               @default(false)
-  previousTeacherName String?
-  teacherChangeReason String?
-  status              StudentStatus?         @default(ACTIVE)
-  teacher             Teacher?               @relation(fields: [teacherId], references: [id], onDelete: SetNull)
-  courses             StudentCourse[]
-  teacherChanges      TeacherChange[]
-  classReports        ClassReport[]
-  classScheduleEvents ClassScheduleEvent[]
-  createdAt           DateTime               @default(now())
-  updatedAt           DateTime               @updatedAt
-  currentCourseLevel  CourseLevel?
-  courseCompleted     Boolean                @default(false)
-  courseUpdatedAt     DateTime?
-  examAttempts        ExamAttempt[]
-  examSchedules       ExamSchedule[]
-  courseHistory       StudentCourseHistory[]
-  userAccount         User?
+  id                   String                 @id @default(cuid())
+  image                String?
+  name                 String?
+  country              String?
+  studentSince         DateTime?
+  weeklySchedule       String?
+  classStartDate       DateTime?
+  classStartTime       String?
+  classDurationMinutes Int?
+  classDays            Int[]                  @default([])
+  packageCode          String?
+  weeklyHours          Decimal?               @db.Decimal(5, 2)
+  billingCycle         String                 @default("MONTHLY")
+  monthlyPriceBdt      Decimal?               @db.Decimal(10, 2)
+  quarterlyPriceBdt    Decimal?               @db.Decimal(10, 2)
+  billingAmountBdt     Decimal?               @db.Decimal(10, 2)
+  billingManualOverride Boolean               @default(false)
+  scheduleConfirmed    Boolean                @default(false)
+  parentName           String?
+  parentEmail          String?
+  parentPhone          String?
+  courseName           String?
+  courseStage          String?
+  teacherId            String?
+  teacherName          String?
+  groupClass           Boolean?               @default(false)
+  groupSchedule        String?
+  groupClassSchedule   String?
+  groupTeacher         String?
+  groupSubject         String?
+  subject              String?
+  teacherChanged       Boolean?               @default(false)
+  previousTeacherName  String?
+  teacherChangeReason  String?
+  status               StudentStatus?         @default(ACTIVE)
+  teacher              Teacher?               @relation(fields: [teacherId], references: [id], onDelete: SetNull)
+  courses              StudentCourse[]
+  teacherChanges       TeacherChange[]
+  classReports         ClassReport[]
+  classScheduleEvents  ClassScheduleEvent[]
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  currentCourseLevel   CourseLevel?
+  courseCompleted      Boolean                @default(false)
+  courseUpdatedAt      DateTime?
+  examAttempts         ExamAttempt[]
+  examSchedules        ExamSchedule[]
+  courseHistory        StudentCourseHistory[]
+  userAccount          User?
+  billingTransactions  StudentBillingTransaction[]
+  invoices             StudentInvoice[]
 
   @@index([teacherId])
+}
+
+model StudentBillingTransaction {
+  id          String   @id @default(cuid())
+  studentId   String
+  type        String
+  amountBdt   Decimal  @db.Decimal(10, 2)
+  date        DateTime
+  description String?
+  category    String?
+  recurring   Boolean  @default(false)
+  frequency   String?
+  repeatsEvery Int?
+  automationKey String?  @unique
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([studentId, date])
+  @@index([type, date])
+}
+
+model StudentInvoice {
+  id            String   @id @default(cuid())
+  studentId     String
+  invoiceNumber String   @unique
+  invoiceDate   DateTime
+  rangeStart    DateTime
+  rangeEnd      DateTime
+  dueDate       DateTime?
+  amountBdt     Decimal  @db.Decimal(10, 2)
+  paidAmountBdt Decimal  @default(0) @db.Decimal(10, 2)
+  status        String   @default("OPEN")
+  emailedAt     DateTime?
+  student       Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([studentId, invoiceDate])
+  @@index([status, invoiceDate])
 }
 
 model StudentCourse {
@@ -250,21 +310,21 @@ model TeacherChange {
 }
 
 model Teacher {
-  id                            String           @id @default(uuid())
+  id                            String                       @id @default(uuid())
   name                          String?
   imageUrl                      String?
   joiningDate                   DateTime?
-  status                        TeacherStatus?   @default(ACTIVE)
+  status                        TeacherStatus?               @default(ACTIVE)
   strongArea                    String?
-  hourlyPayrollRateBdt          Decimal          @default(300.00) @db.Decimal(10, 2)
-  totalStudentsAssignedLifetime Int?             @default(0)
-  currentActiveStudents         Int?             @default(0)
-  studentLeftLifetime           Int?             @default(0)
+  hourlyPayrollRateBdt          Decimal                      @default(300.00) @db.Decimal(10, 2)
+  totalStudentsAssignedLifetime Int?                         @default(0)
+  currentActiveStudents         Int?                         @default(0)
+  studentLeftLifetime           Int?                         @default(0)
   students                      Student[]
   classReports                  ClassReport[]
   studentLeftLogs               StudentLeftLog[]
-  createdAt                     DateTime         @default(now())
-  updatedAt                     DateTime         @updatedAt
+  createdAt                     DateTime                     @default(now())
+  updatedAt                     DateTime                     @updatedAt
   examAttempts                  ExamAttempt[]
   examSchedules                 ExamSchedule[]
   classScheduleEvents           ClassScheduleEvent[]
@@ -274,58 +334,58 @@ model Teacher {
 }
 
 model TeacherPayrollCategoryRate {
-  id             String   @id @default(cuid())
-  teacherId      String
-  category       String
-  hourlyRateBdt  Decimal  @db.Decimal(10, 2)
-  teacher        Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id            String   @id @default(cuid())
+  teacherId     String
+  category      String
+  hourlyRateBdt Decimal  @db.Decimal(10, 2)
+  teacher       Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@unique([teacherId, category])
   @@index([teacherId])
 }
 
 model TeacherPayrollPayment {
-  id            String   @id @default(cuid())
-  teacherId     String
-  month         String
-  amountBdt     Decimal  @db.Decimal(10, 2)
-  paymentDate   DateTime
-  method        String
-  reference     String?
-  note          String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  teacher       Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  id          String   @id @default(cuid())
+  teacherId   String
+  month       String
+  amountBdt   Decimal  @db.Decimal(10, 2)
+  paymentDate DateTime
+  method      String
+  reference   String?
+  note        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  teacher     Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
 
   @@index([teacherId, month])
   @@index([paymentDate])
 }
 
 model ClassScheduleEvent {
-  id              String   @id @default(cuid())
-  studentId       String
-  teacherId       String
-  category        String
-  scheduledDate   DateTime
-  startTime       String
-  endTime         String
-  durationMinutes Int
-  status          String   @default("CONFIRMED")
-  attendanceStatus String  @default("UNRECORDED")
-  makeupCredit    Boolean  @default(false)
-  note            String?
-  recurrenceGroupId String?
+  id                 String    @id @default(cuid())
+  studentId          String
+  teacherId          String
+  category           String
+  scheduledDate      DateTime
+  startTime          String
+  endTime            String
+  durationMinutes    Int
+  status             String    @default("CONFIRMED")
+  attendanceStatus   String    @default("UNRECORDED")
+  makeupCredit       Boolean   @default(false)
+  note               String?
+  recurrenceGroupId  String?
   recurrenceSourceId String?
-  isRecurring     Boolean  @default(false)
-  repeatDays      Int[]    @default([])
-  repeatIndefinitely Boolean @default(false)
-  recurrenceEndDate DateTime?
-  student         Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  teacher         Teacher  @relation(fields: [teacherId], references: [id], onDelete: Cascade)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  isRecurring        Boolean   @default(false)
+  repeatDays         Int[]     @default([])
+  repeatIndefinitely Boolean   @default(false)
+  recurrenceEndDate  DateTime?
+  student            Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  teacher            Teacher   @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 
   @@index([scheduledDate])
   @@index([studentId, scheduledDate])
@@ -354,31 +414,31 @@ model ExamSchedule {
 }
 
 model ExamAttempt {
-  id             String                @id @default(cuid())
-  studentId      String
-  examinerId     String
-  courseLevel    CourseLevel
-  status         ExamStatus            @default(SUBMITTED)
-  outcome        ExamOutcome
-  totalScore     Int
-  totalMaxScore  Int
-  percentage     Decimal               @db.Decimal(5, 2)
-  attemptNumber  Int
-  notes          String?
-  idempotencyKey String                @unique
-  createdById    String?
-  examRuleId     String?
+  id              String                @id @default(cuid())
+  studentId       String
+  examinerId      String
+  courseLevel     CourseLevel
+  status          ExamStatus            @default(SUBMITTED)
+  outcome         ExamOutcome
+  totalScore      Int
+  totalMaxScore   Int
+  percentage      Decimal               @db.Decimal(5, 2)
+  attemptNumber   Int
+  notes           String?
+  idempotencyKey  String                @unique
+  createdById     String?
+  examRuleId      String?
   examRuleVersion Int?
-  submittedAt    DateTime              @default(now())
-  createdAt      DateTime              @default(now())
-  updatedAt      DateTime              @updatedAt
-  student        Student               @relation(fields: [studentId], references: [id], onDelete: Restrict)
-  examiner       Teacher               @relation(fields: [examinerId], references: [id], onDelete: Restrict)
-  createdBy      User?                 @relation("ExamCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
-  examRule       ExamRule?             @relation(fields: [examRuleId], references: [id], onDelete: Restrict)
-  marks          ExamMark[]
-  sections       ExamSectionResult[]
-  promotion      StudentCourseHistory?
+  submittedAt     DateTime              @default(now())
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  student         Student               @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  examiner        Teacher               @relation(fields: [examinerId], references: [id], onDelete: Restrict)
+  createdBy       User?                 @relation("ExamCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+  examRule        ExamRule?             @relation(fields: [examRuleId], references: [id], onDelete: Restrict)
+  marks           ExamMark[]
+  sections        ExamSectionResult[]
+  promotion       StudentCourseHistory?
 
   @@unique([studentId, courseLevel, attemptNumber])
   @@index([studentId, submittedAt])
@@ -396,8 +456,8 @@ model ExamRule {
   totalMaximumMarks Int
   passingMarks      Int?
   passingPercentage Decimal?          @db.Decimal(5, 2)
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
   sections          ExamRuleSection[]
   fields            ExamRuleField[]
   attempts          ExamAttempt[]
@@ -407,59 +467,59 @@ model ExamRule {
 }
 
 model ExamRuleSection {
-  id             String          @id @default(cuid())
-  examRuleId     String
-  key            String
-  label          String
-  maximumMarks   Int
-  passingMarks   Int?
-  sortOrder      Int
-  examRule       ExamRule        @relation(fields: [examRuleId], references: [id], onDelete: Cascade)
-  fields         ExamRuleField[]
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  id           String          @id @default(cuid())
+  examRuleId   String
+  key          String
+  label        String
+  maximumMarks Int
+  passingMarks Int?
+  sortOrder    Int
+  examRule     ExamRule        @relation(fields: [examRuleId], references: [id], onDelete: Cascade)
+  fields       ExamRuleField[]
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
 
   @@unique([examRuleId, key])
   @@index([examRuleId, sortOrder])
 }
 
 model ExamRuleField {
-  id             String          @id @default(cuid())
-  examRuleId     String
-  sectionId      String
-  key            String
-  label          String
-  description    String?
-  maximumMarks   Int
-  minimumMarks   Int             @default(0)
-  required       Boolean         @default(true)
-  sortOrder      Int
-  metadata       Json?
-  examRule       ExamRule        @relation(fields: [examRuleId], references: [id], onDelete: Cascade)
-  section        ExamRuleSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
-  attemptMarks   ExamMark[]
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  id           String          @id @default(cuid())
+  examRuleId   String
+  sectionId    String
+  key          String
+  label        String
+  description  String?
+  maximumMarks Int
+  minimumMarks Int             @default(0)
+  required     Boolean         @default(true)
+  sortOrder    Int
+  metadata     Json?
+  examRule     ExamRule        @relation(fields: [examRuleId], references: [id], onDelete: Cascade)
+  section      ExamRuleSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  attemptMarks ExamMark[]
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
 
   @@unique([examRuleId, key])
   @@index([sectionId, sortOrder])
 }
 
 model ExamMark {
-  id            String      @id @default(cuid())
-  examAttemptId String
-  fieldKey      String
-  label         String
-  description   String?
-  obtainedMarks Int
-  maximumMarks  Int
-  sectionKey    String
-  sectionLabel  String?
+  id              String         @id @default(cuid())
+  examAttemptId   String
+  fieldKey        String
+  label           String
+  description     String?
+  obtainedMarks   Int
+  maximumMarks    Int
+  sectionKey      String
+  sectionLabel    String?
   examRuleFieldId String?
-  sortOrder     Int
-  createdAt     DateTime    @default(now())
-  examAttempt   ExamAttempt @relation(fields: [examAttemptId], references: [id], onDelete: Cascade)
-  examRuleField ExamRuleField? @relation(fields: [examRuleFieldId], references: [id], onDelete: SetNull)
+  sortOrder       Int
+  createdAt       DateTime       @default(now())
+  examAttempt     ExamAttempt    @relation(fields: [examAttemptId], references: [id], onDelete: Cascade)
+  examRuleField   ExamRuleField? @relation(fields: [examRuleFieldId], references: [id], onDelete: SetNull)
 
   @@unique([examAttemptId, fieldKey])
   @@index([examAttemptId])
@@ -475,7 +535,7 @@ model ExamSectionResult {
   maximumMarks  Int
   passingMarks  Int?
   passed        Boolean
-  sortOrder     Int @default(0)
+  sortOrder     Int         @default(0)
   createdAt     DateTime    @default(now())
   examAttempt   ExamAttempt @relation(fields: [examAttemptId], references: [id], onDelete: Cascade)
 

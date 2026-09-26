@@ -28,6 +28,13 @@ export type CreateStudentInput = {
   country?: string | null;
   studentSince?: string | null;
   weeklySchedule?: number | string | null;
+  classStartDate?: string | null;
+  classStartTime?: string | null;
+  classDurationMinutes?: number | string | null;
+  classDays?: number[] | null;
+  billingCycle?: "MONTHLY" | "QUARTERLY" | string | null;
+  billingManualOverride?: boolean;
+  billingAmountBdt?: number | string | null;
   parentName?: string | null;
   parentEmail?: string | null;
   parentPhone?: string | null;

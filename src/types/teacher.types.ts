@@ -31,7 +31,7 @@ export type CreateTeacherPayrollPaymentInput = {
   amountBdt: number | string;
   paymentDate: string;
   method: string;
-  entryType?: "payment" | "adjustment";
+  entryType?: "payment" | "income" | "adjustment";
   reference?: string | null;
   note?: string | null;
 };

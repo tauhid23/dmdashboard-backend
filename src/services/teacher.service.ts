@@ -182,13 +182,33 @@ const nextMonthKey = (month: string) => {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}`;
 };
 
-const normalizePayrollEntryType = (value: unknown) =>
-  value === "adjustment" ? "adjustment" : "payment";
+const parseEstimateThroughDate = (value: string | undefined, month: string) => {
+  const selectedMonth = parsePayrollMonth(month);
+  const dateValue = value?.trim() || selectedMonth.endDate;
 
-const payrollEntryTypeFromMethod = (method: string) =>
-  method.trim().toLowerCase() === "payroll adjustment"
-    ? "adjustment"
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateValue)) {
+    throw createHttpError(400, "estimateThroughDate must use YYYY-MM-DD format");
+  }
+  parseDate(`${dateValue}T00:00:00`, "estimateThroughDate");
+
+  if (!dateValue.startsWith(`${selectedMonth.key}-`)) {
+    throw createHttpError(400, "estimateThroughDate must be within estimateMonth");
+  }
+
+  return dateValue;
+};
+
+const normalizePayrollEntryType = (value: unknown) =>
+  value === "income" || value === "adjustment" ? "income" : "payment";
+
+const payrollEntryTypeFromMethod = (method: string) => {
+  const normalizedMethod = method.trim().toLowerCase();
+
+  return normalizedMethod === "additional income" ||
+    normalizedMethod === "payroll adjustment"
+    ? "income"
     : "payment";
+};
 
 export const isPayrollEligibleAttendance = (attendanceStatus?: string | null) => {
   if (!attendanceStatus) return false;
@@ -416,7 +436,13 @@ export const assertTeacherVisible = (id: string, scope: ActorScope) =>
 
 export { getTeacherClassReportAverage };
 
-export const getTeacherPayroll = async (id: string, month?: string) => {
+export const getTeacherPayroll = async (
+  id: string,
+  month?: string,
+  estimateMonth?: string,
+  estimateThroughDate?: string,
+  now = new Date()
+) => {
   const teacher = await prisma.teacher.findUnique({
     where: { id },
     include: {
@@ -433,7 +459,18 @@ export const getTeacherPayroll = async (id: string, month?: string) => {
   }
 
   const selectedMonth = parsePayrollMonth(month);
-  const estimateMonth = parsePayrollMonth(nextMonthKey(selectedMonth.key));
+  const selectedEstimateMonth = parsePayrollMonth(
+    estimateMonth ?? nextMonthKey(selectedMonth.key)
+  );
+  const estimateEndDate = parseEstimateThroughDate(
+    estimateThroughDate,
+    selectedEstimateMonth.key
+  );
+  const today = toDateKey(now);
+
+  if (estimateEndDate < today) {
+    throw createHttpError(400, "estimateThroughDate cannot be before today");
+  }
   const hourlyRateBdt = decimalToNumber(
     (teacher as { hourlyPayrollRateBdt?: unknown }).hourlyPayrollRateBdt
   );
@@ -442,7 +479,8 @@ export const getTeacherPayroll = async (id: string, month?: string) => {
     category: rate.category,
     hourlyRateBdt: decimalToNumber(rate.hourlyRateBdt)
   }));
-  const payments = (teacher.payrollPayments ?? [])
+  const allPayrollEntries = teacher.payrollPayments ?? [];
+  const payments = allPayrollEntries
     .filter((payment) => payment.month === selectedMonth.key)
     .map((payment) => ({
       id: payment.id,
@@ -458,7 +496,7 @@ export const getTeacherPayroll = async (id: string, month?: string) => {
     categoryRates.map((rate) => [rate.category.trim().toLowerCase(), rate])
   );
 
-  const [currentEvents, nextMonthEvents] = await Promise.all([
+  const [currentEvents, nextMonthEvents, previousEvents] = await Promise.all([
     listEvents({
       teacherId: id,
       status: "CONFIRMED",
@@ -468,10 +506,54 @@ export const getTeacherPayroll = async (id: string, month?: string) => {
     listEvents({
       teacherId: id,
       status: "CONFIRMED",
-      startDate: estimateMonth.startDate,
-      endDate: estimateMonth.endDate
+      startDate: today,
+      endDate: estimateEndDate
+    }),
+    prisma.classScheduleEvent.findMany({
+      where: {
+        teacherId: id,
+        status: "CONFIRMED",
+        scheduledDate: { lt: new Date(`${selectedMonth.startDate}T00:00:00`) }
+      },
+      select: {
+        category: true,
+        durationMinutes: true,
+        attendanceStatus: true
+      }
     })
   ]);
+
+  const previousPayrollBdt = Number(
+    previousEvents
+      .reduce((total, event) => {
+        if (!isPayrollEligibleAttendance(event.attendanceStatus)) return total;
+        const categoryRate = rateByCategory.get(event.category.trim().toLowerCase());
+        return (
+          total +
+          (event.durationMinutes / 60) *
+            (categoryRate?.hourlyRateBdt ?? hourlyRateBdt)
+        );
+      }, 0)
+      .toFixed(2)
+  );
+  const previousEntries = allPayrollEntries.filter(
+    (entry) => entry.month < selectedMonth.key
+  );
+  const previousAdditionalIncomeBdt = Number(
+    previousEntries
+      .filter((entry) => payrollEntryTypeFromMethod(entry.method) === "income")
+      .reduce((total, entry) => total + decimalToNumber(entry.amountBdt, 0), 0)
+      .toFixed(2)
+  );
+  const previousPaidBdt = Number(
+    previousEntries
+      .filter((entry) => payrollEntryTypeFromMethod(entry.method) === "payment")
+      .reduce((total, entry) => total + decimalToNumber(entry.amountBdt, 0), 0)
+      .toFixed(2)
+  );
+  const openingBalanceBdt = Number(
+    (previousPayrollBdt + previousAdditionalIncomeBdt - previousPaidBdt).toFixed(2)
+  );
 
   const chronologicalRows = currentEvents
     .filter((event) => event.status === "confirmed")
@@ -485,7 +567,7 @@ export const getTeacherPayroll = async (id: string, month?: string) => {
         date: string;
         time: string;
         description: string;
-        entryType: "class" | "payment" | "adjustment";
+        entryType: "class" | "payment" | "income";
         durationMinutes: number;
         incomeBdt: number;
         paymentBdt: number;
@@ -546,25 +628,25 @@ export const getTeacherPayroll = async (id: string, month?: string) => {
         date: payment.paidOn,
         time: "00:00",
         description:
-          payment.entryType === "adjustment"
-            ? "Payroll adjustment"
+          payment.entryType === "income"
+            ? "Additional income"
             : `Payment - ${payment.method}`,
         entryType: payment.entryType,
         durationMinutes: 0,
-        incomeBdt: payment.entryType === "adjustment" ? payment.amountBdt : 0,
+        incomeBdt: payment.entryType === "income" ? payment.amountBdt : 0,
         paymentBdt: payment.entryType === "payment" ? payment.amountBdt : 0,
         balanceBdt: 0,
         attachments: payment.reference || "-",
         studentName: "-",
         source:
           payment.note ||
-          (payment.entryType === "adjustment"
-            ? "Manual payroll adjustment"
+          (payment.entryType === "income"
+            ? "Admin-added income"
             : "Teacher payroll payment"),
-        status: payment.entryType === "adjustment" ? "Adjusted" : "Paid"
+        status: payment.entryType === "income" ? "Income added" : "Paid"
       }))
     ].sort((left, right) => `${left.date}T${left.time}`.localeCompare(`${right.date}T${right.time}`));
-    let runningBalance = 0;
+    let runningBalance = openingBalanceBdt;
     const rows = ledgerRows.map((row) => {
       runningBalance = Number((runningBalance + row.incomeBdt - row.paymentBdt).toFixed(2));
       return { ...row, balanceBdt: runningBalance };
@@ -576,29 +658,54 @@ export const getTeacherPayroll = async (id: string, month?: string) => {
       .reduce((total, payment) => total + payment.amountBdt, 0)
       .toFixed(2)
   );
-  const manualAdjustmentBdt = Number(
+  const additionalIncomeBdt = Number(
     payments
-      .filter((payment) => payment.entryType === "adjustment")
+      .filter((payment) => payment.entryType === "income")
       .reduce((total, payment) => total + payment.amountBdt, 0)
       .toFixed(2)
   );
-  const totalBdt = Number((chronologicalRows.balance + manualAdjustmentBdt).toFixed(2));
+  const basePayrollBdt = chronologicalRows.balance;
+  const totalBdt = Number((basePayrollBdt + additionalIncomeBdt).toFixed(2));
+  const netBalanceBdt = Number(
+    (openingBalanceBdt + totalBdt - paidBdt).toFixed(2)
+  );
+  const lifetimeEarningsBdt = Number(
+    allPayrollEntries
+      .filter((entry) => payrollEntryTypeFromMethod(entry.method) === "payment")
+      .reduce(
+        (total, entry) => total + decimalToNumber(entry.amountBdt, 0),
+        0
+      )
+      .toFixed(2)
+  );
 
   return {
     teacherId: id,
     month: selectedMonth.key,
     hourlyRateBdt,
+    basePayrollBdt,
+    additionalIncomeBdt,
+    lifetimeEarningsBdt,
     totalBdt,
     paidBdt,
-    balanceOwingBdt: Number(Math.max(totalBdt - paidBdt, 0).toFixed(2)),
+    openingBalanceBdt,
+    netBalanceBdt,
+    balanceOwingBdt: Number(Math.max(netBalanceBdt, 0).toFixed(2)),
+    creditBalanceBdt: Number(Math.max(-netBalanceBdt, 0).toFixed(2)),
     payments,
     classCount: chronologicalRows.rows.length,
     totalMinutes: chronologicalRows.rows.reduce(
       (total, row) => total + row.durationMinutes,
       0
     ),
+    estimate: {
+      month: selectedEstimateMonth.key,
+      startDate: today,
+      throughDate: estimateEndDate,
+      estimatedAmountBdt: nextMonthEstimateBdt
+    },
     nextMonth: {
-      month: estimateMonth.key,
+      month: selectedEstimateMonth.key,
       estimatedAmountBdt: nextMonthEstimateBdt
     },
     categoryRates,
@@ -622,8 +729,8 @@ export const createTeacherPayrollPayment = async (
   }
   const entryType = normalizePayrollEntryType(body.entryType);
   const method =
-    entryType === "adjustment"
-      ? "Payroll adjustment"
+    entryType === "income"
+      ? "Additional income"
       : typeof body.method === "string"
         ? body.method.trim()
         : "";

@@ -61,6 +61,8 @@ export const ModelName = {
   AuditLog: 'AuditLog',
   AppSetting: 'AppSetting',
   Student: 'Student',
+  StudentBillingTransaction: 'StudentBillingTransaction',
+  StudentInvoice: 'StudentInvoice',
   StudentCourse: 'StudentCourse',
   TeacherChange: 'TeacherChange',
   Teacher: 'Teacher',
@@ -220,6 +222,18 @@ export const StudentScalarFieldEnum = {
   country: 'country',
   studentSince: 'studentSince',
   weeklySchedule: 'weeklySchedule',
+  classStartDate: 'classStartDate',
+  classStartTime: 'classStartTime',
+  classDurationMinutes: 'classDurationMinutes',
+  classDays: 'classDays',
+  packageCode: 'packageCode',
+  weeklyHours: 'weeklyHours',
+  billingCycle: 'billingCycle',
+  monthlyPriceBdt: 'monthlyPriceBdt',
+  quarterlyPriceBdt: 'quarterlyPriceBdt',
+  billingAmountBdt: 'billingAmountBdt',
+  billingManualOverride: 'billingManualOverride',
+  scheduleConfirmed: 'scheduleConfirmed',
   parentName: 'parentName',
   parentEmail: 'parentEmail',
   parentPhone: 'parentPhone',
@@ -245,6 +259,44 @@ export const StudentScalarFieldEnum = {
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
+
+
+export const StudentBillingTransactionScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  type: 'type',
+  amountBdt: 'amountBdt',
+  date: 'date',
+  description: 'description',
+  category: 'category',
+  recurring: 'recurring',
+  frequency: 'frequency',
+  repeatsEvery: 'repeatsEvery',
+  automationKey: 'automationKey',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudentBillingTransactionScalarFieldEnum = (typeof StudentBillingTransactionScalarFieldEnum)[keyof typeof StudentBillingTransactionScalarFieldEnum]
+
+
+export const StudentInvoiceScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  invoiceNumber: 'invoiceNumber',
+  invoiceDate: 'invoiceDate',
+  rangeStart: 'rangeStart',
+  rangeEnd: 'rangeEnd',
+  dueDate: 'dueDate',
+  amountBdt: 'amountBdt',
+  paidAmountBdt: 'paidAmountBdt',
+  status: 'status',
+  emailedAt: 'emailedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudentInvoiceScalarFieldEnum = (typeof StudentInvoiceScalarFieldEnum)[keyof typeof StudentInvoiceScalarFieldEnum]
 
 
 export const StudentCourseScalarFieldEnum = {

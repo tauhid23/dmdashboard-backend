@@ -7,6 +7,7 @@ import * as studentService from "../services/student.service.js";
 import { getUploadedImageFile } from "../middlewares/imageUpload.js";
 import { normalizeStudentRequestBody } from "../utils/normalizeRequestBody.js";
 import { getStudentExamDetails } from "../exam/exam.service.js";
+import { redactStudentPersonalInformation } from "../services/studentPrivacy.js";
 
 const getStudentId = (req: Request) => {
   const { id } = req.params;
@@ -57,14 +58,17 @@ export const createStudent = async (req: AuthRequest, res: Response) => {
 };
 
 export const getStudents = async (req: AuthRequest, res: Response) => {
+  const scope = await getRequestScope(req.auth?.id);
   const students = await studentService.getStudents(
     getStudentFilters(req),
-    await getRequestScope(req.auth?.id)
+    scope
   );
 
   res.status(200).json({
     success: true,
-    data: students
+    data: students.map((student) =>
+      redactStudentPersonalInformation(student, scope)
+    )
   });
 };
 
@@ -80,6 +84,12 @@ export const getStudentOptions = async (req: AuthRequest, res: Response) => {
   });
 };
 
+export const getParentOptions = async (req: AuthRequest, res: Response) => {
+  assertPrivilegedAccess(await getRequestScope(req.auth?.id), "Only staff users can search parent contacts");
+  const parents = await studentService.getParentOptions(getQueryString(req.query.search));
+  res.status(200).json({ success: true, data: parents });
+};
+
 export const getStudentById = async (req: AuthRequest, res: Response) => {
   const scope = await getRequestScope(req.auth?.id);
   await studentService.assertStudentVisible(getStudentId(req), scope);
@@ -87,7 +97,7 @@ export const getStudentById = async (req: AuthRequest, res: Response) => {
 
   res.status(200).json({
     success: true,
-    data: student
+    data: redactStudentPersonalInformation(student, scope)
   });
 };
 

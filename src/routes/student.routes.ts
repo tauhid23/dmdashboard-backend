@@ -13,6 +13,7 @@ router.use(authenticate, requirePermission("students","view"));
 router.post("/", requirePermission("students","add"), imageFieldsUpload, asyncHandler(studentController.createStudent));
 router.get("/", asyncHandler(studentController.getStudents));
 router.get("/options", asyncHandler(studentController.getStudentOptions));
+router.get("/parent-options", asyncHandler(studentController.getParentOptions));
 router.get("/:studentId/course-exam-results", asyncHandler(examController.studentCourseResults));
 router.get("/:studentId/exam-schedules", asyncHandler(examScheduleController.listForStudent));
 router.get("/:studentId/exam-attempts/latest", asyncHandler(examController.studentLatest));

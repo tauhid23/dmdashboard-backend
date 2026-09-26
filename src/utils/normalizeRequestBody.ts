@@ -43,9 +43,11 @@ export const normalizeStudentRequestBody = (
   ...body,
   course: parseJsonField(body.course),
   courses: parseJsonField(body.courses),
+  classDays: parseJsonField(body.classDays),
   teacherChanges: parseJsonField(body.teacherChanges),
   groupClass: parseBooleanField(body.groupClass),
-  teacherChanged: parseBooleanField(body.teacherChanged)
+  teacherChanged: parseBooleanField(body.teacherChanged),
+  billingManualOverride: parseBooleanField(body.billingManualOverride)
 } as CreateStudentInput);
 
 export const normalizeTeacherRequestBody = (

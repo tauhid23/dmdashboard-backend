@@ -20,8 +20,28 @@ export type StudentModel = runtime.Types.Result.DefaultSelection<Prisma.$Student
 
 export type AggregateStudent = {
   _count: StudentCountAggregateOutputType | null
+  _avg: StudentAvgAggregateOutputType | null
+  _sum: StudentSumAggregateOutputType | null
   _min: StudentMinAggregateOutputType | null
   _max: StudentMaxAggregateOutputType | null
+}
+
+export type StudentAvgAggregateOutputType = {
+  classDurationMinutes: number | null
+  classDays: number | null
+  weeklyHours: runtime.Decimal | null
+  monthlyPriceBdt: runtime.Decimal | null
+  quarterlyPriceBdt: runtime.Decimal | null
+  billingAmountBdt: runtime.Decimal | null
+}
+
+export type StudentSumAggregateOutputType = {
+  classDurationMinutes: number | null
+  classDays: number[]
+  weeklyHours: runtime.Decimal | null
+  monthlyPriceBdt: runtime.Decimal | null
+  quarterlyPriceBdt: runtime.Decimal | null
+  billingAmountBdt: runtime.Decimal | null
 }
 
 export type StudentMinAggregateOutputType = {
@@ -31,6 +51,17 @@ export type StudentMinAggregateOutputType = {
   country: string | null
   studentSince: Date | null
   weeklySchedule: string | null
+  classStartDate: Date | null
+  classStartTime: string | null
+  classDurationMinutes: number | null
+  packageCode: string | null
+  weeklyHours: runtime.Decimal | null
+  billingCycle: string | null
+  monthlyPriceBdt: runtime.Decimal | null
+  quarterlyPriceBdt: runtime.Decimal | null
+  billingAmountBdt: runtime.Decimal | null
+  billingManualOverride: boolean | null
+  scheduleConfirmed: boolean | null
   parentName: string | null
   parentEmail: string | null
   parentPhone: string | null
@@ -62,6 +93,17 @@ export type StudentMaxAggregateOutputType = {
   country: string | null
   studentSince: Date | null
   weeklySchedule: string | null
+  classStartDate: Date | null
+  classStartTime: string | null
+  classDurationMinutes: number | null
+  packageCode: string | null
+  weeklyHours: runtime.Decimal | null
+  billingCycle: string | null
+  monthlyPriceBdt: runtime.Decimal | null
+  quarterlyPriceBdt: runtime.Decimal | null
+  billingAmountBdt: runtime.Decimal | null
+  billingManualOverride: boolean | null
+  scheduleConfirmed: boolean | null
   parentName: string | null
   parentEmail: string | null
   parentPhone: string | null
@@ -93,6 +135,18 @@ export type StudentCountAggregateOutputType = {
   country: number
   studentSince: number
   weeklySchedule: number
+  classStartDate: number
+  classStartTime: number
+  classDurationMinutes: number
+  classDays: number
+  packageCode: number
+  weeklyHours: number
+  billingCycle: number
+  monthlyPriceBdt: number
+  quarterlyPriceBdt: number
+  billingAmountBdt: number
+  billingManualOverride: number
+  scheduleConfirmed: number
   parentName: number
   parentEmail: number
   parentPhone: number
@@ -119,6 +173,24 @@ export type StudentCountAggregateOutputType = {
 }
 
 
+export type StudentAvgAggregateInputType = {
+  classDurationMinutes?: true
+  classDays?: true
+  weeklyHours?: true
+  monthlyPriceBdt?: true
+  quarterlyPriceBdt?: true
+  billingAmountBdt?: true
+}
+
+export type StudentSumAggregateInputType = {
+  classDurationMinutes?: true
+  classDays?: true
+  weeklyHours?: true
+  monthlyPriceBdt?: true
+  quarterlyPriceBdt?: true
+  billingAmountBdt?: true
+}
+
 export type StudentMinAggregateInputType = {
   id?: true
   image?: true
@@ -126,6 +198,17 @@ export type StudentMinAggregateInputType = {
   country?: true
   studentSince?: true
   weeklySchedule?: true
+  classStartDate?: true
+  classStartTime?: true
+  classDurationMinutes?: true
+  packageCode?: true
+  weeklyHours?: true
+  billingCycle?: true
+  monthlyPriceBdt?: true
+  quarterlyPriceBdt?: true
+  billingAmountBdt?: true
+  billingManualOverride?: true
+  scheduleConfirmed?: true
   parentName?: true
   parentEmail?: true
   parentPhone?: true
@@ -157,6 +240,17 @@ export type StudentMaxAggregateInputType = {
   country?: true
   studentSince?: true
   weeklySchedule?: true
+  classStartDate?: true
+  classStartTime?: true
+  classDurationMinutes?: true
+  packageCode?: true
+  weeklyHours?: true
+  billingCycle?: true
+  monthlyPriceBdt?: true
+  quarterlyPriceBdt?: true
+  billingAmountBdt?: true
+  billingManualOverride?: true
+  scheduleConfirmed?: true
   parentName?: true
   parentEmail?: true
   parentPhone?: true
@@ -188,6 +282,18 @@ export type StudentCountAggregateInputType = {
   country?: true
   studentSince?: true
   weeklySchedule?: true
+  classStartDate?: true
+  classStartTime?: true
+  classDurationMinutes?: true
+  classDays?: true
+  packageCode?: true
+  weeklyHours?: true
+  billingCycle?: true
+  monthlyPriceBdt?: true
+  quarterlyPriceBdt?: true
+  billingAmountBdt?: true
+  billingManualOverride?: true
+  scheduleConfirmed?: true
   parentName?: true
   parentEmail?: true
   parentPhone?: true
@@ -251,6 +357,18 @@ export type StudentAggregateArgs<ExtArgs extends runtime.Types.Extensions.Intern
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: StudentAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: StudentSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: StudentMinAggregateInputType
@@ -281,6 +399,8 @@ export type StudentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   _count?: StudentCountAggregateInputType | true
+  _avg?: StudentAvgAggregateInputType
+  _sum?: StudentSumAggregateInputType
   _min?: StudentMinAggregateInputType
   _max?: StudentMaxAggregateInputType
 }
@@ -292,6 +412,18 @@ export type StudentGroupByOutputType = {
   country: string | null
   studentSince: Date | null
   weeklySchedule: string | null
+  classStartDate: Date | null
+  classStartTime: string | null
+  classDurationMinutes: number | null
+  classDays: number[]
+  packageCode: string | null
+  weeklyHours: runtime.Decimal | null
+  billingCycle: string
+  monthlyPriceBdt: runtime.Decimal | null
+  quarterlyPriceBdt: runtime.Decimal | null
+  billingAmountBdt: runtime.Decimal | null
+  billingManualOverride: boolean
+  scheduleConfirmed: boolean
   parentName: string | null
   parentEmail: string | null
   parentPhone: string | null
@@ -315,6 +447,8 @@ export type StudentGroupByOutputType = {
   courseCompleted: boolean
   courseUpdatedAt: Date | null
   _count: StudentCountAggregateOutputType | null
+  _avg: StudentAvgAggregateOutputType | null
+  _sum: StudentSumAggregateOutputType | null
   _min: StudentMinAggregateOutputType | null
   _max: StudentMaxAggregateOutputType | null
 }
@@ -344,6 +478,18 @@ export type StudentWhereInput = {
   country?: Prisma.StringNullableFilter<"Student"> | string | null
   studentSince?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
   weeklySchedule?: Prisma.StringNullableFilter<"Student"> | string | null
+  classStartDate?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
+  classStartTime?: Prisma.StringNullableFilter<"Student"> | string | null
+  classDurationMinutes?: Prisma.IntNullableFilter<"Student"> | number | null
+  classDays?: Prisma.IntNullableListFilter<"Student">
+  packageCode?: Prisma.StringNullableFilter<"Student"> | string | null
+  weeklyHours?: Prisma.DecimalNullableFilter<"Student"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFilter<"Student"> | string
+  monthlyPriceBdt?: Prisma.DecimalNullableFilter<"Student"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.DecimalNullableFilter<"Student"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.DecimalNullableFilter<"Student"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFilter<"Student"> | boolean
+  scheduleConfirmed?: Prisma.BoolFilter<"Student"> | boolean
   parentName?: Prisma.StringNullableFilter<"Student"> | string | null
   parentEmail?: Prisma.StringNullableFilter<"Student"> | string | null
   parentPhone?: Prisma.StringNullableFilter<"Student"> | string | null
@@ -375,6 +521,8 @@ export type StudentWhereInput = {
   examSchedules?: Prisma.ExamScheduleListRelationFilter
   courseHistory?: Prisma.StudentCourseHistoryListRelationFilter
   userAccount?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  billingTransactions?: Prisma.StudentBillingTransactionListRelationFilter
+  invoices?: Prisma.StudentInvoiceListRelationFilter
 }
 
 export type StudentOrderByWithRelationInput = {
@@ -384,6 +532,18 @@ export type StudentOrderByWithRelationInput = {
   country?: Prisma.SortOrderInput | Prisma.SortOrder
   studentSince?: Prisma.SortOrderInput | Prisma.SortOrder
   weeklySchedule?: Prisma.SortOrderInput | Prisma.SortOrder
+  classStartDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  classStartTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  classDurationMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
+  classDays?: Prisma.SortOrder
+  packageCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  weeklyHours?: Prisma.SortOrderInput | Prisma.SortOrder
+  billingCycle?: Prisma.SortOrder
+  monthlyPriceBdt?: Prisma.SortOrderInput | Prisma.SortOrder
+  quarterlyPriceBdt?: Prisma.SortOrderInput | Prisma.SortOrder
+  billingAmountBdt?: Prisma.SortOrderInput | Prisma.SortOrder
+  billingManualOverride?: Prisma.SortOrder
+  scheduleConfirmed?: Prisma.SortOrder
   parentName?: Prisma.SortOrderInput | Prisma.SortOrder
   parentEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   parentPhone?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -415,6 +575,8 @@ export type StudentOrderByWithRelationInput = {
   examSchedules?: Prisma.ExamScheduleOrderByRelationAggregateInput
   courseHistory?: Prisma.StudentCourseHistoryOrderByRelationAggregateInput
   userAccount?: Prisma.UserOrderByWithRelationInput
+  billingTransactions?: Prisma.StudentBillingTransactionOrderByRelationAggregateInput
+  invoices?: Prisma.StudentInvoiceOrderByRelationAggregateInput
 }
 
 export type StudentWhereUniqueInput = Prisma.AtLeast<{
@@ -427,6 +589,18 @@ export type StudentWhereUniqueInput = Prisma.AtLeast<{
   country?: Prisma.StringNullableFilter<"Student"> | string | null
   studentSince?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
   weeklySchedule?: Prisma.StringNullableFilter<"Student"> | string | null
+  classStartDate?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
+  classStartTime?: Prisma.StringNullableFilter<"Student"> | string | null
+  classDurationMinutes?: Prisma.IntNullableFilter<"Student"> | number | null
+  classDays?: Prisma.IntNullableListFilter<"Student">
+  packageCode?: Prisma.StringNullableFilter<"Student"> | string | null
+  weeklyHours?: Prisma.DecimalNullableFilter<"Student"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFilter<"Student"> | string
+  monthlyPriceBdt?: Prisma.DecimalNullableFilter<"Student"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.DecimalNullableFilter<"Student"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.DecimalNullableFilter<"Student"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFilter<"Student"> | boolean
+  scheduleConfirmed?: Prisma.BoolFilter<"Student"> | boolean
   parentName?: Prisma.StringNullableFilter<"Student"> | string | null
   parentEmail?: Prisma.StringNullableFilter<"Student"> | string | null
   parentPhone?: Prisma.StringNullableFilter<"Student"> | string | null
@@ -458,6 +632,8 @@ export type StudentWhereUniqueInput = Prisma.AtLeast<{
   examSchedules?: Prisma.ExamScheduleListRelationFilter
   courseHistory?: Prisma.StudentCourseHistoryListRelationFilter
   userAccount?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  billingTransactions?: Prisma.StudentBillingTransactionListRelationFilter
+  invoices?: Prisma.StudentInvoiceListRelationFilter
 }, "id">
 
 export type StudentOrderByWithAggregationInput = {
@@ -467,6 +643,18 @@ export type StudentOrderByWithAggregationInput = {
   country?: Prisma.SortOrderInput | Prisma.SortOrder
   studentSince?: Prisma.SortOrderInput | Prisma.SortOrder
   weeklySchedule?: Prisma.SortOrderInput | Prisma.SortOrder
+  classStartDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  classStartTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  classDurationMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
+  classDays?: Prisma.SortOrder
+  packageCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  weeklyHours?: Prisma.SortOrderInput | Prisma.SortOrder
+  billingCycle?: Prisma.SortOrder
+  monthlyPriceBdt?: Prisma.SortOrderInput | Prisma.SortOrder
+  quarterlyPriceBdt?: Prisma.SortOrderInput | Prisma.SortOrder
+  billingAmountBdt?: Prisma.SortOrderInput | Prisma.SortOrder
+  billingManualOverride?: Prisma.SortOrder
+  scheduleConfirmed?: Prisma.SortOrder
   parentName?: Prisma.SortOrderInput | Prisma.SortOrder
   parentEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   parentPhone?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -490,8 +678,10 @@ export type StudentOrderByWithAggregationInput = {
   courseCompleted?: Prisma.SortOrder
   courseUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.StudentCountOrderByAggregateInput
+  _avg?: Prisma.StudentAvgOrderByAggregateInput
   _max?: Prisma.StudentMaxOrderByAggregateInput
   _min?: Prisma.StudentMinOrderByAggregateInput
+  _sum?: Prisma.StudentSumOrderByAggregateInput
 }
 
 export type StudentScalarWhereWithAggregatesInput = {
@@ -504,6 +694,18 @@ export type StudentScalarWhereWithAggregatesInput = {
   country?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   studentSince?: Prisma.DateTimeNullableWithAggregatesFilter<"Student"> | Date | string | null
   weeklySchedule?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  classStartDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Student"> | Date | string | null
+  classStartTime?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  classDurationMinutes?: Prisma.IntNullableWithAggregatesFilter<"Student"> | number | null
+  classDays?: Prisma.IntNullableListFilter<"Student">
+  packageCode?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  weeklyHours?: Prisma.DecimalNullableWithAggregatesFilter<"Student"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringWithAggregatesFilter<"Student"> | string
+  monthlyPriceBdt?: Prisma.DecimalNullableWithAggregatesFilter<"Student"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.DecimalNullableWithAggregatesFilter<"Student"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.DecimalNullableWithAggregatesFilter<"Student"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolWithAggregatesFilter<"Student"> | boolean
+  scheduleConfirmed?: Prisma.BoolWithAggregatesFilter<"Student"> | boolean
   parentName?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   parentEmail?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   parentPhone?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
@@ -535,6 +737,18 @@ export type StudentCreateInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -565,6 +779,8 @@ export type StudentCreateInput = {
   examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateInput = {
@@ -574,6 +790,18 @@ export type StudentUncheckedCreateInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -604,6 +832,8 @@ export type StudentUncheckedCreateInput = {
   examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUpdateInput = {
@@ -613,6 +843,18 @@ export type StudentUpdateInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -643,6 +885,8 @@ export type StudentUpdateInput = {
   examSchedules?: Prisma.ExamScheduleUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateInput = {
@@ -652,6 +896,18 @@ export type StudentUncheckedUpdateInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -682,6 +938,8 @@ export type StudentUncheckedUpdateInput = {
   examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateManyInput = {
@@ -691,6 +949,18 @@ export type StudentCreateManyInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -722,6 +992,18 @@ export type StudentUpdateManyMutationInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -752,6 +1034,18 @@ export type StudentUncheckedUpdateManyInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -781,6 +1075,14 @@ export type StudentNullableScalarRelationFilter = {
   isNot?: Prisma.StudentWhereInput | null
 }
 
+export type IntNullableListFilter<$PrismaModel = never> = {
+  equals?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel> | null
+  has?: number | Prisma.IntFieldRefInput<$PrismaModel> | null
+  hasEvery?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
+  hasSome?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
 export type StudentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   image?: Prisma.SortOrder
@@ -788,6 +1090,18 @@ export type StudentCountOrderByAggregateInput = {
   country?: Prisma.SortOrder
   studentSince?: Prisma.SortOrder
   weeklySchedule?: Prisma.SortOrder
+  classStartDate?: Prisma.SortOrder
+  classStartTime?: Prisma.SortOrder
+  classDurationMinutes?: Prisma.SortOrder
+  classDays?: Prisma.SortOrder
+  packageCode?: Prisma.SortOrder
+  weeklyHours?: Prisma.SortOrder
+  billingCycle?: Prisma.SortOrder
+  monthlyPriceBdt?: Prisma.SortOrder
+  quarterlyPriceBdt?: Prisma.SortOrder
+  billingAmountBdt?: Prisma.SortOrder
+  billingManualOverride?: Prisma.SortOrder
+  scheduleConfirmed?: Prisma.SortOrder
   parentName?: Prisma.SortOrder
   parentEmail?: Prisma.SortOrder
   parentPhone?: Prisma.SortOrder
@@ -812,6 +1126,15 @@ export type StudentCountOrderByAggregateInput = {
   courseUpdatedAt?: Prisma.SortOrder
 }
 
+export type StudentAvgOrderByAggregateInput = {
+  classDurationMinutes?: Prisma.SortOrder
+  classDays?: Prisma.SortOrder
+  weeklyHours?: Prisma.SortOrder
+  monthlyPriceBdt?: Prisma.SortOrder
+  quarterlyPriceBdt?: Prisma.SortOrder
+  billingAmountBdt?: Prisma.SortOrder
+}
+
 export type StudentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   image?: Prisma.SortOrder
@@ -819,6 +1142,17 @@ export type StudentMaxOrderByAggregateInput = {
   country?: Prisma.SortOrder
   studentSince?: Prisma.SortOrder
   weeklySchedule?: Prisma.SortOrder
+  classStartDate?: Prisma.SortOrder
+  classStartTime?: Prisma.SortOrder
+  classDurationMinutes?: Prisma.SortOrder
+  packageCode?: Prisma.SortOrder
+  weeklyHours?: Prisma.SortOrder
+  billingCycle?: Prisma.SortOrder
+  monthlyPriceBdt?: Prisma.SortOrder
+  quarterlyPriceBdt?: Prisma.SortOrder
+  billingAmountBdt?: Prisma.SortOrder
+  billingManualOverride?: Prisma.SortOrder
+  scheduleConfirmed?: Prisma.SortOrder
   parentName?: Prisma.SortOrder
   parentEmail?: Prisma.SortOrder
   parentPhone?: Prisma.SortOrder
@@ -850,6 +1184,17 @@ export type StudentMinOrderByAggregateInput = {
   country?: Prisma.SortOrder
   studentSince?: Prisma.SortOrder
   weeklySchedule?: Prisma.SortOrder
+  classStartDate?: Prisma.SortOrder
+  classStartTime?: Prisma.SortOrder
+  classDurationMinutes?: Prisma.SortOrder
+  packageCode?: Prisma.SortOrder
+  weeklyHours?: Prisma.SortOrder
+  billingCycle?: Prisma.SortOrder
+  monthlyPriceBdt?: Prisma.SortOrder
+  quarterlyPriceBdt?: Prisma.SortOrder
+  billingAmountBdt?: Prisma.SortOrder
+  billingManualOverride?: Prisma.SortOrder
+  scheduleConfirmed?: Prisma.SortOrder
   parentName?: Prisma.SortOrder
   parentEmail?: Prisma.SortOrder
   parentPhone?: Prisma.SortOrder
@@ -872,6 +1217,15 @@ export type StudentMinOrderByAggregateInput = {
   currentCourseLevel?: Prisma.SortOrder
   courseCompleted?: Prisma.SortOrder
   courseUpdatedAt?: Prisma.SortOrder
+}
+
+export type StudentSumOrderByAggregateInput = {
+  classDurationMinutes?: Prisma.SortOrder
+  classDays?: Prisma.SortOrder
+  weeklyHours?: Prisma.SortOrder
+  monthlyPriceBdt?: Prisma.SortOrder
+  quarterlyPriceBdt?: Prisma.SortOrder
+  billingAmountBdt?: Prisma.SortOrder
 }
 
 export type StudentScalarRelationFilter = {
@@ -905,6 +1259,31 @@ export type StudentUpdateOneWithoutUserAccountNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StudentUpdateToOneWithWhereWithoutUserAccountInput, Prisma.StudentUpdateWithoutUserAccountInput>, Prisma.StudentUncheckedUpdateWithoutUserAccountInput>
 }
 
+export type StudentCreateclassDaysInput = {
+  set: number[]
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type StudentUpdateclassDaysInput = {
+  set?: number[]
+  push?: number | number[]
+}
+
+export type NullableDecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
+}
+
 export type NullableBoolFieldUpdateOperationsInput = {
   set?: boolean | null
 }
@@ -915,6 +1294,34 @@ export type NullableEnumStudentStatusFieldUpdateOperationsInput = {
 
 export type NullableEnumCourseLevelFieldUpdateOperationsInput = {
   set?: $Enums.CourseLevel | null
+}
+
+export type StudentCreateNestedOneWithoutBillingTransactionsInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutBillingTransactionsInput, Prisma.StudentUncheckedCreateWithoutBillingTransactionsInput>
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutBillingTransactionsInput
+  connect?: Prisma.StudentWhereUniqueInput
+}
+
+export type StudentUpdateOneRequiredWithoutBillingTransactionsNestedInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutBillingTransactionsInput, Prisma.StudentUncheckedCreateWithoutBillingTransactionsInput>
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutBillingTransactionsInput
+  upsert?: Prisma.StudentUpsertWithoutBillingTransactionsInput
+  connect?: Prisma.StudentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StudentUpdateToOneWithWhereWithoutBillingTransactionsInput, Prisma.StudentUpdateWithoutBillingTransactionsInput>, Prisma.StudentUncheckedUpdateWithoutBillingTransactionsInput>
+}
+
+export type StudentCreateNestedOneWithoutInvoicesInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutInvoicesInput, Prisma.StudentUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutInvoicesInput
+  connect?: Prisma.StudentWhereUniqueInput
+}
+
+export type StudentUpdateOneRequiredWithoutInvoicesNestedInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutInvoicesInput, Prisma.StudentUncheckedCreateWithoutInvoicesInput>
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutInvoicesInput
+  upsert?: Prisma.StudentUpsertWithoutInvoicesInput
+  connect?: Prisma.StudentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StudentUpdateToOneWithWhereWithoutInvoicesInput, Prisma.StudentUpdateWithoutInvoicesInput>, Prisma.StudentUncheckedUpdateWithoutInvoicesInput>
 }
 
 export type StudentCreateNestedOneWithoutCoursesInput = {
@@ -1066,6 +1473,18 @@ export type StudentCreateWithoutUserAccountInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -1095,6 +1514,8 @@ export type StudentCreateWithoutUserAccountInput = {
   examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutStudentInput
   examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutUserAccountInput = {
@@ -1104,6 +1525,18 @@ export type StudentUncheckedCreateWithoutUserAccountInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -1133,6 +1566,8 @@ export type StudentUncheckedCreateWithoutUserAccountInput = {
   examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutStudentInput
   examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutUserAccountInput = {
@@ -1158,6 +1593,18 @@ export type StudentUpdateWithoutUserAccountInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1187,6 +1634,8 @@ export type StudentUpdateWithoutUserAccountInput = {
   examAttempts?: Prisma.ExamAttemptUpdateManyWithoutStudentNestedInput
   examSchedules?: Prisma.ExamScheduleUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutUserAccountInput = {
@@ -1196,6 +1645,18 @@ export type StudentUncheckedUpdateWithoutUserAccountInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1225,6 +1686,456 @@ export type StudentUncheckedUpdateWithoutUserAccountInput = {
   examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutStudentNestedInput
   examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentCreateWithoutBillingTransactionsInput = {
+  id?: string
+  image?: string | null
+  name?: string | null
+  country?: string | null
+  studentSince?: Date | string | null
+  weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
+  parentName?: string | null
+  parentEmail?: string | null
+  parentPhone?: string | null
+  courseName?: string | null
+  courseStage?: string | null
+  teacherName?: string | null
+  groupClass?: boolean | null
+  groupSchedule?: string | null
+  groupClassSchedule?: string | null
+  groupTeacher?: string | null
+  groupSubject?: string | null
+  subject?: string | null
+  teacherChanged?: boolean | null
+  previousTeacherName?: string | null
+  teacherChangeReason?: string | null
+  status?: $Enums.StudentStatus | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
+  teacher?: Prisma.TeacherCreateNestedOneWithoutStudentsInput
+  courses?: Prisma.StudentCourseCreateNestedManyWithoutStudentInput
+  teacherChanges?: Prisma.TeacherChangeCreateNestedManyWithoutStudentInput
+  classReports?: Prisma.ClassReportCreateNestedManyWithoutStudentInput
+  classScheduleEvents?: Prisma.ClassScheduleEventCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutStudentInput
+  examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
+  userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
+}
+
+export type StudentUncheckedCreateWithoutBillingTransactionsInput = {
+  id?: string
+  image?: string | null
+  name?: string | null
+  country?: string | null
+  studentSince?: Date | string | null
+  weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
+  parentName?: string | null
+  parentEmail?: string | null
+  parentPhone?: string | null
+  courseName?: string | null
+  courseStage?: string | null
+  teacherId?: string | null
+  teacherName?: string | null
+  groupClass?: boolean | null
+  groupSchedule?: string | null
+  groupClassSchedule?: string | null
+  groupTeacher?: string | null
+  groupSubject?: string | null
+  subject?: string | null
+  teacherChanged?: boolean | null
+  previousTeacherName?: string | null
+  teacherChangeReason?: string | null
+  status?: $Enums.StudentStatus | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
+  courses?: Prisma.StudentCourseUncheckedCreateNestedManyWithoutStudentInput
+  teacherChanges?: Prisma.TeacherChangeUncheckedCreateNestedManyWithoutStudentInput
+  classReports?: Prisma.ClassReportUncheckedCreateNestedManyWithoutStudentInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutStudentInput
+  examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
+  userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
+}
+
+export type StudentCreateOrConnectWithoutBillingTransactionsInput = {
+  where: Prisma.StudentWhereUniqueInput
+  create: Prisma.XOR<Prisma.StudentCreateWithoutBillingTransactionsInput, Prisma.StudentUncheckedCreateWithoutBillingTransactionsInput>
+}
+
+export type StudentUpsertWithoutBillingTransactionsInput = {
+  update: Prisma.XOR<Prisma.StudentUpdateWithoutBillingTransactionsInput, Prisma.StudentUncheckedUpdateWithoutBillingTransactionsInput>
+  create: Prisma.XOR<Prisma.StudentCreateWithoutBillingTransactionsInput, Prisma.StudentUncheckedCreateWithoutBillingTransactionsInput>
+  where?: Prisma.StudentWhereInput
+}
+
+export type StudentUpdateToOneWithWhereWithoutBillingTransactionsInput = {
+  where?: Prisma.StudentWhereInput
+  data: Prisma.XOR<Prisma.StudentUpdateWithoutBillingTransactionsInput, Prisma.StudentUncheckedUpdateWithoutBillingTransactionsInput>
+}
+
+export type StudentUpdateWithoutBillingTransactionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClass?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  groupSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClassSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupTeacher?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupSubject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChanged?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  previousTeacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChangeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  teacher?: Prisma.TeacherUpdateOneWithoutStudentsNestedInput
+  courses?: Prisma.StudentCourseUpdateManyWithoutStudentNestedInput
+  teacherChanges?: Prisma.TeacherChangeUpdateManyWithoutStudentNestedInput
+  classReports?: Prisma.ClassReportUpdateManyWithoutStudentNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUpdateManyWithoutStudentNestedInput
+  examSchedules?: Prisma.ExamScheduleUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
+  userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentUncheckedUpdateWithoutBillingTransactionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClass?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  groupSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClassSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupTeacher?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupSubject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChanged?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  previousTeacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChangeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  courses?: Prisma.StudentCourseUncheckedUpdateManyWithoutStudentNestedInput
+  teacherChanges?: Prisma.TeacherChangeUncheckedUpdateManyWithoutStudentNestedInput
+  classReports?: Prisma.ClassReportUncheckedUpdateManyWithoutStudentNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutStudentNestedInput
+  examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
+  userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentCreateWithoutInvoicesInput = {
+  id?: string
+  image?: string | null
+  name?: string | null
+  country?: string | null
+  studentSince?: Date | string | null
+  weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
+  parentName?: string | null
+  parentEmail?: string | null
+  parentPhone?: string | null
+  courseName?: string | null
+  courseStage?: string | null
+  teacherName?: string | null
+  groupClass?: boolean | null
+  groupSchedule?: string | null
+  groupClassSchedule?: string | null
+  groupTeacher?: string | null
+  groupSubject?: string | null
+  subject?: string | null
+  teacherChanged?: boolean | null
+  previousTeacherName?: string | null
+  teacherChangeReason?: string | null
+  status?: $Enums.StudentStatus | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
+  teacher?: Prisma.TeacherCreateNestedOneWithoutStudentsInput
+  courses?: Prisma.StudentCourseCreateNestedManyWithoutStudentInput
+  teacherChanges?: Prisma.TeacherChangeCreateNestedManyWithoutStudentInput
+  classReports?: Prisma.ClassReportCreateNestedManyWithoutStudentInput
+  classScheduleEvents?: Prisma.ClassScheduleEventCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutStudentInput
+  examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
+  userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
+}
+
+export type StudentUncheckedCreateWithoutInvoicesInput = {
+  id?: string
+  image?: string | null
+  name?: string | null
+  country?: string | null
+  studentSince?: Date | string | null
+  weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
+  parentName?: string | null
+  parentEmail?: string | null
+  parentPhone?: string | null
+  courseName?: string | null
+  courseStage?: string | null
+  teacherId?: string | null
+  teacherName?: string | null
+  groupClass?: boolean | null
+  groupSchedule?: string | null
+  groupClassSchedule?: string | null
+  groupTeacher?: string | null
+  groupSubject?: string | null
+  subject?: string | null
+  teacherChanged?: boolean | null
+  previousTeacherName?: string | null
+  teacherChangeReason?: string | null
+  status?: $Enums.StudentStatus | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
+  courses?: Prisma.StudentCourseUncheckedCreateNestedManyWithoutStudentInput
+  teacherChanges?: Prisma.TeacherChangeUncheckedCreateNestedManyWithoutStudentInput
+  classReports?: Prisma.ClassReportUncheckedCreateNestedManyWithoutStudentInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutStudentInput
+  examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
+  userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
+}
+
+export type StudentCreateOrConnectWithoutInvoicesInput = {
+  where: Prisma.StudentWhereUniqueInput
+  create: Prisma.XOR<Prisma.StudentCreateWithoutInvoicesInput, Prisma.StudentUncheckedCreateWithoutInvoicesInput>
+}
+
+export type StudentUpsertWithoutInvoicesInput = {
+  update: Prisma.XOR<Prisma.StudentUpdateWithoutInvoicesInput, Prisma.StudentUncheckedUpdateWithoutInvoicesInput>
+  create: Prisma.XOR<Prisma.StudentCreateWithoutInvoicesInput, Prisma.StudentUncheckedCreateWithoutInvoicesInput>
+  where?: Prisma.StudentWhereInput
+}
+
+export type StudentUpdateToOneWithWhereWithoutInvoicesInput = {
+  where?: Prisma.StudentWhereInput
+  data: Prisma.XOR<Prisma.StudentUpdateWithoutInvoicesInput, Prisma.StudentUncheckedUpdateWithoutInvoicesInput>
+}
+
+export type StudentUpdateWithoutInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClass?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  groupSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClassSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupTeacher?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupSubject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChanged?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  previousTeacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChangeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  teacher?: Prisma.TeacherUpdateOneWithoutStudentsNestedInput
+  courses?: Prisma.StudentCourseUpdateManyWithoutStudentNestedInput
+  teacherChanges?: Prisma.TeacherChangeUpdateManyWithoutStudentNestedInput
+  classReports?: Prisma.ClassReportUpdateManyWithoutStudentNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUpdateManyWithoutStudentNestedInput
+  examSchedules?: Prisma.ExamScheduleUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
+  userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentUncheckedUpdateWithoutInvoicesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClass?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  groupSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClassSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupTeacher?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupSubject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChanged?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  previousTeacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChangeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  courses?: Prisma.StudentCourseUncheckedUpdateManyWithoutStudentNestedInput
+  teacherChanges?: Prisma.TeacherChangeUncheckedUpdateManyWithoutStudentNestedInput
+  classReports?: Prisma.ClassReportUncheckedUpdateManyWithoutStudentNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutStudentNestedInput
+  examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
+  userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutCoursesInput = {
@@ -1234,6 +2145,18 @@ export type StudentCreateWithoutCoursesInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -1263,6 +2186,8 @@ export type StudentCreateWithoutCoursesInput = {
   examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutCoursesInput = {
@@ -1272,6 +2197,18 @@ export type StudentUncheckedCreateWithoutCoursesInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -1301,6 +2238,8 @@ export type StudentUncheckedCreateWithoutCoursesInput = {
   examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutCoursesInput = {
@@ -1326,6 +2265,18 @@ export type StudentUpdateWithoutCoursesInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1355,6 +2306,8 @@ export type StudentUpdateWithoutCoursesInput = {
   examSchedules?: Prisma.ExamScheduleUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutCoursesInput = {
@@ -1364,6 +2317,18 @@ export type StudentUncheckedUpdateWithoutCoursesInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1393,6 +2358,8 @@ export type StudentUncheckedUpdateWithoutCoursesInput = {
   examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutTeacherChangesInput = {
@@ -1402,6 +2369,18 @@ export type StudentCreateWithoutTeacherChangesInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -1431,6 +2410,8 @@ export type StudentCreateWithoutTeacherChangesInput = {
   examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutTeacherChangesInput = {
@@ -1440,6 +2421,18 @@ export type StudentUncheckedCreateWithoutTeacherChangesInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -1469,6 +2462,8 @@ export type StudentUncheckedCreateWithoutTeacherChangesInput = {
   examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutTeacherChangesInput = {
@@ -1494,6 +2489,18 @@ export type StudentUpdateWithoutTeacherChangesInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1523,6 +2530,8 @@ export type StudentUpdateWithoutTeacherChangesInput = {
   examSchedules?: Prisma.ExamScheduleUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutTeacherChangesInput = {
@@ -1532,6 +2541,18 @@ export type StudentUncheckedUpdateWithoutTeacherChangesInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1561,6 +2582,8 @@ export type StudentUncheckedUpdateWithoutTeacherChangesInput = {
   examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutTeacherInput = {
@@ -1570,6 +2593,18 @@ export type StudentCreateWithoutTeacherInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -1599,6 +2634,8 @@ export type StudentCreateWithoutTeacherInput = {
   examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutTeacherInput = {
@@ -1608,6 +2645,18 @@ export type StudentUncheckedCreateWithoutTeacherInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -1637,6 +2686,8 @@ export type StudentUncheckedCreateWithoutTeacherInput = {
   examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutTeacherInput = {
@@ -1675,6 +2726,18 @@ export type StudentScalarWhereInput = {
   country?: Prisma.StringNullableFilter<"Student"> | string | null
   studentSince?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
   weeklySchedule?: Prisma.StringNullableFilter<"Student"> | string | null
+  classStartDate?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
+  classStartTime?: Prisma.StringNullableFilter<"Student"> | string | null
+  classDurationMinutes?: Prisma.IntNullableFilter<"Student"> | number | null
+  classDays?: Prisma.IntNullableListFilter<"Student">
+  packageCode?: Prisma.StringNullableFilter<"Student"> | string | null
+  weeklyHours?: Prisma.DecimalNullableFilter<"Student"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFilter<"Student"> | string
+  monthlyPriceBdt?: Prisma.DecimalNullableFilter<"Student"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.DecimalNullableFilter<"Student"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.DecimalNullableFilter<"Student"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFilter<"Student"> | boolean
+  scheduleConfirmed?: Prisma.BoolFilter<"Student"> | boolean
   parentName?: Prisma.StringNullableFilter<"Student"> | string | null
   parentEmail?: Prisma.StringNullableFilter<"Student"> | string | null
   parentPhone?: Prisma.StringNullableFilter<"Student"> | string | null
@@ -1706,6 +2769,18 @@ export type StudentCreateWithoutClassScheduleEventsInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -1735,6 +2810,8 @@ export type StudentCreateWithoutClassScheduleEventsInput = {
   examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutClassScheduleEventsInput = {
@@ -1744,6 +2821,18 @@ export type StudentUncheckedCreateWithoutClassScheduleEventsInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -1773,6 +2862,8 @@ export type StudentUncheckedCreateWithoutClassScheduleEventsInput = {
   examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutClassScheduleEventsInput = {
@@ -1798,6 +2889,18 @@ export type StudentUpdateWithoutClassScheduleEventsInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1827,6 +2930,8 @@ export type StudentUpdateWithoutClassScheduleEventsInput = {
   examSchedules?: Prisma.ExamScheduleUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutClassScheduleEventsInput = {
@@ -1836,6 +2941,18 @@ export type StudentUncheckedUpdateWithoutClassScheduleEventsInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1865,6 +2982,8 @@ export type StudentUncheckedUpdateWithoutClassScheduleEventsInput = {
   examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutExamSchedulesInput = {
@@ -1874,6 +2993,18 @@ export type StudentCreateWithoutExamSchedulesInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -1903,6 +3034,8 @@ export type StudentCreateWithoutExamSchedulesInput = {
   examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutExamSchedulesInput = {
@@ -1912,6 +3045,18 @@ export type StudentUncheckedCreateWithoutExamSchedulesInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -1941,6 +3086,8 @@ export type StudentUncheckedCreateWithoutExamSchedulesInput = {
   examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutExamSchedulesInput = {
@@ -1966,6 +3113,18 @@ export type StudentUpdateWithoutExamSchedulesInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1995,6 +3154,8 @@ export type StudentUpdateWithoutExamSchedulesInput = {
   examAttempts?: Prisma.ExamAttemptUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutExamSchedulesInput = {
@@ -2004,6 +3165,18 @@ export type StudentUncheckedUpdateWithoutExamSchedulesInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2033,6 +3206,8 @@ export type StudentUncheckedUpdateWithoutExamSchedulesInput = {
   examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutExamAttemptsInput = {
@@ -2042,6 +3217,18 @@ export type StudentCreateWithoutExamAttemptsInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -2071,6 +3258,8 @@ export type StudentCreateWithoutExamAttemptsInput = {
   examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutExamAttemptsInput = {
@@ -2080,6 +3269,18 @@ export type StudentUncheckedCreateWithoutExamAttemptsInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -2109,6 +3310,8 @@ export type StudentUncheckedCreateWithoutExamAttemptsInput = {
   examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutExamAttemptsInput = {
@@ -2134,6 +3337,18 @@ export type StudentUpdateWithoutExamAttemptsInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2163,6 +3378,8 @@ export type StudentUpdateWithoutExamAttemptsInput = {
   examSchedules?: Prisma.ExamScheduleUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutExamAttemptsInput = {
@@ -2172,6 +3389,18 @@ export type StudentUncheckedUpdateWithoutExamAttemptsInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2201,6 +3430,8 @@ export type StudentUncheckedUpdateWithoutExamAttemptsInput = {
   examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutCourseHistoryInput = {
@@ -2210,6 +3441,18 @@ export type StudentCreateWithoutCourseHistoryInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -2239,6 +3482,8 @@ export type StudentCreateWithoutCourseHistoryInput = {
   examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutStudentInput
   examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutCourseHistoryInput = {
@@ -2248,6 +3493,18 @@ export type StudentUncheckedCreateWithoutCourseHistoryInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -2277,6 +3534,8 @@ export type StudentUncheckedCreateWithoutCourseHistoryInput = {
   examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutStudentInput
   examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutCourseHistoryInput = {
@@ -2302,6 +3561,18 @@ export type StudentUpdateWithoutCourseHistoryInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2331,6 +3602,8 @@ export type StudentUpdateWithoutCourseHistoryInput = {
   examAttempts?: Prisma.ExamAttemptUpdateManyWithoutStudentNestedInput
   examSchedules?: Prisma.ExamScheduleUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutCourseHistoryInput = {
@@ -2340,6 +3613,18 @@ export type StudentUncheckedUpdateWithoutCourseHistoryInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2369,6 +3654,8 @@ export type StudentUncheckedUpdateWithoutCourseHistoryInput = {
   examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutStudentNestedInput
   examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutClassReportsInput = {
@@ -2378,6 +3665,18 @@ export type StudentCreateWithoutClassReportsInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -2407,6 +3706,8 @@ export type StudentCreateWithoutClassReportsInput = {
   examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutClassReportsInput = {
@@ -2416,6 +3717,18 @@ export type StudentUncheckedCreateWithoutClassReportsInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -2445,6 +3758,8 @@ export type StudentUncheckedCreateWithoutClassReportsInput = {
   examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutStudentInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutClassReportsInput = {
@@ -2470,6 +3785,18 @@ export type StudentUpdateWithoutClassReportsInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2499,6 +3826,8 @@ export type StudentUpdateWithoutClassReportsInput = {
   examSchedules?: Prisma.ExamScheduleUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutClassReportsInput = {
@@ -2508,6 +3837,18 @@ export type StudentUncheckedUpdateWithoutClassReportsInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2537,6 +3878,8 @@ export type StudentUncheckedUpdateWithoutClassReportsInput = {
   examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateManyTeacherInput = {
@@ -2546,6 +3889,18 @@ export type StudentCreateManyTeacherInput = {
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: string | null
   parentEmail?: string | null
   parentPhone?: string | null
@@ -2576,6 +3931,18 @@ export type StudentUpdateWithoutTeacherInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2605,6 +3972,8 @@ export type StudentUpdateWithoutTeacherInput = {
   examSchedules?: Prisma.ExamScheduleUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutTeacherInput = {
@@ -2614,6 +3983,18 @@ export type StudentUncheckedUpdateWithoutTeacherInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2643,6 +4024,8 @@ export type StudentUncheckedUpdateWithoutTeacherInput = {
   examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutStudentNestedInput
   courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateManyWithoutTeacherInput = {
@@ -2652,6 +4035,18 @@ export type StudentUncheckedUpdateManyWithoutTeacherInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
   parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2688,6 +4083,8 @@ export type StudentCountOutputType = {
   examAttempts: number
   examSchedules: number
   courseHistory: number
+  billingTransactions: number
+  invoices: number
 }
 
 export type StudentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2698,6 +4095,8 @@ export type StudentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   examAttempts?: boolean | StudentCountOutputTypeCountExamAttemptsArgs
   examSchedules?: boolean | StudentCountOutputTypeCountExamSchedulesArgs
   courseHistory?: boolean | StudentCountOutputTypeCountCourseHistoryArgs
+  billingTransactions?: boolean | StudentCountOutputTypeCountBillingTransactionsArgs
+  invoices?: boolean | StudentCountOutputTypeCountInvoicesArgs
 }
 
 /**
@@ -2759,6 +4158,20 @@ export type StudentCountOutputTypeCountCourseHistoryArgs<ExtArgs extends runtime
   where?: Prisma.StudentCourseHistoryWhereInput
 }
 
+/**
+ * StudentCountOutputType without action
+ */
+export type StudentCountOutputTypeCountBillingTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StudentBillingTransactionWhereInput
+}
+
+/**
+ * StudentCountOutputType without action
+ */
+export type StudentCountOutputTypeCountInvoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StudentInvoiceWhereInput
+}
+
 
 export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2767,6 +4180,18 @@ export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   country?: boolean
   studentSince?: boolean
   weeklySchedule?: boolean
+  classStartDate?: boolean
+  classStartTime?: boolean
+  classDurationMinutes?: boolean
+  classDays?: boolean
+  packageCode?: boolean
+  weeklyHours?: boolean
+  billingCycle?: boolean
+  monthlyPriceBdt?: boolean
+  quarterlyPriceBdt?: boolean
+  billingAmountBdt?: boolean
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: boolean
   parentEmail?: boolean
   parentPhone?: boolean
@@ -2798,6 +4223,8 @@ export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   examSchedules?: boolean | Prisma.Student$examSchedulesArgs<ExtArgs>
   courseHistory?: boolean | Prisma.Student$courseHistoryArgs<ExtArgs>
   userAccount?: boolean | Prisma.Student$userAccountArgs<ExtArgs>
+  billingTransactions?: boolean | Prisma.Student$billingTransactionsArgs<ExtArgs>
+  invoices?: boolean | Prisma.Student$invoicesArgs<ExtArgs>
   _count?: boolean | Prisma.StudentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
 
@@ -2808,6 +4235,18 @@ export type StudentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   country?: boolean
   studentSince?: boolean
   weeklySchedule?: boolean
+  classStartDate?: boolean
+  classStartTime?: boolean
+  classDurationMinutes?: boolean
+  classDays?: boolean
+  packageCode?: boolean
+  weeklyHours?: boolean
+  billingCycle?: boolean
+  monthlyPriceBdt?: boolean
+  quarterlyPriceBdt?: boolean
+  billingAmountBdt?: boolean
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: boolean
   parentEmail?: boolean
   parentPhone?: boolean
@@ -2840,6 +4279,18 @@ export type StudentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   country?: boolean
   studentSince?: boolean
   weeklySchedule?: boolean
+  classStartDate?: boolean
+  classStartTime?: boolean
+  classDurationMinutes?: boolean
+  classDays?: boolean
+  packageCode?: boolean
+  weeklyHours?: boolean
+  billingCycle?: boolean
+  monthlyPriceBdt?: boolean
+  quarterlyPriceBdt?: boolean
+  billingAmountBdt?: boolean
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: boolean
   parentEmail?: boolean
   parentPhone?: boolean
@@ -2872,6 +4323,18 @@ export type StudentSelectScalar = {
   country?: boolean
   studentSince?: boolean
   weeklySchedule?: boolean
+  classStartDate?: boolean
+  classStartTime?: boolean
+  classDurationMinutes?: boolean
+  classDays?: boolean
+  packageCode?: boolean
+  weeklyHours?: boolean
+  billingCycle?: boolean
+  monthlyPriceBdt?: boolean
+  quarterlyPriceBdt?: boolean
+  billingAmountBdt?: boolean
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
   parentName?: boolean
   parentEmail?: boolean
   parentPhone?: boolean
@@ -2896,7 +4359,7 @@ export type StudentSelectScalar = {
   courseUpdatedAt?: boolean
 }
 
-export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "image" | "name" | "country" | "studentSince" | "weeklySchedule" | "parentName" | "parentEmail" | "parentPhone" | "courseName" | "courseStage" | "teacherId" | "teacherName" | "groupClass" | "groupSchedule" | "groupClassSchedule" | "groupTeacher" | "groupSubject" | "subject" | "teacherChanged" | "previousTeacherName" | "teacherChangeReason" | "status" | "createdAt" | "updatedAt" | "currentCourseLevel" | "courseCompleted" | "courseUpdatedAt", ExtArgs["result"]["student"]>
+export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "image" | "name" | "country" | "studentSince" | "weeklySchedule" | "classStartDate" | "classStartTime" | "classDurationMinutes" | "classDays" | "packageCode" | "weeklyHours" | "billingCycle" | "monthlyPriceBdt" | "quarterlyPriceBdt" | "billingAmountBdt" | "billingManualOverride" | "scheduleConfirmed" | "parentName" | "parentEmail" | "parentPhone" | "courseName" | "courseStage" | "teacherId" | "teacherName" | "groupClass" | "groupSchedule" | "groupClassSchedule" | "groupTeacher" | "groupSubject" | "subject" | "teacherChanged" | "previousTeacherName" | "teacherChangeReason" | "status" | "createdAt" | "updatedAt" | "currentCourseLevel" | "courseCompleted" | "courseUpdatedAt", ExtArgs["result"]["student"]>
 export type StudentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   teacher?: boolean | Prisma.Student$teacherArgs<ExtArgs>
   courses?: boolean | Prisma.Student$coursesArgs<ExtArgs>
@@ -2907,6 +4370,8 @@ export type StudentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   examSchedules?: boolean | Prisma.Student$examSchedulesArgs<ExtArgs>
   courseHistory?: boolean | Prisma.Student$courseHistoryArgs<ExtArgs>
   userAccount?: boolean | Prisma.Student$userAccountArgs<ExtArgs>
+  billingTransactions?: boolean | Prisma.Student$billingTransactionsArgs<ExtArgs>
+  invoices?: boolean | Prisma.Student$invoicesArgs<ExtArgs>
   _count?: boolean | Prisma.StudentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StudentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2928,6 +4393,8 @@ export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     examSchedules: Prisma.$ExamSchedulePayload<ExtArgs>[]
     courseHistory: Prisma.$StudentCourseHistoryPayload<ExtArgs>[]
     userAccount: Prisma.$UserPayload<ExtArgs> | null
+    billingTransactions: Prisma.$StudentBillingTransactionPayload<ExtArgs>[]
+    invoices: Prisma.$StudentInvoicePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2936,6 +4403,18 @@ export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     country: string | null
     studentSince: Date | null
     weeklySchedule: string | null
+    classStartDate: Date | null
+    classStartTime: string | null
+    classDurationMinutes: number | null
+    classDays: number[]
+    packageCode: string | null
+    weeklyHours: runtime.Decimal | null
+    billingCycle: string
+    monthlyPriceBdt: runtime.Decimal | null
+    quarterlyPriceBdt: runtime.Decimal | null
+    billingAmountBdt: runtime.Decimal | null
+    billingManualOverride: boolean
+    scheduleConfirmed: boolean
     parentName: string | null
     parentEmail: string | null
     parentPhone: string | null
@@ -3361,6 +4840,8 @@ export interface Prisma__StudentClient<T, Null = never, ExtArgs extends runtime.
   examSchedules<T extends Prisma.Student$examSchedulesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$examSchedulesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExamSchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   courseHistory<T extends Prisma.Student$courseHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$courseHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentCourseHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   userAccount<T extends Prisma.Student$userAccountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$userAccountArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  billingTransactions<T extends Prisma.Student$billingTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$billingTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentBillingTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  invoices<T extends Prisma.Student$invoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentInvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3396,6 +4877,18 @@ export interface StudentFieldRefs {
   readonly country: Prisma.FieldRef<"Student", 'String'>
   readonly studentSince: Prisma.FieldRef<"Student", 'DateTime'>
   readonly weeklySchedule: Prisma.FieldRef<"Student", 'String'>
+  readonly classStartDate: Prisma.FieldRef<"Student", 'DateTime'>
+  readonly classStartTime: Prisma.FieldRef<"Student", 'String'>
+  readonly classDurationMinutes: Prisma.FieldRef<"Student", 'Int'>
+  readonly classDays: Prisma.FieldRef<"Student", 'Int[]'>
+  readonly packageCode: Prisma.FieldRef<"Student", 'String'>
+  readonly weeklyHours: Prisma.FieldRef<"Student", 'Decimal'>
+  readonly billingCycle: Prisma.FieldRef<"Student", 'String'>
+  readonly monthlyPriceBdt: Prisma.FieldRef<"Student", 'Decimal'>
+  readonly quarterlyPriceBdt: Prisma.FieldRef<"Student", 'Decimal'>
+  readonly billingAmountBdt: Prisma.FieldRef<"Student", 'Decimal'>
+  readonly billingManualOverride: Prisma.FieldRef<"Student", 'Boolean'>
+  readonly scheduleConfirmed: Prisma.FieldRef<"Student", 'Boolean'>
   readonly parentName: Prisma.FieldRef<"Student", 'String'>
   readonly parentEmail: Prisma.FieldRef<"Student", 'String'>
   readonly parentPhone: Prisma.FieldRef<"Student", 'String'>
@@ -4022,6 +5515,54 @@ export type Student$userAccountArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * Student.billingTransactions
+ */
+export type Student$billingTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StudentBillingTransaction
+   */
+  select?: Prisma.StudentBillingTransactionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StudentBillingTransaction
+   */
+  omit?: Prisma.StudentBillingTransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StudentBillingTransactionInclude<ExtArgs> | null
+  where?: Prisma.StudentBillingTransactionWhereInput
+  orderBy?: Prisma.StudentBillingTransactionOrderByWithRelationInput | Prisma.StudentBillingTransactionOrderByWithRelationInput[]
+  cursor?: Prisma.StudentBillingTransactionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StudentBillingTransactionScalarFieldEnum | Prisma.StudentBillingTransactionScalarFieldEnum[]
+}
+
+/**
+ * Student.invoices
+ */
+export type Student$invoicesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StudentInvoice
+   */
+  select?: Prisma.StudentInvoiceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StudentInvoice
+   */
+  omit?: Prisma.StudentInvoiceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StudentInvoiceInclude<ExtArgs> | null
+  where?: Prisma.StudentInvoiceWhereInput
+  orderBy?: Prisma.StudentInvoiceOrderByWithRelationInput | Prisma.StudentInvoiceOrderByWithRelationInput[]
+  cursor?: Prisma.StudentInvoiceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StudentInvoiceScalarFieldEnum | Prisma.StudentInvoiceScalarFieldEnum[]
 }
 
 /**

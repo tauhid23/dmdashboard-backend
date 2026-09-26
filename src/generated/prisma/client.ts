@@ -92,6 +92,16 @@ export type AppSetting = Prisma.AppSettingModel
  */
 export type Student = Prisma.StudentModel
 /**
+ * Model StudentBillingTransaction
+ * 
+ */
+export type StudentBillingTransaction = Prisma.StudentBillingTransactionModel
+/**
+ * Model StudentInvoice
+ * 
+ */
+export type StudentInvoice = Prisma.StudentInvoiceModel
+/**
  * Model StudentCourse
  * 
  */

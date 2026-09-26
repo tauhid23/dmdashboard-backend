@@ -12,6 +12,7 @@ import examRuleRoutes from "../exam/exam-rule.routes.js";
 import examScheduleRoutes from "../exam/exam-schedule.routes.js";
 import authRoutes from "../auth/auth.routes.js";
 import { permissionRoutes, roleRoutes } from "./rbac.routes.js";
+import billingRoutes from "./billing.routes.js";
 
 const router = Router();
 router.use("/auth", authRoutes);
@@ -25,6 +26,7 @@ router.use("/students", studentRoutes);
 router.use("/settings", settingsRoutes);
 router.use("/teachers", teacherRoutes);
 router.use("/users", userRoutes);
+router.use("/billing", billingRoutes);
 router.use("/exam-attempts", examRoutes);
 router.use("/exam-rules", examRuleRoutes);
 router.use("/exam-schedules", examScheduleRoutes);
