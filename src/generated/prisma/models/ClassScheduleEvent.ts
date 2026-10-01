@@ -336,6 +336,8 @@ export type ClassScheduleEventWhereInput = {
   recurrenceEndDate?: Prisma.DateTimeNullableFilter<"ClassScheduleEvent"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"ClassScheduleEvent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ClassScheduleEvent"> | Date | string
+  earnedMakeupCredit?: Prisma.XOR<Prisma.MakeupCreditNullableScalarRelationFilter, Prisma.MakeupCreditWhereInput> | null
+  makeupUses?: Prisma.MakeupCreditUseListRelationFilter
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
   teacher?: Prisma.XOR<Prisma.TeacherScalarRelationFilter, Prisma.TeacherWhereInput>
 }
@@ -361,6 +363,8 @@ export type ClassScheduleEventOrderByWithRelationInput = {
   recurrenceEndDate?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  earnedMakeupCredit?: Prisma.MakeupCreditOrderByWithRelationInput
+  makeupUses?: Prisma.MakeupCreditUseOrderByRelationAggregateInput
   student?: Prisma.StudentOrderByWithRelationInput
   teacher?: Prisma.TeacherOrderByWithRelationInput
 }
@@ -389,6 +393,8 @@ export type ClassScheduleEventWhereUniqueInput = Prisma.AtLeast<{
   recurrenceEndDate?: Prisma.DateTimeNullableFilter<"ClassScheduleEvent"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"ClassScheduleEvent"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ClassScheduleEvent"> | Date | string
+  earnedMakeupCredit?: Prisma.XOR<Prisma.MakeupCreditNullableScalarRelationFilter, Prisma.MakeupCreditWhereInput> | null
+  makeupUses?: Prisma.MakeupCreditUseListRelationFilter
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
   teacher?: Prisma.XOR<Prisma.TeacherScalarRelationFilter, Prisma.TeacherWhereInput>
 }, "id">
@@ -466,6 +472,8 @@ export type ClassScheduleEventCreateInput = {
   recurrenceEndDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  earnedMakeupCredit?: Prisma.MakeupCreditCreateNestedOneWithoutSourceEventInput
+  makeupUses?: Prisma.MakeupCreditUseCreateNestedManyWithoutEventInput
   student: Prisma.StudentCreateNestedOneWithoutClassScheduleEventsInput
   teacher: Prisma.TeacherCreateNestedOneWithoutClassScheduleEventsInput
 }
@@ -491,6 +499,8 @@ export type ClassScheduleEventUncheckedCreateInput = {
   recurrenceEndDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  earnedMakeupCredit?: Prisma.MakeupCreditUncheckedCreateNestedOneWithoutSourceEventInput
+  makeupUses?: Prisma.MakeupCreditUseUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type ClassScheduleEventUpdateInput = {
@@ -512,6 +522,8 @@ export type ClassScheduleEventUpdateInput = {
   recurrenceEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  earnedMakeupCredit?: Prisma.MakeupCreditUpdateOneWithoutSourceEventNestedInput
+  makeupUses?: Prisma.MakeupCreditUseUpdateManyWithoutEventNestedInput
   student?: Prisma.StudentUpdateOneRequiredWithoutClassScheduleEventsNestedInput
   teacher?: Prisma.TeacherUpdateOneRequiredWithoutClassScheduleEventsNestedInput
 }
@@ -537,6 +549,8 @@ export type ClassScheduleEventUncheckedUpdateInput = {
   recurrenceEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  earnedMakeupCredit?: Prisma.MakeupCreditUncheckedUpdateOneWithoutSourceEventNestedInput
+  makeupUses?: Prisma.MakeupCreditUseUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type ClassScheduleEventCreateManyInput = {
@@ -693,6 +707,11 @@ export type ClassScheduleEventSumOrderByAggregateInput = {
   repeatDays?: Prisma.SortOrder
 }
 
+export type ClassScheduleEventScalarRelationFilter = {
+  is?: Prisma.ClassScheduleEventWhereInput
+  isNot?: Prisma.ClassScheduleEventWhereInput
+}
+
 export type ClassScheduleEventCreateNestedManyWithoutStudentInput = {
   create?: Prisma.XOR<Prisma.ClassScheduleEventCreateWithoutStudentInput, Prisma.ClassScheduleEventUncheckedCreateWithoutStudentInput> | Prisma.ClassScheduleEventCreateWithoutStudentInput[] | Prisma.ClassScheduleEventUncheckedCreateWithoutStudentInput[]
   connectOrCreate?: Prisma.ClassScheduleEventCreateOrConnectWithoutStudentInput | Prisma.ClassScheduleEventCreateOrConnectWithoutStudentInput[]
@@ -786,6 +805,34 @@ export type ClassScheduleEventUpdaterepeatDaysInput = {
   push?: number | number[]
 }
 
+export type ClassScheduleEventCreateNestedOneWithoutEarnedMakeupCreditInput = {
+  create?: Prisma.XOR<Prisma.ClassScheduleEventCreateWithoutEarnedMakeupCreditInput, Prisma.ClassScheduleEventUncheckedCreateWithoutEarnedMakeupCreditInput>
+  connectOrCreate?: Prisma.ClassScheduleEventCreateOrConnectWithoutEarnedMakeupCreditInput
+  connect?: Prisma.ClassScheduleEventWhereUniqueInput
+}
+
+export type ClassScheduleEventUpdateOneRequiredWithoutEarnedMakeupCreditNestedInput = {
+  create?: Prisma.XOR<Prisma.ClassScheduleEventCreateWithoutEarnedMakeupCreditInput, Prisma.ClassScheduleEventUncheckedCreateWithoutEarnedMakeupCreditInput>
+  connectOrCreate?: Prisma.ClassScheduleEventCreateOrConnectWithoutEarnedMakeupCreditInput
+  upsert?: Prisma.ClassScheduleEventUpsertWithoutEarnedMakeupCreditInput
+  connect?: Prisma.ClassScheduleEventWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClassScheduleEventUpdateToOneWithWhereWithoutEarnedMakeupCreditInput, Prisma.ClassScheduleEventUpdateWithoutEarnedMakeupCreditInput>, Prisma.ClassScheduleEventUncheckedUpdateWithoutEarnedMakeupCreditInput>
+}
+
+export type ClassScheduleEventCreateNestedOneWithoutMakeupUsesInput = {
+  create?: Prisma.XOR<Prisma.ClassScheduleEventCreateWithoutMakeupUsesInput, Prisma.ClassScheduleEventUncheckedCreateWithoutMakeupUsesInput>
+  connectOrCreate?: Prisma.ClassScheduleEventCreateOrConnectWithoutMakeupUsesInput
+  connect?: Prisma.ClassScheduleEventWhereUniqueInput
+}
+
+export type ClassScheduleEventUpdateOneRequiredWithoutMakeupUsesNestedInput = {
+  create?: Prisma.XOR<Prisma.ClassScheduleEventCreateWithoutMakeupUsesInput, Prisma.ClassScheduleEventUncheckedCreateWithoutMakeupUsesInput>
+  connectOrCreate?: Prisma.ClassScheduleEventCreateOrConnectWithoutMakeupUsesInput
+  upsert?: Prisma.ClassScheduleEventUpsertWithoutMakeupUsesInput
+  connect?: Prisma.ClassScheduleEventWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ClassScheduleEventUpdateToOneWithWhereWithoutMakeupUsesInput, Prisma.ClassScheduleEventUpdateWithoutMakeupUsesInput>, Prisma.ClassScheduleEventUncheckedUpdateWithoutMakeupUsesInput>
+}
+
 export type ClassScheduleEventCreateWithoutStudentInput = {
   id?: string
   category: string
@@ -805,6 +852,8 @@ export type ClassScheduleEventCreateWithoutStudentInput = {
   recurrenceEndDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  earnedMakeupCredit?: Prisma.MakeupCreditCreateNestedOneWithoutSourceEventInput
+  makeupUses?: Prisma.MakeupCreditUseCreateNestedManyWithoutEventInput
   teacher: Prisma.TeacherCreateNestedOneWithoutClassScheduleEventsInput
 }
 
@@ -828,6 +877,8 @@ export type ClassScheduleEventUncheckedCreateWithoutStudentInput = {
   recurrenceEndDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  earnedMakeupCredit?: Prisma.MakeupCreditUncheckedCreateNestedOneWithoutSourceEventInput
+  makeupUses?: Prisma.MakeupCreditUseUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type ClassScheduleEventCreateOrConnectWithoutStudentInput = {
@@ -901,6 +952,8 @@ export type ClassScheduleEventCreateWithoutTeacherInput = {
   recurrenceEndDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  earnedMakeupCredit?: Prisma.MakeupCreditCreateNestedOneWithoutSourceEventInput
+  makeupUses?: Prisma.MakeupCreditUseCreateNestedManyWithoutEventInput
   student: Prisma.StudentCreateNestedOneWithoutClassScheduleEventsInput
 }
 
@@ -924,6 +977,8 @@ export type ClassScheduleEventUncheckedCreateWithoutTeacherInput = {
   recurrenceEndDate?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  earnedMakeupCredit?: Prisma.MakeupCreditUncheckedCreateNestedOneWithoutSourceEventInput
+  makeupUses?: Prisma.MakeupCreditUseUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type ClassScheduleEventCreateOrConnectWithoutTeacherInput = {
@@ -950,6 +1005,230 @@ export type ClassScheduleEventUpdateWithWhereUniqueWithoutTeacherInput = {
 export type ClassScheduleEventUpdateManyWithWhereWithoutTeacherInput = {
   where: Prisma.ClassScheduleEventScalarWhereInput
   data: Prisma.XOR<Prisma.ClassScheduleEventUpdateManyMutationInput, Prisma.ClassScheduleEventUncheckedUpdateManyWithoutTeacherInput>
+}
+
+export type ClassScheduleEventCreateWithoutEarnedMakeupCreditInput = {
+  id?: string
+  category: string
+  scheduledDate: Date | string
+  startTime: string
+  endTime: string
+  durationMinutes: number
+  status?: string
+  attendanceStatus?: string
+  makeupCredit?: boolean
+  note?: string | null
+  recurrenceGroupId?: string | null
+  recurrenceSourceId?: string | null
+  isRecurring?: boolean
+  repeatDays?: Prisma.ClassScheduleEventCreaterepeatDaysInput | number[]
+  repeatIndefinitely?: boolean
+  recurrenceEndDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  makeupUses?: Prisma.MakeupCreditUseCreateNestedManyWithoutEventInput
+  student: Prisma.StudentCreateNestedOneWithoutClassScheduleEventsInput
+  teacher: Prisma.TeacherCreateNestedOneWithoutClassScheduleEventsInput
+}
+
+export type ClassScheduleEventUncheckedCreateWithoutEarnedMakeupCreditInput = {
+  id?: string
+  studentId: string
+  teacherId: string
+  category: string
+  scheduledDate: Date | string
+  startTime: string
+  endTime: string
+  durationMinutes: number
+  status?: string
+  attendanceStatus?: string
+  makeupCredit?: boolean
+  note?: string | null
+  recurrenceGroupId?: string | null
+  recurrenceSourceId?: string | null
+  isRecurring?: boolean
+  repeatDays?: Prisma.ClassScheduleEventCreaterepeatDaysInput | number[]
+  repeatIndefinitely?: boolean
+  recurrenceEndDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  makeupUses?: Prisma.MakeupCreditUseUncheckedCreateNestedManyWithoutEventInput
+}
+
+export type ClassScheduleEventCreateOrConnectWithoutEarnedMakeupCreditInput = {
+  where: Prisma.ClassScheduleEventWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClassScheduleEventCreateWithoutEarnedMakeupCreditInput, Prisma.ClassScheduleEventUncheckedCreateWithoutEarnedMakeupCreditInput>
+}
+
+export type ClassScheduleEventUpsertWithoutEarnedMakeupCreditInput = {
+  update: Prisma.XOR<Prisma.ClassScheduleEventUpdateWithoutEarnedMakeupCreditInput, Prisma.ClassScheduleEventUncheckedUpdateWithoutEarnedMakeupCreditInput>
+  create: Prisma.XOR<Prisma.ClassScheduleEventCreateWithoutEarnedMakeupCreditInput, Prisma.ClassScheduleEventUncheckedCreateWithoutEarnedMakeupCreditInput>
+  where?: Prisma.ClassScheduleEventWhereInput
+}
+
+export type ClassScheduleEventUpdateToOneWithWhereWithoutEarnedMakeupCreditInput = {
+  where?: Prisma.ClassScheduleEventWhereInput
+  data: Prisma.XOR<Prisma.ClassScheduleEventUpdateWithoutEarnedMakeupCreditInput, Prisma.ClassScheduleEventUncheckedUpdateWithoutEarnedMakeupCreditInput>
+}
+
+export type ClassScheduleEventUpdateWithoutEarnedMakeupCreditInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduledDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.StringFieldUpdateOperationsInput | string
+  endTime?: Prisma.StringFieldUpdateOperationsInput | string
+  durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  attendanceStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  makeupCredit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recurrenceGroupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recurrenceSourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  repeatDays?: Prisma.ClassScheduleEventUpdaterepeatDaysInput | number[]
+  repeatIndefinitely?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  recurrenceEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  makeupUses?: Prisma.MakeupCreditUseUpdateManyWithoutEventNestedInput
+  student?: Prisma.StudentUpdateOneRequiredWithoutClassScheduleEventsNestedInput
+  teacher?: Prisma.TeacherUpdateOneRequiredWithoutClassScheduleEventsNestedInput
+}
+
+export type ClassScheduleEventUncheckedUpdateWithoutEarnedMakeupCreditInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  studentId?: Prisma.StringFieldUpdateOperationsInput | string
+  teacherId?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduledDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.StringFieldUpdateOperationsInput | string
+  endTime?: Prisma.StringFieldUpdateOperationsInput | string
+  durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  attendanceStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  makeupCredit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recurrenceGroupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recurrenceSourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  repeatDays?: Prisma.ClassScheduleEventUpdaterepeatDaysInput | number[]
+  repeatIndefinitely?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  recurrenceEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  makeupUses?: Prisma.MakeupCreditUseUncheckedUpdateManyWithoutEventNestedInput
+}
+
+export type ClassScheduleEventCreateWithoutMakeupUsesInput = {
+  id?: string
+  category: string
+  scheduledDate: Date | string
+  startTime: string
+  endTime: string
+  durationMinutes: number
+  status?: string
+  attendanceStatus?: string
+  makeupCredit?: boolean
+  note?: string | null
+  recurrenceGroupId?: string | null
+  recurrenceSourceId?: string | null
+  isRecurring?: boolean
+  repeatDays?: Prisma.ClassScheduleEventCreaterepeatDaysInput | number[]
+  repeatIndefinitely?: boolean
+  recurrenceEndDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  earnedMakeupCredit?: Prisma.MakeupCreditCreateNestedOneWithoutSourceEventInput
+  student: Prisma.StudentCreateNestedOneWithoutClassScheduleEventsInput
+  teacher: Prisma.TeacherCreateNestedOneWithoutClassScheduleEventsInput
+}
+
+export type ClassScheduleEventUncheckedCreateWithoutMakeupUsesInput = {
+  id?: string
+  studentId: string
+  teacherId: string
+  category: string
+  scheduledDate: Date | string
+  startTime: string
+  endTime: string
+  durationMinutes: number
+  status?: string
+  attendanceStatus?: string
+  makeupCredit?: boolean
+  note?: string | null
+  recurrenceGroupId?: string | null
+  recurrenceSourceId?: string | null
+  isRecurring?: boolean
+  repeatDays?: Prisma.ClassScheduleEventCreaterepeatDaysInput | number[]
+  repeatIndefinitely?: boolean
+  recurrenceEndDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  earnedMakeupCredit?: Prisma.MakeupCreditUncheckedCreateNestedOneWithoutSourceEventInput
+}
+
+export type ClassScheduleEventCreateOrConnectWithoutMakeupUsesInput = {
+  where: Prisma.ClassScheduleEventWhereUniqueInput
+  create: Prisma.XOR<Prisma.ClassScheduleEventCreateWithoutMakeupUsesInput, Prisma.ClassScheduleEventUncheckedCreateWithoutMakeupUsesInput>
+}
+
+export type ClassScheduleEventUpsertWithoutMakeupUsesInput = {
+  update: Prisma.XOR<Prisma.ClassScheduleEventUpdateWithoutMakeupUsesInput, Prisma.ClassScheduleEventUncheckedUpdateWithoutMakeupUsesInput>
+  create: Prisma.XOR<Prisma.ClassScheduleEventCreateWithoutMakeupUsesInput, Prisma.ClassScheduleEventUncheckedCreateWithoutMakeupUsesInput>
+  where?: Prisma.ClassScheduleEventWhereInput
+}
+
+export type ClassScheduleEventUpdateToOneWithWhereWithoutMakeupUsesInput = {
+  where?: Prisma.ClassScheduleEventWhereInput
+  data: Prisma.XOR<Prisma.ClassScheduleEventUpdateWithoutMakeupUsesInput, Prisma.ClassScheduleEventUncheckedUpdateWithoutMakeupUsesInput>
+}
+
+export type ClassScheduleEventUpdateWithoutMakeupUsesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduledDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.StringFieldUpdateOperationsInput | string
+  endTime?: Prisma.StringFieldUpdateOperationsInput | string
+  durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  attendanceStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  makeupCredit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recurrenceGroupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recurrenceSourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  repeatDays?: Prisma.ClassScheduleEventUpdaterepeatDaysInput | number[]
+  repeatIndefinitely?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  recurrenceEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  earnedMakeupCredit?: Prisma.MakeupCreditUpdateOneWithoutSourceEventNestedInput
+  student?: Prisma.StudentUpdateOneRequiredWithoutClassScheduleEventsNestedInput
+  teacher?: Prisma.TeacherUpdateOneRequiredWithoutClassScheduleEventsNestedInput
+}
+
+export type ClassScheduleEventUncheckedUpdateWithoutMakeupUsesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  studentId?: Prisma.StringFieldUpdateOperationsInput | string
+  teacherId?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  scheduledDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  startTime?: Prisma.StringFieldUpdateOperationsInput | string
+  endTime?: Prisma.StringFieldUpdateOperationsInput | string
+  durationMinutes?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  attendanceStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  makeupCredit?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recurrenceGroupId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recurrenceSourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  repeatDays?: Prisma.ClassScheduleEventUpdaterepeatDaysInput | number[]
+  repeatIndefinitely?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  recurrenceEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  earnedMakeupCredit?: Prisma.MakeupCreditUncheckedUpdateOneWithoutSourceEventNestedInput
 }
 
 export type ClassScheduleEventCreateManyStudentInput = {
@@ -993,6 +1272,8 @@ export type ClassScheduleEventUpdateWithoutStudentInput = {
   recurrenceEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  earnedMakeupCredit?: Prisma.MakeupCreditUpdateOneWithoutSourceEventNestedInput
+  makeupUses?: Prisma.MakeupCreditUseUpdateManyWithoutEventNestedInput
   teacher?: Prisma.TeacherUpdateOneRequiredWithoutClassScheduleEventsNestedInput
 }
 
@@ -1016,6 +1297,8 @@ export type ClassScheduleEventUncheckedUpdateWithoutStudentInput = {
   recurrenceEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  earnedMakeupCredit?: Prisma.MakeupCreditUncheckedUpdateOneWithoutSourceEventNestedInput
+  makeupUses?: Prisma.MakeupCreditUseUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type ClassScheduleEventUncheckedUpdateManyWithoutStudentInput = {
@@ -1081,6 +1364,8 @@ export type ClassScheduleEventUpdateWithoutTeacherInput = {
   recurrenceEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  earnedMakeupCredit?: Prisma.MakeupCreditUpdateOneWithoutSourceEventNestedInput
+  makeupUses?: Prisma.MakeupCreditUseUpdateManyWithoutEventNestedInput
   student?: Prisma.StudentUpdateOneRequiredWithoutClassScheduleEventsNestedInput
 }
 
@@ -1104,6 +1389,8 @@ export type ClassScheduleEventUncheckedUpdateWithoutTeacherInput = {
   recurrenceEndDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  earnedMakeupCredit?: Prisma.MakeupCreditUncheckedUpdateOneWithoutSourceEventNestedInput
+  makeupUses?: Prisma.MakeupCreditUseUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type ClassScheduleEventUncheckedUpdateManyWithoutTeacherInput = {
@@ -1129,6 +1416,35 @@ export type ClassScheduleEventUncheckedUpdateManyWithoutTeacherInput = {
 }
 
 
+/**
+ * Count Type ClassScheduleEventCountOutputType
+ */
+
+export type ClassScheduleEventCountOutputType = {
+  makeupUses: number
+}
+
+export type ClassScheduleEventCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  makeupUses?: boolean | ClassScheduleEventCountOutputTypeCountMakeupUsesArgs
+}
+
+/**
+ * ClassScheduleEventCountOutputType without action
+ */
+export type ClassScheduleEventCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClassScheduleEventCountOutputType
+   */
+  select?: Prisma.ClassScheduleEventCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ClassScheduleEventCountOutputType without action
+ */
+export type ClassScheduleEventCountOutputTypeCountMakeupUsesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MakeupCreditUseWhereInput
+}
+
 
 export type ClassScheduleEventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1151,8 +1467,11 @@ export type ClassScheduleEventSelect<ExtArgs extends runtime.Types.Extensions.In
   recurrenceEndDate?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  earnedMakeupCredit?: boolean | Prisma.ClassScheduleEvent$earnedMakeupCreditArgs<ExtArgs>
+  makeupUses?: boolean | Prisma.ClassScheduleEvent$makeupUsesArgs<ExtArgs>
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
   teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.ClassScheduleEventCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["classScheduleEvent"]>
 
 export type ClassScheduleEventSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1230,8 +1549,11 @@ export type ClassScheduleEventSelectScalar = {
 
 export type ClassScheduleEventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "teacherId" | "category" | "scheduledDate" | "startTime" | "endTime" | "durationMinutes" | "status" | "attendanceStatus" | "makeupCredit" | "note" | "recurrenceGroupId" | "recurrenceSourceId" | "isRecurring" | "repeatDays" | "repeatIndefinitely" | "recurrenceEndDate" | "createdAt" | "updatedAt", ExtArgs["result"]["classScheduleEvent"]>
 export type ClassScheduleEventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  earnedMakeupCredit?: boolean | Prisma.ClassScheduleEvent$earnedMakeupCreditArgs<ExtArgs>
+  makeupUses?: boolean | Prisma.ClassScheduleEvent$makeupUsesArgs<ExtArgs>
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
   teacher?: boolean | Prisma.TeacherDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.ClassScheduleEventCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ClassScheduleEventIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
@@ -1245,6 +1567,8 @@ export type ClassScheduleEventIncludeUpdateManyAndReturn<ExtArgs extends runtime
 export type $ClassScheduleEventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ClassScheduleEvent"
   objects: {
+    earnedMakeupCredit: Prisma.$MakeupCreditPayload<ExtArgs> | null
+    makeupUses: Prisma.$MakeupCreditUsePayload<ExtArgs>[]
     student: Prisma.$StudentPayload<ExtArgs>
     teacher: Prisma.$TeacherPayload<ExtArgs>
   }
@@ -1663,6 +1987,8 @@ readonly fields: ClassScheduleEventFieldRefs;
  */
 export interface Prisma__ClassScheduleEventClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  earnedMakeupCredit<T extends Prisma.ClassScheduleEvent$earnedMakeupCreditArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ClassScheduleEvent$earnedMakeupCreditArgs<ExtArgs>>): Prisma.Prisma__MakeupCreditClient<runtime.Types.Result.GetResult<Prisma.$MakeupCreditPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  makeupUses<T extends Prisma.ClassScheduleEvent$makeupUsesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ClassScheduleEvent$makeupUsesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MakeupCreditUsePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   student<T extends Prisma.StudentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentDefaultArgs<ExtArgs>>): Prisma.Prisma__StudentClient<runtime.Types.Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   teacher<T extends Prisma.TeacherDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TeacherDefaultArgs<ExtArgs>>): Prisma.Prisma__TeacherClient<runtime.Types.Result.GetResult<Prisma.$TeacherPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -2112,6 +2438,49 @@ export type ClassScheduleEventDeleteManyArgs<ExtArgs extends runtime.Types.Exten
    * Limit how many ClassScheduleEvents to delete.
    */
   limit?: number
+}
+
+/**
+ * ClassScheduleEvent.earnedMakeupCredit
+ */
+export type ClassScheduleEvent$earnedMakeupCreditArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MakeupCredit
+   */
+  select?: Prisma.MakeupCreditSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MakeupCredit
+   */
+  omit?: Prisma.MakeupCreditOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MakeupCreditInclude<ExtArgs> | null
+  where?: Prisma.MakeupCreditWhereInput
+}
+
+/**
+ * ClassScheduleEvent.makeupUses
+ */
+export type ClassScheduleEvent$makeupUsesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MakeupCreditUse
+   */
+  select?: Prisma.MakeupCreditUseSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MakeupCreditUse
+   */
+  omit?: Prisma.MakeupCreditUseOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MakeupCreditUseInclude<ExtArgs> | null
+  where?: Prisma.MakeupCreditUseWhereInput
+  orderBy?: Prisma.MakeupCreditUseOrderByWithRelationInput | Prisma.MakeupCreditUseOrderByWithRelationInput[]
+  cursor?: Prisma.MakeupCreditUseWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MakeupCreditUseScalarFieldEnum | Prisma.MakeupCreditUseScalarFieldEnum[]
 }
 
 /**

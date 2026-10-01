@@ -27,11 +27,17 @@ export type AggregateStudentInvoice = {
 }
 
 export type StudentInvoiceAvgAggregateOutputType = {
+  previousBalanceBdt: runtime.Decimal | null
+  currentChargesBdt: runtime.Decimal | null
+  currentPaymentsBdt: runtime.Decimal | null
   amountBdt: runtime.Decimal | null
   paidAmountBdt: runtime.Decimal | null
 }
 
 export type StudentInvoiceSumAggregateOutputType = {
+  previousBalanceBdt: runtime.Decimal | null
+  currentChargesBdt: runtime.Decimal | null
+  currentPaymentsBdt: runtime.Decimal | null
   amountBdt: runtime.Decimal | null
   paidAmountBdt: runtime.Decimal | null
 }
@@ -40,14 +46,28 @@ export type StudentInvoiceMinAggregateOutputType = {
   id: string | null
   studentId: string | null
   invoiceNumber: string | null
+  automationKey: string | null
   invoiceDate: Date | null
   rangeStart: Date | null
   rangeEnd: Date | null
   dueDate: Date | null
+  includeBalanceForward: boolean | null
+  previousBalanceBdt: runtime.Decimal | null
+  currentChargesBdt: runtime.Decimal | null
+  currentPaymentsBdt: runtime.Decimal | null
   amountBdt: runtime.Decimal | null
   paidAmountBdt: runtime.Decimal | null
   status: string | null
   emailedAt: Date | null
+  autoSendAt: Date | null
+  autoRetryAt: Date | null
+  sendingUntil: Date | null
+  sentTo: string | null
+  emailSubject: string | null
+  emailBody: string | null
+  pdfTemplate: string | null
+  pdfAccentColor: string | null
+  pdfNotes: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,14 +76,28 @@ export type StudentInvoiceMaxAggregateOutputType = {
   id: string | null
   studentId: string | null
   invoiceNumber: string | null
+  automationKey: string | null
   invoiceDate: Date | null
   rangeStart: Date | null
   rangeEnd: Date | null
   dueDate: Date | null
+  includeBalanceForward: boolean | null
+  previousBalanceBdt: runtime.Decimal | null
+  currentChargesBdt: runtime.Decimal | null
+  currentPaymentsBdt: runtime.Decimal | null
   amountBdt: runtime.Decimal | null
   paidAmountBdt: runtime.Decimal | null
   status: string | null
   emailedAt: Date | null
+  autoSendAt: Date | null
+  autoRetryAt: Date | null
+  sendingUntil: Date | null
+  sentTo: string | null
+  emailSubject: string | null
+  emailBody: string | null
+  pdfTemplate: string | null
+  pdfAccentColor: string | null
+  pdfNotes: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -72,14 +106,29 @@ export type StudentInvoiceCountAggregateOutputType = {
   id: number
   studentId: number
   invoiceNumber: number
+  automationKey: number
   invoiceDate: number
   rangeStart: number
   rangeEnd: number
   dueDate: number
+  includeBalanceForward: number
+  previousBalanceBdt: number
+  currentChargesBdt: number
+  currentPaymentsBdt: number
   amountBdt: number
   paidAmountBdt: number
   status: number
   emailedAt: number
+  autoSendAt: number
+  autoRetryAt: number
+  sendingUntil: number
+  sentTo: number
+  emailSubject: number
+  emailBody: number
+  pdfTemplate: number
+  pdfAccentColor: number
+  pdfNotes: number
+  lineItems: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -87,11 +136,17 @@ export type StudentInvoiceCountAggregateOutputType = {
 
 
 export type StudentInvoiceAvgAggregateInputType = {
+  previousBalanceBdt?: true
+  currentChargesBdt?: true
+  currentPaymentsBdt?: true
   amountBdt?: true
   paidAmountBdt?: true
 }
 
 export type StudentInvoiceSumAggregateInputType = {
+  previousBalanceBdt?: true
+  currentChargesBdt?: true
+  currentPaymentsBdt?: true
   amountBdt?: true
   paidAmountBdt?: true
 }
@@ -100,14 +155,28 @@ export type StudentInvoiceMinAggregateInputType = {
   id?: true
   studentId?: true
   invoiceNumber?: true
+  automationKey?: true
   invoiceDate?: true
   rangeStart?: true
   rangeEnd?: true
   dueDate?: true
+  includeBalanceForward?: true
+  previousBalanceBdt?: true
+  currentChargesBdt?: true
+  currentPaymentsBdt?: true
   amountBdt?: true
   paidAmountBdt?: true
   status?: true
   emailedAt?: true
+  autoSendAt?: true
+  autoRetryAt?: true
+  sendingUntil?: true
+  sentTo?: true
+  emailSubject?: true
+  emailBody?: true
+  pdfTemplate?: true
+  pdfAccentColor?: true
+  pdfNotes?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -116,14 +185,28 @@ export type StudentInvoiceMaxAggregateInputType = {
   id?: true
   studentId?: true
   invoiceNumber?: true
+  automationKey?: true
   invoiceDate?: true
   rangeStart?: true
   rangeEnd?: true
   dueDate?: true
+  includeBalanceForward?: true
+  previousBalanceBdt?: true
+  currentChargesBdt?: true
+  currentPaymentsBdt?: true
   amountBdt?: true
   paidAmountBdt?: true
   status?: true
   emailedAt?: true
+  autoSendAt?: true
+  autoRetryAt?: true
+  sendingUntil?: true
+  sentTo?: true
+  emailSubject?: true
+  emailBody?: true
+  pdfTemplate?: true
+  pdfAccentColor?: true
+  pdfNotes?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -132,14 +215,29 @@ export type StudentInvoiceCountAggregateInputType = {
   id?: true
   studentId?: true
   invoiceNumber?: true
+  automationKey?: true
   invoiceDate?: true
   rangeStart?: true
   rangeEnd?: true
   dueDate?: true
+  includeBalanceForward?: true
+  previousBalanceBdt?: true
+  currentChargesBdt?: true
+  currentPaymentsBdt?: true
   amountBdt?: true
   paidAmountBdt?: true
   status?: true
   emailedAt?: true
+  autoSendAt?: true
+  autoRetryAt?: true
+  sendingUntil?: true
+  sentTo?: true
+  emailSubject?: true
+  emailBody?: true
+  pdfTemplate?: true
+  pdfAccentColor?: true
+  pdfNotes?: true
+  lineItems?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -235,14 +333,29 @@ export type StudentInvoiceGroupByOutputType = {
   id: string
   studentId: string
   invoiceNumber: string
+  automationKey: string | null
   invoiceDate: Date
   rangeStart: Date
   rangeEnd: Date
   dueDate: Date | null
+  includeBalanceForward: boolean
+  previousBalanceBdt: runtime.Decimal
+  currentChargesBdt: runtime.Decimal
+  currentPaymentsBdt: runtime.Decimal
   amountBdt: runtime.Decimal
   paidAmountBdt: runtime.Decimal
   status: string
   emailedAt: Date | null
+  autoSendAt: Date | null
+  autoRetryAt: Date | null
+  sendingUntil: Date | null
+  sentTo: string | null
+  emailSubject: string | null
+  emailBody: string | null
+  pdfTemplate: string
+  pdfAccentColor: string | null
+  pdfNotes: string | null
+  lineItems: runtime.JsonValue | null
   createdAt: Date
   updatedAt: Date
   _count: StudentInvoiceCountAggregateOutputType | null
@@ -274,14 +387,29 @@ export type StudentInvoiceWhereInput = {
   id?: Prisma.StringFilter<"StudentInvoice"> | string
   studentId?: Prisma.StringFilter<"StudentInvoice"> | string
   invoiceNumber?: Prisma.StringFilter<"StudentInvoice"> | string
+  automationKey?: Prisma.StringNullableFilter<"StudentInvoice"> | string | null
   invoiceDate?: Prisma.DateTimeFilter<"StudentInvoice"> | Date | string
   rangeStart?: Prisma.DateTimeFilter<"StudentInvoice"> | Date | string
   rangeEnd?: Prisma.DateTimeFilter<"StudentInvoice"> | Date | string
   dueDate?: Prisma.DateTimeNullableFilter<"StudentInvoice"> | Date | string | null
+  includeBalanceForward?: Prisma.BoolFilter<"StudentInvoice"> | boolean
+  previousBalanceBdt?: Prisma.DecimalFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentChargesBdt?: Prisma.DecimalFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPaymentsBdt?: Prisma.DecimalFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   amountBdt?: Prisma.DecimalFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidAmountBdt?: Prisma.DecimalFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.StringFilter<"StudentInvoice"> | string
   emailedAt?: Prisma.DateTimeNullableFilter<"StudentInvoice"> | Date | string | null
+  autoSendAt?: Prisma.DateTimeNullableFilter<"StudentInvoice"> | Date | string | null
+  autoRetryAt?: Prisma.DateTimeNullableFilter<"StudentInvoice"> | Date | string | null
+  sendingUntil?: Prisma.DateTimeNullableFilter<"StudentInvoice"> | Date | string | null
+  sentTo?: Prisma.StringNullableFilter<"StudentInvoice"> | string | null
+  emailSubject?: Prisma.StringNullableFilter<"StudentInvoice"> | string | null
+  emailBody?: Prisma.StringNullableFilter<"StudentInvoice"> | string | null
+  pdfTemplate?: Prisma.StringFilter<"StudentInvoice"> | string
+  pdfAccentColor?: Prisma.StringNullableFilter<"StudentInvoice"> | string | null
+  pdfNotes?: Prisma.StringNullableFilter<"StudentInvoice"> | string | null
+  lineItems?: Prisma.JsonNullableFilter<"StudentInvoice">
   createdAt?: Prisma.DateTimeFilter<"StudentInvoice"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentInvoice"> | Date | string
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
@@ -291,14 +419,29 @@ export type StudentInvoiceOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   studentId?: Prisma.SortOrder
   invoiceNumber?: Prisma.SortOrder
+  automationKey?: Prisma.SortOrderInput | Prisma.SortOrder
   invoiceDate?: Prisma.SortOrder
   rangeStart?: Prisma.SortOrder
   rangeEnd?: Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  includeBalanceForward?: Prisma.SortOrder
+  previousBalanceBdt?: Prisma.SortOrder
+  currentChargesBdt?: Prisma.SortOrder
+  currentPaymentsBdt?: Prisma.SortOrder
   amountBdt?: Prisma.SortOrder
   paidAmountBdt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   emailedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  autoSendAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  autoRetryAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  sendingUntil?: Prisma.SortOrderInput | Prisma.SortOrder
+  sentTo?: Prisma.SortOrderInput | Prisma.SortOrder
+  emailSubject?: Prisma.SortOrderInput | Prisma.SortOrder
+  emailBody?: Prisma.SortOrderInput | Prisma.SortOrder
+  pdfTemplate?: Prisma.SortOrder
+  pdfAccentColor?: Prisma.SortOrderInput | Prisma.SortOrder
+  pdfNotes?: Prisma.SortOrderInput | Prisma.SortOrder
+  lineItems?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   student?: Prisma.StudentOrderByWithRelationInput
@@ -307,6 +450,7 @@ export type StudentInvoiceOrderByWithRelationInput = {
 export type StudentInvoiceWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   invoiceNumber?: string
+  automationKey?: string
   AND?: Prisma.StudentInvoiceWhereInput | Prisma.StudentInvoiceWhereInput[]
   OR?: Prisma.StudentInvoiceWhereInput[]
   NOT?: Prisma.StudentInvoiceWhereInput | Prisma.StudentInvoiceWhereInput[]
@@ -315,27 +459,56 @@ export type StudentInvoiceWhereUniqueInput = Prisma.AtLeast<{
   rangeStart?: Prisma.DateTimeFilter<"StudentInvoice"> | Date | string
   rangeEnd?: Prisma.DateTimeFilter<"StudentInvoice"> | Date | string
   dueDate?: Prisma.DateTimeNullableFilter<"StudentInvoice"> | Date | string | null
+  includeBalanceForward?: Prisma.BoolFilter<"StudentInvoice"> | boolean
+  previousBalanceBdt?: Prisma.DecimalFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentChargesBdt?: Prisma.DecimalFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPaymentsBdt?: Prisma.DecimalFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   amountBdt?: Prisma.DecimalFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidAmountBdt?: Prisma.DecimalFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.StringFilter<"StudentInvoice"> | string
   emailedAt?: Prisma.DateTimeNullableFilter<"StudentInvoice"> | Date | string | null
+  autoSendAt?: Prisma.DateTimeNullableFilter<"StudentInvoice"> | Date | string | null
+  autoRetryAt?: Prisma.DateTimeNullableFilter<"StudentInvoice"> | Date | string | null
+  sendingUntil?: Prisma.DateTimeNullableFilter<"StudentInvoice"> | Date | string | null
+  sentTo?: Prisma.StringNullableFilter<"StudentInvoice"> | string | null
+  emailSubject?: Prisma.StringNullableFilter<"StudentInvoice"> | string | null
+  emailBody?: Prisma.StringNullableFilter<"StudentInvoice"> | string | null
+  pdfTemplate?: Prisma.StringFilter<"StudentInvoice"> | string
+  pdfAccentColor?: Prisma.StringNullableFilter<"StudentInvoice"> | string | null
+  pdfNotes?: Prisma.StringNullableFilter<"StudentInvoice"> | string | null
+  lineItems?: Prisma.JsonNullableFilter<"StudentInvoice">
   createdAt?: Prisma.DateTimeFilter<"StudentInvoice"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentInvoice"> | Date | string
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
-}, "id" | "invoiceNumber">
+}, "id" | "invoiceNumber" | "automationKey">
 
 export type StudentInvoiceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   studentId?: Prisma.SortOrder
   invoiceNumber?: Prisma.SortOrder
+  automationKey?: Prisma.SortOrderInput | Prisma.SortOrder
   invoiceDate?: Prisma.SortOrder
   rangeStart?: Prisma.SortOrder
   rangeEnd?: Prisma.SortOrder
   dueDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  includeBalanceForward?: Prisma.SortOrder
+  previousBalanceBdt?: Prisma.SortOrder
+  currentChargesBdt?: Prisma.SortOrder
+  currentPaymentsBdt?: Prisma.SortOrder
   amountBdt?: Prisma.SortOrder
   paidAmountBdt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   emailedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  autoSendAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  autoRetryAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  sendingUntil?: Prisma.SortOrderInput | Prisma.SortOrder
+  sentTo?: Prisma.SortOrderInput | Prisma.SortOrder
+  emailSubject?: Prisma.SortOrderInput | Prisma.SortOrder
+  emailBody?: Prisma.SortOrderInput | Prisma.SortOrder
+  pdfTemplate?: Prisma.SortOrder
+  pdfAccentColor?: Prisma.SortOrderInput | Prisma.SortOrder
+  pdfNotes?: Prisma.SortOrderInput | Prisma.SortOrder
+  lineItems?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.StudentInvoiceCountOrderByAggregateInput
@@ -352,14 +525,29 @@ export type StudentInvoiceScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"StudentInvoice"> | string
   studentId?: Prisma.StringWithAggregatesFilter<"StudentInvoice"> | string
   invoiceNumber?: Prisma.StringWithAggregatesFilter<"StudentInvoice"> | string
+  automationKey?: Prisma.StringNullableWithAggregatesFilter<"StudentInvoice"> | string | null
   invoiceDate?: Prisma.DateTimeWithAggregatesFilter<"StudentInvoice"> | Date | string
   rangeStart?: Prisma.DateTimeWithAggregatesFilter<"StudentInvoice"> | Date | string
   rangeEnd?: Prisma.DateTimeWithAggregatesFilter<"StudentInvoice"> | Date | string
   dueDate?: Prisma.DateTimeNullableWithAggregatesFilter<"StudentInvoice"> | Date | string | null
+  includeBalanceForward?: Prisma.BoolWithAggregatesFilter<"StudentInvoice"> | boolean
+  previousBalanceBdt?: Prisma.DecimalWithAggregatesFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentChargesBdt?: Prisma.DecimalWithAggregatesFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPaymentsBdt?: Prisma.DecimalWithAggregatesFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   amountBdt?: Prisma.DecimalWithAggregatesFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidAmountBdt?: Prisma.DecimalWithAggregatesFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.StringWithAggregatesFilter<"StudentInvoice"> | string
   emailedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"StudentInvoice"> | Date | string | null
+  autoSendAt?: Prisma.DateTimeNullableWithAggregatesFilter<"StudentInvoice"> | Date | string | null
+  autoRetryAt?: Prisma.DateTimeNullableWithAggregatesFilter<"StudentInvoice"> | Date | string | null
+  sendingUntil?: Prisma.DateTimeNullableWithAggregatesFilter<"StudentInvoice"> | Date | string | null
+  sentTo?: Prisma.StringNullableWithAggregatesFilter<"StudentInvoice"> | string | null
+  emailSubject?: Prisma.StringNullableWithAggregatesFilter<"StudentInvoice"> | string | null
+  emailBody?: Prisma.StringNullableWithAggregatesFilter<"StudentInvoice"> | string | null
+  pdfTemplate?: Prisma.StringWithAggregatesFilter<"StudentInvoice"> | string
+  pdfAccentColor?: Prisma.StringNullableWithAggregatesFilter<"StudentInvoice"> | string | null
+  pdfNotes?: Prisma.StringNullableWithAggregatesFilter<"StudentInvoice"> | string | null
+  lineItems?: Prisma.JsonNullableWithAggregatesFilter<"StudentInvoice">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"StudentInvoice"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"StudentInvoice"> | Date | string
 }
@@ -367,14 +555,29 @@ export type StudentInvoiceScalarWhereWithAggregatesInput = {
 export type StudentInvoiceCreateInput = {
   id?: string
   invoiceNumber: string
+  automationKey?: string | null
   invoiceDate: Date | string
   rangeStart: Date | string
   rangeEnd: Date | string
   dueDate?: Date | string | null
+  includeBalanceForward?: boolean
+  previousBalanceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentChargesBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPaymentsBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   amountBdt: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: string
   emailedAt?: Date | string | null
+  autoSendAt?: Date | string | null
+  autoRetryAt?: Date | string | null
+  sendingUntil?: Date | string | null
+  sentTo?: string | null
+  emailSubject?: string | null
+  emailBody?: string | null
+  pdfTemplate?: string
+  pdfAccentColor?: string | null
+  pdfNotes?: string | null
+  lineItems?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
   student: Prisma.StudentCreateNestedOneWithoutInvoicesInput
@@ -384,14 +587,29 @@ export type StudentInvoiceUncheckedCreateInput = {
   id?: string
   studentId: string
   invoiceNumber: string
+  automationKey?: string | null
   invoiceDate: Date | string
   rangeStart: Date | string
   rangeEnd: Date | string
   dueDate?: Date | string | null
+  includeBalanceForward?: boolean
+  previousBalanceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentChargesBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPaymentsBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   amountBdt: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: string
   emailedAt?: Date | string | null
+  autoSendAt?: Date | string | null
+  autoRetryAt?: Date | string | null
+  sendingUntil?: Date | string | null
+  sentTo?: string | null
+  emailSubject?: string | null
+  emailBody?: string | null
+  pdfTemplate?: string
+  pdfAccentColor?: string | null
+  pdfNotes?: string | null
+  lineItems?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -399,14 +617,29 @@ export type StudentInvoiceUncheckedCreateInput = {
 export type StudentInvoiceUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  automationKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rangeStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rangeEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  includeBalanceForward?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  previousBalanceBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentChargesBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPaymentsBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   amountBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidAmountBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   emailedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  autoSendAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  autoRetryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sendingUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailSubject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailBody?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfTemplate?: Prisma.StringFieldUpdateOperationsInput | string
+  pdfAccentColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineItems?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   student?: Prisma.StudentUpdateOneRequiredWithoutInvoicesNestedInput
@@ -416,14 +649,29 @@ export type StudentInvoiceUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  automationKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rangeStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rangeEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  includeBalanceForward?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  previousBalanceBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentChargesBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPaymentsBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   amountBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidAmountBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   emailedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  autoSendAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  autoRetryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sendingUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailSubject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailBody?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfTemplate?: Prisma.StringFieldUpdateOperationsInput | string
+  pdfAccentColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineItems?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -432,14 +680,29 @@ export type StudentInvoiceCreateManyInput = {
   id?: string
   studentId: string
   invoiceNumber: string
+  automationKey?: string | null
   invoiceDate: Date | string
   rangeStart: Date | string
   rangeEnd: Date | string
   dueDate?: Date | string | null
+  includeBalanceForward?: boolean
+  previousBalanceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentChargesBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPaymentsBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   amountBdt: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: string
   emailedAt?: Date | string | null
+  autoSendAt?: Date | string | null
+  autoRetryAt?: Date | string | null
+  sendingUntil?: Date | string | null
+  sentTo?: string | null
+  emailSubject?: string | null
+  emailBody?: string | null
+  pdfTemplate?: string
+  pdfAccentColor?: string | null
+  pdfNotes?: string | null
+  lineItems?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -447,14 +710,29 @@ export type StudentInvoiceCreateManyInput = {
 export type StudentInvoiceUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  automationKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rangeStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rangeEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  includeBalanceForward?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  previousBalanceBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentChargesBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPaymentsBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   amountBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidAmountBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   emailedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  autoSendAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  autoRetryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sendingUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailSubject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailBody?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfTemplate?: Prisma.StringFieldUpdateOperationsInput | string
+  pdfAccentColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineItems?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -463,14 +741,29 @@ export type StudentInvoiceUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   studentId?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  automationKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rangeStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rangeEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  includeBalanceForward?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  previousBalanceBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentChargesBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPaymentsBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   amountBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidAmountBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   emailedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  autoSendAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  autoRetryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sendingUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailSubject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailBody?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfTemplate?: Prisma.StringFieldUpdateOperationsInput | string
+  pdfAccentColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineItems?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -489,19 +782,37 @@ export type StudentInvoiceCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   studentId?: Prisma.SortOrder
   invoiceNumber?: Prisma.SortOrder
+  automationKey?: Prisma.SortOrder
   invoiceDate?: Prisma.SortOrder
   rangeStart?: Prisma.SortOrder
   rangeEnd?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
+  includeBalanceForward?: Prisma.SortOrder
+  previousBalanceBdt?: Prisma.SortOrder
+  currentChargesBdt?: Prisma.SortOrder
+  currentPaymentsBdt?: Prisma.SortOrder
   amountBdt?: Prisma.SortOrder
   paidAmountBdt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   emailedAt?: Prisma.SortOrder
+  autoSendAt?: Prisma.SortOrder
+  autoRetryAt?: Prisma.SortOrder
+  sendingUntil?: Prisma.SortOrder
+  sentTo?: Prisma.SortOrder
+  emailSubject?: Prisma.SortOrder
+  emailBody?: Prisma.SortOrder
+  pdfTemplate?: Prisma.SortOrder
+  pdfAccentColor?: Prisma.SortOrder
+  pdfNotes?: Prisma.SortOrder
+  lineItems?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type StudentInvoiceAvgOrderByAggregateInput = {
+  previousBalanceBdt?: Prisma.SortOrder
+  currentChargesBdt?: Prisma.SortOrder
+  currentPaymentsBdt?: Prisma.SortOrder
   amountBdt?: Prisma.SortOrder
   paidAmountBdt?: Prisma.SortOrder
 }
@@ -510,14 +821,28 @@ export type StudentInvoiceMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   studentId?: Prisma.SortOrder
   invoiceNumber?: Prisma.SortOrder
+  automationKey?: Prisma.SortOrder
   invoiceDate?: Prisma.SortOrder
   rangeStart?: Prisma.SortOrder
   rangeEnd?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
+  includeBalanceForward?: Prisma.SortOrder
+  previousBalanceBdt?: Prisma.SortOrder
+  currentChargesBdt?: Prisma.SortOrder
+  currentPaymentsBdt?: Prisma.SortOrder
   amountBdt?: Prisma.SortOrder
   paidAmountBdt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   emailedAt?: Prisma.SortOrder
+  autoSendAt?: Prisma.SortOrder
+  autoRetryAt?: Prisma.SortOrder
+  sendingUntil?: Prisma.SortOrder
+  sentTo?: Prisma.SortOrder
+  emailSubject?: Prisma.SortOrder
+  emailBody?: Prisma.SortOrder
+  pdfTemplate?: Prisma.SortOrder
+  pdfAccentColor?: Prisma.SortOrder
+  pdfNotes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -526,19 +851,36 @@ export type StudentInvoiceMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   studentId?: Prisma.SortOrder
   invoiceNumber?: Prisma.SortOrder
+  automationKey?: Prisma.SortOrder
   invoiceDate?: Prisma.SortOrder
   rangeStart?: Prisma.SortOrder
   rangeEnd?: Prisma.SortOrder
   dueDate?: Prisma.SortOrder
+  includeBalanceForward?: Prisma.SortOrder
+  previousBalanceBdt?: Prisma.SortOrder
+  currentChargesBdt?: Prisma.SortOrder
+  currentPaymentsBdt?: Prisma.SortOrder
   amountBdt?: Prisma.SortOrder
   paidAmountBdt?: Prisma.SortOrder
   status?: Prisma.SortOrder
   emailedAt?: Prisma.SortOrder
+  autoSendAt?: Prisma.SortOrder
+  autoRetryAt?: Prisma.SortOrder
+  sendingUntil?: Prisma.SortOrder
+  sentTo?: Prisma.SortOrder
+  emailSubject?: Prisma.SortOrder
+  emailBody?: Prisma.SortOrder
+  pdfTemplate?: Prisma.SortOrder
+  pdfAccentColor?: Prisma.SortOrder
+  pdfNotes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type StudentInvoiceSumOrderByAggregateInput = {
+  previousBalanceBdt?: Prisma.SortOrder
+  currentChargesBdt?: Prisma.SortOrder
+  currentPaymentsBdt?: Prisma.SortOrder
   amountBdt?: Prisma.SortOrder
   paidAmountBdt?: Prisma.SortOrder
 }
@@ -588,14 +930,29 @@ export type StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput = {
 export type StudentInvoiceCreateWithoutStudentInput = {
   id?: string
   invoiceNumber: string
+  automationKey?: string | null
   invoiceDate: Date | string
   rangeStart: Date | string
   rangeEnd: Date | string
   dueDate?: Date | string | null
+  includeBalanceForward?: boolean
+  previousBalanceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentChargesBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPaymentsBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   amountBdt: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: string
   emailedAt?: Date | string | null
+  autoSendAt?: Date | string | null
+  autoRetryAt?: Date | string | null
+  sendingUntil?: Date | string | null
+  sentTo?: string | null
+  emailSubject?: string | null
+  emailBody?: string | null
+  pdfTemplate?: string
+  pdfAccentColor?: string | null
+  pdfNotes?: string | null
+  lineItems?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -603,14 +960,29 @@ export type StudentInvoiceCreateWithoutStudentInput = {
 export type StudentInvoiceUncheckedCreateWithoutStudentInput = {
   id?: string
   invoiceNumber: string
+  automationKey?: string | null
   invoiceDate: Date | string
   rangeStart: Date | string
   rangeEnd: Date | string
   dueDate?: Date | string | null
+  includeBalanceForward?: boolean
+  previousBalanceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentChargesBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPaymentsBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   amountBdt: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: string
   emailedAt?: Date | string | null
+  autoSendAt?: Date | string | null
+  autoRetryAt?: Date | string | null
+  sendingUntil?: Date | string | null
+  sentTo?: string | null
+  emailSubject?: string | null
+  emailBody?: string | null
+  pdfTemplate?: string
+  pdfAccentColor?: string | null
+  pdfNotes?: string | null
+  lineItems?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -648,14 +1020,29 @@ export type StudentInvoiceScalarWhereInput = {
   id?: Prisma.StringFilter<"StudentInvoice"> | string
   studentId?: Prisma.StringFilter<"StudentInvoice"> | string
   invoiceNumber?: Prisma.StringFilter<"StudentInvoice"> | string
+  automationKey?: Prisma.StringNullableFilter<"StudentInvoice"> | string | null
   invoiceDate?: Prisma.DateTimeFilter<"StudentInvoice"> | Date | string
   rangeStart?: Prisma.DateTimeFilter<"StudentInvoice"> | Date | string
   rangeEnd?: Prisma.DateTimeFilter<"StudentInvoice"> | Date | string
   dueDate?: Prisma.DateTimeNullableFilter<"StudentInvoice"> | Date | string | null
+  includeBalanceForward?: Prisma.BoolFilter<"StudentInvoice"> | boolean
+  previousBalanceBdt?: Prisma.DecimalFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentChargesBdt?: Prisma.DecimalFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPaymentsBdt?: Prisma.DecimalFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   amountBdt?: Prisma.DecimalFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidAmountBdt?: Prisma.DecimalFilter<"StudentInvoice"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.StringFilter<"StudentInvoice"> | string
   emailedAt?: Prisma.DateTimeNullableFilter<"StudentInvoice"> | Date | string | null
+  autoSendAt?: Prisma.DateTimeNullableFilter<"StudentInvoice"> | Date | string | null
+  autoRetryAt?: Prisma.DateTimeNullableFilter<"StudentInvoice"> | Date | string | null
+  sendingUntil?: Prisma.DateTimeNullableFilter<"StudentInvoice"> | Date | string | null
+  sentTo?: Prisma.StringNullableFilter<"StudentInvoice"> | string | null
+  emailSubject?: Prisma.StringNullableFilter<"StudentInvoice"> | string | null
+  emailBody?: Prisma.StringNullableFilter<"StudentInvoice"> | string | null
+  pdfTemplate?: Prisma.StringFilter<"StudentInvoice"> | string
+  pdfAccentColor?: Prisma.StringNullableFilter<"StudentInvoice"> | string | null
+  pdfNotes?: Prisma.StringNullableFilter<"StudentInvoice"> | string | null
+  lineItems?: Prisma.JsonNullableFilter<"StudentInvoice">
   createdAt?: Prisma.DateTimeFilter<"StudentInvoice"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentInvoice"> | Date | string
 }
@@ -663,14 +1050,29 @@ export type StudentInvoiceScalarWhereInput = {
 export type StudentInvoiceCreateManyStudentInput = {
   id?: string
   invoiceNumber: string
+  automationKey?: string | null
   invoiceDate: Date | string
   rangeStart: Date | string
   rangeEnd: Date | string
   dueDate?: Date | string | null
+  includeBalanceForward?: boolean
+  previousBalanceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentChargesBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPaymentsBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   amountBdt: runtime.Decimal | runtime.DecimalJsLike | number | string
   paidAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: string
   emailedAt?: Date | string | null
+  autoSendAt?: Date | string | null
+  autoRetryAt?: Date | string | null
+  sendingUntil?: Date | string | null
+  sentTo?: string | null
+  emailSubject?: string | null
+  emailBody?: string | null
+  pdfTemplate?: string
+  pdfAccentColor?: string | null
+  pdfNotes?: string | null
+  lineItems?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -678,14 +1080,29 @@ export type StudentInvoiceCreateManyStudentInput = {
 export type StudentInvoiceUpdateWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  automationKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rangeStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rangeEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  includeBalanceForward?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  previousBalanceBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentChargesBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPaymentsBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   amountBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidAmountBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   emailedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  autoSendAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  autoRetryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sendingUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailSubject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailBody?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfTemplate?: Prisma.StringFieldUpdateOperationsInput | string
+  pdfAccentColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineItems?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -693,14 +1110,29 @@ export type StudentInvoiceUpdateWithoutStudentInput = {
 export type StudentInvoiceUncheckedUpdateWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  automationKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rangeStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rangeEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  includeBalanceForward?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  previousBalanceBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentChargesBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPaymentsBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   amountBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidAmountBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   emailedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  autoSendAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  autoRetryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sendingUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailSubject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailBody?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfTemplate?: Prisma.StringFieldUpdateOperationsInput | string
+  pdfAccentColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineItems?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -708,14 +1140,29 @@ export type StudentInvoiceUncheckedUpdateWithoutStudentInput = {
 export type StudentInvoiceUncheckedUpdateManyWithoutStudentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   invoiceNumber?: Prisma.StringFieldUpdateOperationsInput | string
+  automationKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   invoiceDate?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rangeStart?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   rangeEnd?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  includeBalanceForward?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  previousBalanceBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentChargesBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  currentPaymentsBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   amountBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   paidAmountBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   emailedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  autoSendAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  autoRetryAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sendingUntil?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentTo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailSubject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  emailBody?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfTemplate?: Prisma.StringFieldUpdateOperationsInput | string
+  pdfAccentColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pdfNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lineItems?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -726,14 +1173,29 @@ export type StudentInvoiceSelect<ExtArgs extends runtime.Types.Extensions.Intern
   id?: boolean
   studentId?: boolean
   invoiceNumber?: boolean
+  automationKey?: boolean
   invoiceDate?: boolean
   rangeStart?: boolean
   rangeEnd?: boolean
   dueDate?: boolean
+  includeBalanceForward?: boolean
+  previousBalanceBdt?: boolean
+  currentChargesBdt?: boolean
+  currentPaymentsBdt?: boolean
   amountBdt?: boolean
   paidAmountBdt?: boolean
   status?: boolean
   emailedAt?: boolean
+  autoSendAt?: boolean
+  autoRetryAt?: boolean
+  sendingUntil?: boolean
+  sentTo?: boolean
+  emailSubject?: boolean
+  emailBody?: boolean
+  pdfTemplate?: boolean
+  pdfAccentColor?: boolean
+  pdfNotes?: boolean
+  lineItems?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
@@ -743,14 +1205,29 @@ export type StudentInvoiceSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   studentId?: boolean
   invoiceNumber?: boolean
+  automationKey?: boolean
   invoiceDate?: boolean
   rangeStart?: boolean
   rangeEnd?: boolean
   dueDate?: boolean
+  includeBalanceForward?: boolean
+  previousBalanceBdt?: boolean
+  currentChargesBdt?: boolean
+  currentPaymentsBdt?: boolean
   amountBdt?: boolean
   paidAmountBdt?: boolean
   status?: boolean
   emailedAt?: boolean
+  autoSendAt?: boolean
+  autoRetryAt?: boolean
+  sendingUntil?: boolean
+  sentTo?: boolean
+  emailSubject?: boolean
+  emailBody?: boolean
+  pdfTemplate?: boolean
+  pdfAccentColor?: boolean
+  pdfNotes?: boolean
+  lineItems?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
@@ -760,14 +1237,29 @@ export type StudentInvoiceSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   id?: boolean
   studentId?: boolean
   invoiceNumber?: boolean
+  automationKey?: boolean
   invoiceDate?: boolean
   rangeStart?: boolean
   rangeEnd?: boolean
   dueDate?: boolean
+  includeBalanceForward?: boolean
+  previousBalanceBdt?: boolean
+  currentChargesBdt?: boolean
+  currentPaymentsBdt?: boolean
   amountBdt?: boolean
   paidAmountBdt?: boolean
   status?: boolean
   emailedAt?: boolean
+  autoSendAt?: boolean
+  autoRetryAt?: boolean
+  sendingUntil?: boolean
+  sentTo?: boolean
+  emailSubject?: boolean
+  emailBody?: boolean
+  pdfTemplate?: boolean
+  pdfAccentColor?: boolean
+  pdfNotes?: boolean
+  lineItems?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
@@ -777,19 +1269,34 @@ export type StudentInvoiceSelectScalar = {
   id?: boolean
   studentId?: boolean
   invoiceNumber?: boolean
+  automationKey?: boolean
   invoiceDate?: boolean
   rangeStart?: boolean
   rangeEnd?: boolean
   dueDate?: boolean
+  includeBalanceForward?: boolean
+  previousBalanceBdt?: boolean
+  currentChargesBdt?: boolean
+  currentPaymentsBdt?: boolean
   amountBdt?: boolean
   paidAmountBdt?: boolean
   status?: boolean
   emailedAt?: boolean
+  autoSendAt?: boolean
+  autoRetryAt?: boolean
+  sendingUntil?: boolean
+  sentTo?: boolean
+  emailSubject?: boolean
+  emailBody?: boolean
+  pdfTemplate?: boolean
+  pdfAccentColor?: boolean
+  pdfNotes?: boolean
+  lineItems?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type StudentInvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "invoiceNumber" | "invoiceDate" | "rangeStart" | "rangeEnd" | "dueDate" | "amountBdt" | "paidAmountBdt" | "status" | "emailedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["studentInvoice"]>
+export type StudentInvoiceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "invoiceNumber" | "automationKey" | "invoiceDate" | "rangeStart" | "rangeEnd" | "dueDate" | "includeBalanceForward" | "previousBalanceBdt" | "currentChargesBdt" | "currentPaymentsBdt" | "amountBdt" | "paidAmountBdt" | "status" | "emailedAt" | "autoSendAt" | "autoRetryAt" | "sendingUntil" | "sentTo" | "emailSubject" | "emailBody" | "pdfTemplate" | "pdfAccentColor" | "pdfNotes" | "lineItems" | "createdAt" | "updatedAt", ExtArgs["result"]["studentInvoice"]>
 export type StudentInvoiceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
 }
@@ -809,14 +1316,29 @@ export type $StudentInvoicePayload<ExtArgs extends runtime.Types.Extensions.Inte
     id: string
     studentId: string
     invoiceNumber: string
+    automationKey: string | null
     invoiceDate: Date
     rangeStart: Date
     rangeEnd: Date
     dueDate: Date | null
+    includeBalanceForward: boolean
+    previousBalanceBdt: runtime.Decimal
+    currentChargesBdt: runtime.Decimal
+    currentPaymentsBdt: runtime.Decimal
     amountBdt: runtime.Decimal
     paidAmountBdt: runtime.Decimal
     status: string
     emailedAt: Date | null
+    autoSendAt: Date | null
+    autoRetryAt: Date | null
+    sendingUntil: Date | null
+    sentTo: string | null
+    emailSubject: string | null
+    emailBody: string | null
+    pdfTemplate: string
+    pdfAccentColor: string | null
+    pdfNotes: string | null
+    lineItems: runtime.JsonValue | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["studentInvoice"]>
@@ -1246,14 +1768,29 @@ export interface StudentInvoiceFieldRefs {
   readonly id: Prisma.FieldRef<"StudentInvoice", 'String'>
   readonly studentId: Prisma.FieldRef<"StudentInvoice", 'String'>
   readonly invoiceNumber: Prisma.FieldRef<"StudentInvoice", 'String'>
+  readonly automationKey: Prisma.FieldRef<"StudentInvoice", 'String'>
   readonly invoiceDate: Prisma.FieldRef<"StudentInvoice", 'DateTime'>
   readonly rangeStart: Prisma.FieldRef<"StudentInvoice", 'DateTime'>
   readonly rangeEnd: Prisma.FieldRef<"StudentInvoice", 'DateTime'>
   readonly dueDate: Prisma.FieldRef<"StudentInvoice", 'DateTime'>
+  readonly includeBalanceForward: Prisma.FieldRef<"StudentInvoice", 'Boolean'>
+  readonly previousBalanceBdt: Prisma.FieldRef<"StudentInvoice", 'Decimal'>
+  readonly currentChargesBdt: Prisma.FieldRef<"StudentInvoice", 'Decimal'>
+  readonly currentPaymentsBdt: Prisma.FieldRef<"StudentInvoice", 'Decimal'>
   readonly amountBdt: Prisma.FieldRef<"StudentInvoice", 'Decimal'>
   readonly paidAmountBdt: Prisma.FieldRef<"StudentInvoice", 'Decimal'>
   readonly status: Prisma.FieldRef<"StudentInvoice", 'String'>
   readonly emailedAt: Prisma.FieldRef<"StudentInvoice", 'DateTime'>
+  readonly autoSendAt: Prisma.FieldRef<"StudentInvoice", 'DateTime'>
+  readonly autoRetryAt: Prisma.FieldRef<"StudentInvoice", 'DateTime'>
+  readonly sendingUntil: Prisma.FieldRef<"StudentInvoice", 'DateTime'>
+  readonly sentTo: Prisma.FieldRef<"StudentInvoice", 'String'>
+  readonly emailSubject: Prisma.FieldRef<"StudentInvoice", 'String'>
+  readonly emailBody: Prisma.FieldRef<"StudentInvoice", 'String'>
+  readonly pdfTemplate: Prisma.FieldRef<"StudentInvoice", 'String'>
+  readonly pdfAccentColor: Prisma.FieldRef<"StudentInvoice", 'String'>
+  readonly pdfNotes: Prisma.FieldRef<"StudentInvoice", 'String'>
+  readonly lineItems: Prisma.FieldRef<"StudentInvoice", 'Json'>
   readonly createdAt: Prisma.FieldRef<"StudentInvoice", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"StudentInvoice", 'DateTime'>
 }

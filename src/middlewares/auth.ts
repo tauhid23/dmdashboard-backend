@@ -11,8 +11,13 @@ export async function authenticate(req: AuthRequest, _res: Response, next: NextF
     const token = readCookies(req.headers.cookie).access_token;
     const payload = token && verifyAccessToken(token);
     if (!payload) throw fail(401, "Authentication required", "UNAUTHENTICATED");
-    const user = await prisma.user.findUnique({ where:{id:payload.sub}, select:{id:true,status:true,deletedAt:true,sessionVersion:true} });
+    const user = await prisma.user.findUnique({ where:{id:payload.sub}, select:{id:true,status:true,deletedAt:true,sessionVersion:true,role:{select:{code:true}},student:{select:{status:true}}} });
     if (!user || user.deletedAt || user.status !== "ACTIVE" || user.sessionVersion !== payload.ver) throw fail(401, "Session is no longer valid", "SESSION_INVALID");
+    const enrollmentOnly = user.role?.code === "STUDENT" && !["ACTIVE", "TRIAL"].includes(user.student?.status ?? "");
+    const allowedPendingRoute = req.baseUrl.endsWith("/auth") && (
+      (req.method === "GET" && ["/me", "/enrollment"].includes(req.path))
+    );
+    if (enrollmentOnly && !allowedPendingRoute) throw fail(403, "Your enrollment is awaiting approval or is inactive.", "ENROLLMENT_PENDING");
     req.auth = { id:user.id, sessionVersion:user.sessionVersion };
     next();
   } catch (error) { next(error); }
@@ -26,4 +31,3 @@ export const requirePermission = (resource:Resource, action:Action) => async (re
     next();
   } catch(error){next(error);}
 };
-

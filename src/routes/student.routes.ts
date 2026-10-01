@@ -14,6 +14,8 @@ router.post("/", requirePermission("students","add"), imageFieldsUpload, asyncHa
 router.get("/", asyncHandler(studentController.getStudents));
 router.get("/options", asyncHandler(studentController.getStudentOptions));
 router.get("/parent-options", asyncHandler(studentController.getParentOptions));
+router.get("/:id/credentials", requirePermission("user-management","view"), asyncHandler(studentController.getStudentCredentials));
+router.patch("/:id/credentials", requirePermission("user-management","edit"), asyncHandler(studentController.saveStudentCredentials));
 router.get("/:studentId/course-exam-results", asyncHandler(examController.studentCourseResults));
 router.get("/:studentId/exam-schedules", asyncHandler(examScheduleController.listForStudent));
 router.get("/:studentId/exam-attempts/latest", asyncHandler(examController.studentLatest));

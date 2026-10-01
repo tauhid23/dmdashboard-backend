@@ -13,6 +13,7 @@ import examScheduleRoutes from "../exam/exam-schedule.routes.js";
 import authRoutes from "../auth/auth.routes.js";
 import { permissionRoutes, roleRoutes } from "./rbac.routes.js";
 import billingRoutes from "./billing.routes.js";
+import dashboardRoutes from "./dashboard.routes.js";
 
 const router = Router();
 router.use("/auth", authRoutes);
@@ -20,6 +21,7 @@ router.use("/roles", roleRoutes);
 router.use("/permissions", permissionRoutes);
 
 router.use("/health", healthRoutes);
+router.use("/dashboard", dashboardRoutes);
 router.use("/class-reports", classReportRoutes);
 router.use("/class-schedule", classScheduleRoutes);
 router.use("/students", studentRoutes);

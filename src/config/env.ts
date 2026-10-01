@@ -31,6 +31,8 @@ const numberEnv = (key: string, fallback: number) => {
 };
 
 const emailEnabled = booleanEnv("EMAIL_ENABLED", false);
+const smtpPort = numberEnv("SMTP_PORT", 587);
+const smtpSecure = booleanEnv("SMTP_SECURE", smtpPort === 465);
 
 export const env = {
   NODE_ENV: process.env.NODE_ENV ?? "development",
@@ -46,12 +48,12 @@ export const env = {
   SUPER_ADMIN_PASSWORD: requiredEnv("SUPER_ADMIN_PASSWORD", process.env.NODE_ENV === "production" ? undefined : "SuperAdmin1"),
   EMAIL_ENABLED: emailEnabled,
   SMTP_HOST: emailEnabled ? requiredEnv("SMTP_HOST") : process.env.SMTP_HOST,
-  SMTP_PORT: numberEnv("SMTP_PORT", 587),
-  SMTP_SECURE: booleanEnv("SMTP_SECURE", false),
+  SMTP_PORT: smtpPort,
+  SMTP_SECURE: smtpSecure,
   SMTP_REQUIRE_TLS: booleanEnv("SMTP_REQUIRE_TLS", true),
   SMTP_USER: emailEnabled ? requiredEnv("SMTP_USER") : process.env.SMTP_USER,
   SMTP_PASSWORD: emailEnabled ? requiredEnv("SMTP_PASSWORD") : process.env.SMTP_PASSWORD,
-  EMAIL_FROM_NAME: process.env.EMAIL_FROM_NAME ?? "DM Dashboard",
+  EMAIL_FROM_NAME: process.env.EMAIL_FROM_NAME ?? "Deeni Madrasa",
   EMAIL_FROM_ADDRESS: emailEnabled ? requiredEnv("EMAIL_FROM_ADDRESS") : process.env.EMAIL_FROM_ADDRESS,
   ADMIN_NOTIFICATION_EMAILS: (process.env.ADMIN_NOTIFICATION_EMAILS ?? "")
     .split(",")

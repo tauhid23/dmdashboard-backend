@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import type { AuthRequest } from "../auth/auth.types.js";
-import { assertPrivilegedAccess, getRequestScope } from "../auth/accessScope.js";
+import { assertAdminAccess, assertPrivilegedAccess, getRequestScope } from "../auth/accessScope.js";
 
 import { uploadImageBuffer } from "../config/cloudinary.js";
 import * as studentService from "../services/student.service.js";
@@ -8,6 +8,8 @@ import { getUploadedImageFile } from "../middlewares/imageUpload.js";
 import { normalizeStudentRequestBody } from "../utils/normalizeRequestBody.js";
 import { getStudentExamDetails } from "../exam/exam.service.js";
 import { redactStudentPersonalInformation } from "../services/studentPrivacy.js";
+import { getStudentMakeupCredits, getStudentMakeupReviewCount } from "../services/makeupCredit.service.js";
+import { effectivePermissions } from "../auth/permissions.js";
 
 const getStudentId = (req: Request) => {
   const { id } = req.params;
@@ -42,6 +44,11 @@ export const createStudent = async (req: AuthRequest, res: Response) => {
     "Only staff users can create student profiles"
   );
   const payload = normalizeStudentRequestBody(req.body);
+  const createLogin = req.body.createLogin === true || req.body.createLogin === "true";
+  if (createLogin) assertAdminAccess(await getRequestScope(req.auth?.id));
+  if (createLogin && !(await effectivePermissions(req.auth!.id))["user-management"].add) {
+    throw Object.assign(new Error("Permission to create login accounts is required"), { statusCode: 403, code: "FORBIDDEN" });
+  }
   const imageFile = getUploadedImageFile(req);
 
   if (imageFile) {
@@ -49,12 +56,27 @@ export const createStudent = async (req: AuthRequest, res: Response) => {
     payload.image = uploadedImage.secure_url;
   }
 
-  const student = await studentService.createStudent(payload);
+  const result = createLogin
+    ? await studentService.createStudentWithCredentials(payload, { username: String(req.body.loginUsername ?? ""), password: String(req.body.loginPassword ?? "") })
+    : { student: await studentService.createStudent(payload), credentials: null };
 
   res.status(201).json({
     success: true,
-    data: student
+    data: result.student,
+    credentials: result.credentials
   });
+};
+
+export const getStudentCredentials = async (req: AuthRequest, res: Response) => {
+  assertAdminAccess(await getRequestScope(req.auth?.id));
+  res.json(await studentService.getStudentCredentials(getStudentId(req)));
+};
+
+export const saveStudentCredentials = async (req: AuthRequest, res: Response) => {
+  assertAdminAccess(await getRequestScope(req.auth?.id));
+  res.json(await studentService.saveStudentCredentials(getStudentId(req), {
+    username: String(req.body.username ?? ""), password: String(req.body.password ?? ""),
+  }));
 };
 
 export const getStudents = async (req: AuthRequest, res: Response) => {
@@ -97,7 +119,10 @@ export const getStudentById = async (req: AuthRequest, res: Response) => {
 
   res.status(200).json({
     success: true,
-    data: redactStudentPersonalInformation(student, scope)
+    data: redactStudentPersonalInformation({ ...student,
+      makeupCredits: await getStudentMakeupCredits(getStudentId(req)),
+      makeupCreditReviewCount: await getStudentMakeupReviewCount(getStudentId(req)),
+    }, scope)
   });
 };
 

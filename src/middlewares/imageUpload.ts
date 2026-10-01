@@ -33,6 +33,7 @@ export const imageFieldsUpload = imageUpload.fields([
   { name: "image", maxCount: 1 },
   { name: "imageUrl", maxCount: 1 }
 ]);
+export const registrationImageUpload = imageUpload.single("image");
 
 export const getUploadedImageFile = (req: Request) => {
   if (!req.files || Array.isArray(req.files)) {

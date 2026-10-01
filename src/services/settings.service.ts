@@ -33,12 +33,20 @@ export const defaultSettings: AppSettings = {
     sessionTimeoutMinutes: 15,
     allowPasswordReset: true,
   },
+  invoicing: {
+    pdfTemplate: "CLASSIC",
+    pdfAccentColor: "#5c4938",
+    pdfNotes: "Please contact Deeni Madrasa if you have any questions about this invoice.",
+    emailSubject: "Invoice {{invoiceNumber}} from Deeni Madrasa",
+    emailBody: "Assalamu alaikum {{familyName}},\n\nPlease find invoice {{invoiceNumber}} attached as a PDF.\n\nKindly review the attached invoice. If you have any questions, please reply to this email.\n\nJazakumullahu khairan,\nDeeni Madrasa",
+  },
+  notifications: { managerEmails: [] },
 };
 
 const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value);
 
-const getSettingsDelegate = () => (prisma as any).appSetting;
+const getSettingsDelegate = () => prisma.appSetting;
 
 const isMissingSettingsStore = (cause: unknown) => {
   if (!isObject(cause)) return false;
@@ -66,6 +74,16 @@ const integer = (value: unknown, fallback: number, min: number, max: number) => 
 const bool = (value: unknown, fallback: boolean) =>
   typeof value === "boolean" ? value : fallback;
 
+const pdfTemplate = (value: unknown, fallback: AppSettings["invoicing"]["pdfTemplate"]) => {
+  const next = String(value ?? "").toUpperCase();
+  return (["CLASSIC", "MODERN", "MINIMAL"] as const).find((template) => template === next) ?? fallback;
+};
+
+const hexColor = (value: unknown, fallback: string) => {
+  const next = typeof value === "string" ? value.trim() : "";
+  return /^#[0-9a-f]{6}$/i.test(next) ? next.toLowerCase() : fallback;
+};
+
 const email = (value: unknown, fallback: string) => {
   const next = text(value, fallback, 254);
   if (!next) return "";
@@ -75,6 +93,17 @@ const email = (value: unknown, fallback: string) => {
     });
   }
   return next;
+};
+
+const emailList = (value: unknown, fallback: string[]) => {
+  if (!Array.isArray(value)) return fallback;
+  const entries = [...new Set(value.map((item) => String(item).trim().toLowerCase()).filter(Boolean))];
+  if (entries.length > 20 || entries.some((item) => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(item))) {
+    throw error(422, "Validation failed", "VALIDATION_ERROR", {
+      managerEmails: ["Enter up to 20 valid manager email addresses"],
+    });
+  }
+  return entries;
 };
 
 const url = (value: unknown, fallback: string) => {
@@ -96,6 +125,8 @@ export const normalizeSettings = (value: unknown): AppSettings => {
   const workspace = isObject(input.workspace) ? input.workspace : {};
   const operations = isObject(input.operations) ? input.operations : {};
   const security = isObject(input.security) ? input.security : {};
+  const invoicing = isObject(input.invoicing) ? input.invoicing : {};
+  const notifications = isObject(input.notifications) ? input.notifications : {};
 
   return {
     workspace: {
@@ -166,6 +197,16 @@ export const normalizeSettings = (value: unknown): AppSettings => {
       ),
       allowPasswordReset: bool(security.allowPasswordReset, defaultSettings.security.allowPasswordReset),
     },
+    invoicing: {
+      pdfTemplate: pdfTemplate(invoicing.pdfTemplate, defaultSettings.invoicing.pdfTemplate),
+      pdfAccentColor: hexColor(invoicing.pdfAccentColor, defaultSettings.invoicing.pdfAccentColor),
+      pdfNotes: text(invoicing.pdfNotes, defaultSettings.invoicing.pdfNotes, 1000),
+      emailSubject: text(invoicing.emailSubject, defaultSettings.invoicing.emailSubject, 250) || defaultSettings.invoicing.emailSubject,
+      emailBody: text(invoicing.emailBody, defaultSettings.invoicing.emailBody, 10000) || defaultSettings.invoicing.emailBody,
+    },
+    notifications: {
+      managerEmails: emailList(notifications.managerEmails, defaultSettings.notifications.managerEmails),
+    },
   };
 };
 
@@ -197,6 +238,8 @@ export async function updateSettings(actorId: string, payload: unknown) {
     workspace: { ...current.workspace, ...(isObject(payload) && isObject(payload.workspace) ? payload.workspace : {}) },
     operations: { ...current.operations, ...(isObject(payload) && isObject(payload.operations) ? payload.operations : {}) },
     security: { ...current.security, ...(isObject(payload) && isObject(payload.security) ? payload.security : {}) },
+    invoicing: { ...current.invoicing, ...(isObject(payload) && isObject(payload.invoicing) ? payload.invoicing : {}) },
+    notifications: { ...current.notifications, ...(isObject(payload) && isObject(payload.notifications) ? payload.notifications : {}) },
   });
 
   try {

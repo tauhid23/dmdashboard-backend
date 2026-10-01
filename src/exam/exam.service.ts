@@ -1,6 +1,7 @@
 import type { Prisma } from "../generated/prisma/client.js";
 import { CourseLevel, ExamOutcome } from "../generated/prisma/enums.js";
 import { prisma } from "../config/prisma.js";
+import { resolveStaffRecipients } from "../services/notification.service.js";
 import type { ActorScope } from "../auth/accessScope.js";
 import { assertStudentAccess, assertTeacherAccess, forbidden } from "../auth/accessScope.js";
 import { COURSE_RULES } from "./exam.rules.js";
@@ -62,6 +63,7 @@ export const submitExam = async (raw:unknown, scope?: ActorScope) => {
  const input=validatePayload(raw), existing=await prisma.examAttempt.findUnique({where:{idempotencyKey:input.idempotencyKey}});
  if(scope&&!scope.isPrivileged){await assertStudentAccess(scope,input.studentId);if(input.examinerId)await assertTeacherAccess(scope,input.examinerId);}
  if(existing){if(existing.studentId!==input.studentId||existing.examinerId!==input.examinerId||existing.courseLevel!==input.courseLevel)throw httpError(409,"Idempotency key belongs to a different submission");return {statusCode:200,data:await response(existing.id,false,existing.courseLevel)};}
+ const recipients=await resolveStaffRecipients();
  try {
   const saved=await prisma.$transaction(async tx=>{
    const student=await tx.student.findUnique({where:{id:input.studentId}});if(!student)throw httpError(404,"Student not found");
@@ -74,7 +76,22 @@ export const submitExam = async (raw:unknown, scope?: ActorScope) => {
    const result=calculateUsingRule({fields:rule.fields.map(field=>({id:field.id,key:field.key,label:field.label,description:field.description,maximumMarks:field.maximumMarks,sectionKey:field.section.key,sectionLabel:field.section.label,sortOrder:field.sortOrder,required:field.required})),sections:rule.sections.map(section=>({key:section.key,label:section.label,maximumMarks:section.maximumMarks,passingMarks:section.passingMarks,sortOrder:section.sortOrder}))},input.marks);
    const attemptNumber=await tx.examAttempt.count({where:{studentId:input.studentId,courseLevel:input.courseLevel}})+1;
    const exam=await tx.examAttempt.create({data:{studentId:input.studentId,examinerId:input.examinerId!,examRuleId:rule.id,examRuleVersion:rule.version,courseLevel:input.courseLevel,idempotencyKey:input.idempotencyKey,notes:input.notes,outcome:result.outcome,totalScore:result.totalScore,totalMaxScore:result.totalMaxScore,percentage:result.percentage,attemptNumber,createdById:input.createdById,marks:{create:result.marks.map(m=>({examRuleFieldId:m.id,fieldKey:m.key,label:m.label,description:m.description,obtainedMarks:m.obtainedMarks,maximumMarks:m.maximumMarks,sectionKey:m.sectionKey,sectionLabel:m.sectionLabel,sortOrder:m.sortOrder}))},sections:{create:result.sections.map(s=>({sectionKey:s.key,sectionLabel:s.label,obtainedMarks:s.obtainedMarks,maximumMarks:s.maximumMarks,passingMarks:s.passingMarks,passed:s.passed,sortOrder:s.sortOrder??0}))}}});
-   let promoted=false;if(result.outcome===ExamOutcome.PASSED){const next=nextCourseLevel(input.courseLevel),display=next?courseDisplay(next):null,updated=await tx.student.updateMany({where:{id:student.id,currentCourseLevel:input.courseLevel,courseCompleted:false},data:{...(next?{currentCourseLevel:next,courseName:display!.courseName,courseStage:display!.courseStage}:{courseCompleted:true}),courseUpdatedAt:new Date()}});if(updated.count!==1)throw httpError(409,"Student level changed during submission");await tx.studentCourseHistory.create({data:{studentId:student.id,fromLevel:input.courseLevel,toLevel:next??input.courseLevel,examAttemptId:exam.id,reason:"EXAM_PASSED",changedById:input.createdById}});promoted=true;}return {id:exam.id,promoted};
+   let promoted=false;if(result.outcome===ExamOutcome.PASSED){const next=nextCourseLevel(input.courseLevel),display=next?courseDisplay(next):null,updated=await tx.student.updateMany({where:{id:student.id,currentCourseLevel:input.courseLevel,courseCompleted:false},data:{...(next?{currentCourseLevel:next,courseName:display!.courseName,courseStage:display!.courseStage}:{courseCompleted:true}),courseUpdatedAt:new Date()}});if(updated.count!==1)throw httpError(409,"Student level changed during submission");await tx.studentCourseHistory.create({data:{studentId:student.id,fromLevel:input.courseLevel,toLevel:next??input.courseLevel,examAttemptId:exam.id,reason:"EXAM_PASSED",changedById:input.createdById}});promoted=true;}
+   await tx.emailNotification.create({data:{
+    eventKey:`exam-completed:${exam.id}`,
+    recipients,
+    subject:`Exam completed: ${student.name||"Student"}`,
+    body:[
+     `An exam has been completed for ${student.name||"Student"}.`,
+     `Examiner: ${examiner.name||"Teacher"}`,
+     `Course level: ${input.courseLevel.replaceAll("_"," ")}`,
+     `Result: ${result.outcome===ExamOutcome.PASSED?"Passed":"Needs improvement"}`,
+     `Score: ${result.totalScore}/${result.totalMaxScore}`,
+     `Completed: ${new Date().toLocaleString("en-GB",{timeZone:"Asia/Dhaka"})} (Dhaka time)`,
+     "Review the exam record in the Deeni Madrasa dashboard.",
+    ].join("\n\n"),
+   }});
+   return {id:exam.id,promoted};
   },{isolationLevel:"Serializable"});
   return {statusCode:201,data:await response(saved.id,saved.promoted,input.courseLevel)};
  } catch(error){const replay=await prisma.examAttempt.findUnique({where:{idempotencyKey:input.idempotencyKey}});if(replay)return {statusCode:200,data:await response(replay.id,false,replay.courseLevel)};throw error;}

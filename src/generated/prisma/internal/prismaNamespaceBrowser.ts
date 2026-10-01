@@ -60,6 +60,7 @@ export const ModelName = {
   PasswordResetToken: 'PasswordResetToken',
   AuditLog: 'AuditLog',
   AppSetting: 'AppSetting',
+  EmailNotification: 'EmailNotification',
   Student: 'Student',
   StudentBillingTransaction: 'StudentBillingTransaction',
   StudentInvoice: 'StudentInvoice',
@@ -69,6 +70,8 @@ export const ModelName = {
   TeacherPayrollCategoryRate: 'TeacherPayrollCategoryRate',
   TeacherPayrollPayment: 'TeacherPayrollPayment',
   ClassScheduleEvent: 'ClassScheduleEvent',
+  MakeupCredit: 'MakeupCredit',
+  MakeupCreditUse: 'MakeupCreditUse',
   ExamSchedule: 'ExamSchedule',
   ExamAttempt: 'ExamAttempt',
   ExamRule: 'ExamRule',
@@ -215,15 +218,38 @@ export const AppSettingScalarFieldEnum = {
 export type AppSettingScalarFieldEnum = (typeof AppSettingScalarFieldEnum)[keyof typeof AppSettingScalarFieldEnum]
 
 
+export const EmailNotificationScalarFieldEnum = {
+  id: 'id',
+  eventKey: 'eventKey',
+  recipients: 'recipients',
+  subject: 'subject',
+  body: 'body',
+  attempts: 'attempts',
+  nextAttemptAt: 'nextAttemptAt',
+  sentAt: 'sentAt',
+  lastError: 'lastError',
+  createdAt: 'createdAt'
+} as const
+
+export type EmailNotificationScalarFieldEnum = (typeof EmailNotificationScalarFieldEnum)[keyof typeof EmailNotificationScalarFieldEnum]
+
+
 export const StudentScalarFieldEnum = {
   id: 'id',
   image: 'image',
   name: 'name',
+  studentType: 'studentType',
+  age: 'age',
+  gender: 'gender',
   country: 'country',
   studentSince: 'studentSince',
   weeklySchedule: 'weeklySchedule',
   classStartDate: 'classStartDate',
   classStartTime: 'classStartTime',
+  preferredTimeZone: 'preferredTimeZone',
+  preferredLocalTime: 'preferredLocalTime',
+  preferredLocalDays: 'preferredLocalDays',
+  preferredStartDate: 'preferredStartDate',
   classDurationMinutes: 'classDurationMinutes',
   classDays: 'classDays',
   packageCode: 'packageCode',
@@ -284,14 +310,29 @@ export const StudentInvoiceScalarFieldEnum = {
   id: 'id',
   studentId: 'studentId',
   invoiceNumber: 'invoiceNumber',
+  automationKey: 'automationKey',
   invoiceDate: 'invoiceDate',
   rangeStart: 'rangeStart',
   rangeEnd: 'rangeEnd',
   dueDate: 'dueDate',
+  includeBalanceForward: 'includeBalanceForward',
+  previousBalanceBdt: 'previousBalanceBdt',
+  currentChargesBdt: 'currentChargesBdt',
+  currentPaymentsBdt: 'currentPaymentsBdt',
   amountBdt: 'amountBdt',
   paidAmountBdt: 'paidAmountBdt',
   status: 'status',
   emailedAt: 'emailedAt',
+  autoSendAt: 'autoSendAt',
+  autoRetryAt: 'autoRetryAt',
+  sendingUntil: 'sendingUntil',
+  sentTo: 'sentTo',
+  emailSubject: 'emailSubject',
+  emailBody: 'emailBody',
+  pdfTemplate: 'pdfTemplate',
+  pdfAccentColor: 'pdfAccentColor',
+  pdfNotes: 'pdfNotes',
+  lineItems: 'lineItems',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -395,6 +436,37 @@ export const ClassScheduleEventScalarFieldEnum = {
 } as const
 
 export type ClassScheduleEventScalarFieldEnum = (typeof ClassScheduleEventScalarFieldEnum)[keyof typeof ClassScheduleEventScalarFieldEnum]
+
+
+export const MakeupCreditScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  sourceEventId: 'sourceEventId',
+  durationMinutes: 'durationMinutes',
+  periodKey: 'periodKey',
+  expiresAt: 'expiresAt',
+  revokedAt: 'revokedAt',
+  adjustedMinutes: 'adjustedMinutes',
+  adjustmentId: 'adjustmentId',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MakeupCreditScalarFieldEnum = (typeof MakeupCreditScalarFieldEnum)[keyof typeof MakeupCreditScalarFieldEnum]
+
+
+export const MakeupCreditUseScalarFieldEnum = {
+  id: 'id',
+  creditId: 'creditId',
+  eventId: 'eventId',
+  minutes: 'minutes',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MakeupCreditUseScalarFieldEnum = (typeof MakeupCreditUseScalarFieldEnum)[keyof typeof MakeupCreditUseScalarFieldEnum]
 
 
 export const ExamScheduleScalarFieldEnum = {

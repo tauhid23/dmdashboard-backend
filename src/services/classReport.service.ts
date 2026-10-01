@@ -1,5 +1,6 @@
 import type { Prisma } from "../generated/prisma/client.js";
 import { prisma } from "../config/prisma.js";
+import { resolveStaffRecipients } from "./notification.service.js";
 import type { ActorScope } from "../auth/accessScope.js";
 import {
   assertStudentAccess,
@@ -821,9 +822,27 @@ export const createClassReport = async (
   scope?: ActorScope
 ) => {
   await assertClassReportPayloadAccess(payload, scope);
-  return prisma.classReport.create({
-    data: mapClassReportData(payload),
-    include: classReportInclude
+  const recipients = await resolveStaffRecipients();
+  return prisma.$transaction(async (tx) => {
+    const report = await tx.classReport.create({
+      data: mapClassReportData(payload),
+      include: classReportInclude
+    });
+    const studentName = report.student?.name || report.studentName || "Student";
+    const teacherName = report.teacher?.name || report.teacherName || "Teacher";
+    await tx.emailNotification.create({ data: {
+      eventKey: `class-report:${report.id}`,
+      recipients,
+      subject: `Class report submitted: ${studentName}`,
+      body: [
+        `A class report has been submitted for ${studentName}.`,
+        `Teacher: ${teacherName}`,
+        `Report month: ${report.month || "Not specified"}`,
+        `Submitted: ${report.createdAt.toLocaleString("en-GB", { timeZone: "Asia/Dhaka" })} (Dhaka time)`,
+        "Review the report in the Deeni Madrasa dashboard.",
+      ].join("\n\n"),
+    } });
+    return report;
   });
 };
 

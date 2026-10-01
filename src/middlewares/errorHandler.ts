@@ -34,6 +34,13 @@ const publicError = (err: unknown) => {
     };
   }
 
+  if (err.code === "LIMIT_FILE_SIZE") {
+    return { statusCode: 413, message: "Image must be 5 MB or smaller.", code: "IMAGE_TOO_LARGE", errors: undefined };
+  }
+  if (err.code === "LIMIT_UNEXPECTED_FILE") {
+    return { statusCode: 400, message: "Upload one image only.", code: "INVALID_IMAGE", errors: undefined };
+  }
+
   const rawStatus = Number(err.statusCode);
   const statusCode = Number.isInteger(rawStatus) ? rawStatus : 500;
   const code =

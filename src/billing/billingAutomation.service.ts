@@ -25,7 +25,7 @@ export const missedClassSummary = (classStartDate: Date, classDays: number[], du
 
 export const materializeStudentBillingThrough = async (studentId: string, throughDate: Date) => {
   const student = await prisma.student.findUnique({ where: { id: studentId } });
-  if (!student?.scheduleConfirmed || !student.billingAmountBdt) return;
+  if (!student?.scheduleConfirmed || student.status === "INACTIVE" || student.status === "NEW_SIGN_UP" || !student.billingAmountBdt) return;
   const schedule = await prisma.classScheduleEvent.findFirst({
     where: { studentId, status: "CONFIRMED", recurrenceSourceId: null, isRecurring: true },
     orderBy: [{ scheduledDate: "asc" }, { createdAt: "asc" }]

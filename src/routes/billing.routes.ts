@@ -10,4 +10,7 @@ router.get("/families/:familyId", asyncHandler(controller.getFamily));
 router.post("/families/:familyId/transactions", requirePermission("students", "edit"), asyncHandler(controller.createTransaction));
 router.patch("/families/:familyId/transactions/:transactionId", requirePermission("students", "edit"), asyncHandler(controller.updateTransaction));
 router.post("/families/:familyId/invoices", requirePermission("students", "edit"), asyncHandler(controller.createInvoice));
+router.patch("/families/:familyId/invoices/:invoiceId/email", requirePermission("students", "edit"), asyncHandler(controller.updateInvoiceEmail));
+router.post("/families/:familyId/invoices/:invoiceId/send", requirePermission("students", "edit"), asyncHandler(controller.sendInvoice));
+router.get("/families/:familyId/invoices/:invoiceId/pdf", asyncHandler(controller.downloadInvoicePdf));
 export default router;

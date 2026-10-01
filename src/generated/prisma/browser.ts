@@ -63,6 +63,11 @@ export type AuditLog = Prisma.AuditLogModel
  */
 export type AppSetting = Prisma.AppSettingModel
 /**
+ * Model EmailNotification
+ * 
+ */
+export type EmailNotification = Prisma.EmailNotificationModel
+/**
  * Model Student
  * 
  */
@@ -107,6 +112,16 @@ export type TeacherPayrollPayment = Prisma.TeacherPayrollPaymentModel
  * 
  */
 export type ClassScheduleEvent = Prisma.ClassScheduleEventModel
+/**
+ * Model MakeupCredit
+ * 
+ */
+export type MakeupCredit = Prisma.MakeupCreditModel
+/**
+ * Model MakeupCreditUse
+ * 
+ */
+export type MakeupCreditUse = Prisma.MakeupCreditUseModel
 /**
  * Model ExamSchedule
  * 

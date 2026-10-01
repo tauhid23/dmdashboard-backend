@@ -8,6 +8,8 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 import { notFoundHandler } from "./middlewares/notFoundHandler.js";
 
 const app = express();
+const proxyHops = Number(process.env.TRUST_PROXY_HOPS ?? 0);
+if (Number.isInteger(proxyHops) && proxyHops > 0 && proxyHops <= 5) app.set("trust proxy", proxyHops);
 const allowedOrigins = new Set([
   "https://portal.deenimadrasa.com",
   process.env.FRONTEND_ORIGIN ?? "http://localhost:5173",

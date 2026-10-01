@@ -27,8 +27,22 @@ export type SecuritySettings = {
   allowPasswordReset: boolean;
 };
 
+export type InvoicingSettings = {
+  pdfTemplate: "CLASSIC" | "MODERN" | "MINIMAL";
+  pdfAccentColor: string;
+  pdfNotes: string;
+  emailSubject: string;
+  emailBody: string;
+};
+
+export type NotificationSettings = {
+  managerEmails: string[];
+};
+
 export type AppSettings = {
   workspace: WorkspaceSettings;
   operations: OperationsSettings;
   security: SecuritySettings;
+  invoicing: InvoicingSettings;
+  notifications: NotificationSettings;
 };

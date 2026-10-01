@@ -15,6 +15,9 @@ const scope = (roleCode: string): ActorScope => ({
 const student = {
   id: "student-1",
   name: "Student",
+  studentType: "CHILD",
+  age: 12,
+  gender: "FEMALE",
   country: "Bangladesh",
   studentSince: new Date("2026-07-01"),
   createdAt: new Date("2026-07-01"),

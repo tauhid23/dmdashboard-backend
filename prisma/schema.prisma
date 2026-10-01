@@ -65,7 +65,7 @@ model User {
   id                  String                   @id @default(cuid())
   name                String
   email               String
-  normalizedEmail     String                   @unique
+    normalizedEmail     String
   username            String
   normalizedUsername  String                   @unique
   passwordHash        String
@@ -88,7 +88,9 @@ model User {
   auditLogsAsActor    AuditLog[]               @relation("AuditActor")
   auditLogsAsTarget   AuditLog[]               @relation("AuditTarget")
   createdExamAttempts ExamAttempt[]            @relation("ExamCreatedBy")
-  courseChanges       StudentCourseHistory[]   @relation("CourseChangedBy")
+    courseChanges       StudentCourseHistory[]   @relation("CourseChangedBy")
+
+    @@index([normalizedEmail])
 }
 
 model Role {
@@ -187,15 +189,37 @@ model AppSetting {
   updatedAt DateTime @updatedAt
 }
 
+model EmailNotification {
+  id            String    @id @default(cuid())
+  eventKey      String    @unique
+  recipients    Json
+  subject       String
+  body          String
+  attempts      Int       @default(0)
+  nextAttemptAt DateTime  @default(now())
+  sentAt        DateTime?
+  lastError     String?
+  createdAt     DateTime  @default(now())
+
+  @@index([sentAt, nextAttemptAt])
+}
+
 model Student {
   id                   String                 @id @default(cuid())
   image                String?
   name                 String?
+  studentType          String?
+  age                  Int?
+  gender               String?
   country              String?
   studentSince         DateTime?
   weeklySchedule       String?
   classStartDate       DateTime?
   classStartTime       String?
+  preferredTimeZone    String?
+  preferredLocalTime   String?
+  preferredLocalDays   Int[]                  @default([])
+  preferredStartDate   DateTime?
   classDurationMinutes Int?
   classDays            Int[]                  @default([])
   packageCode          String?
@@ -239,6 +263,7 @@ model Student {
   userAccount          User?
   billingTransactions  StudentBillingTransaction[]
   invoices             StudentInvoice[]
+  makeupCredits        MakeupCredit[]
 
   @@index([teacherId])
 }
@@ -258,6 +283,7 @@ model StudentBillingTransaction {
   student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  makeupCredits MakeupCredit[]
 
   @@index([studentId, date])
   @@index([type, date])
@@ -267,20 +293,36 @@ model StudentInvoice {
   id            String   @id @default(cuid())
   studentId     String
   invoiceNumber String   @unique
+  automationKey String?  @unique
   invoiceDate   DateTime
   rangeStart    DateTime
   rangeEnd      DateTime
   dueDate       DateTime?
+  includeBalanceForward Boolean @default(true)
+  previousBalanceBdt Decimal @default(0) @db.Decimal(10, 2)
+  currentChargesBdt Decimal @default(0) @db.Decimal(10, 2)
+  currentPaymentsBdt Decimal @default(0) @db.Decimal(10, 2)
   amountBdt     Decimal  @db.Decimal(10, 2)
   paidAmountBdt Decimal  @default(0) @db.Decimal(10, 2)
   status        String   @default("OPEN")
   emailedAt     DateTime?
+  autoSendAt    DateTime?
+  autoRetryAt   DateTime?
+  sendingUntil  DateTime?
+  sentTo        String?
+  emailSubject String?
+  emailBody    String?
+  pdfTemplate  String   @default("CLASSIC")
+  pdfAccentColor String?
+  pdfNotes     String?
+  lineItems    Json?
   student       Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   @@index([studentId, invoiceDate])
   @@index([status, invoiceDate])
+  @@index([autoSendAt, emailedAt])
 }
 
 model StudentCourse {
@@ -382,6 +424,8 @@ model ClassScheduleEvent {
   repeatDays         Int[]     @default([])
   repeatIndefinitely Boolean   @default(false)
   recurrenceEndDate  DateTime?
+  earnedMakeupCredit MakeupCredit? @relation("EarnedMakeupCredit")
+  makeupUses         MakeupCreditUse[]
   student            Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
   teacher            Teacher   @relation(fields: [teacherId], references: [id], onDelete: Cascade)
   createdAt          DateTime  @default(now())
@@ -393,6 +437,42 @@ model ClassScheduleEvent {
   @@index([status, scheduledDate])
   @@index([recurrenceGroupId])
   @@index([recurrenceSourceId])
+}
+
+model MakeupCredit {
+  id                    String @id @default(cuid())
+  studentId             String
+  sourceEventId         String @unique
+  durationMinutes       Int
+  periodKey             String
+  expiresAt             DateTime
+  revokedAt             DateTime?
+  adjustedMinutes       Int @default(0)
+  adjustmentId          String?
+  createdById           String?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  student               Student @relation(fields: [studentId], references: [id], onDelete: Restrict)
+  sourceEvent           ClassScheduleEvent @relation("EarnedMakeupCredit", fields: [sourceEventId], references: [id], onDelete: Restrict)
+  adjustment            StudentBillingTransaction? @relation(fields: [adjustmentId], references: [id], onDelete: Restrict)
+  uses                  MakeupCreditUse[]
+
+  @@index([studentId, expiresAt])
+}
+
+model MakeupCreditUse {
+  id        String @id @default(cuid())
+  creditId  String
+  eventId   String
+  minutes   Int
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  credit    MakeupCredit @relation(fields: [creditId], references: [id], onDelete: Restrict)
+  event     ClassScheduleEvent @relation(fields: [eventId], references: [id], onDelete: Restrict)
+
+  @@unique([creditId, eventId])
+  @@index([eventId])
 }
 
 model ExamSchedule {

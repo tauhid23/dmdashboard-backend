@@ -15,6 +15,8 @@ import type {
 } from "../types/student.types.js";
 import { calculateBillingPlan } from "../billing/studentBilling.service.js";
 import type { BillingCycle } from "../billing/packageCatalog.js";
+import { hashPassword } from "../auth/security.js";
+import { revokeSessions, validatePassword } from "../auth/auth.service.js";
 
 const studentInclude = {
   courses: true,
@@ -212,7 +214,7 @@ const buildStudentWhere = (filters?: StudentFilters, scope?: ActorScope) => {
   return Object.keys(where).length > 0 ? where : undefined;
 };
 
-export const createStudent = async (payload: CreateStudentInput) => {
+export const createStudent = async (payload: CreateStudentInput, database: Prisma.TransactionClient | typeof prisma = prisma) => {
   const courses = compactCourses(payload);
   const teacherChanges = compactTeacherChanges(payload);
   const currentCourseLevel = courseLevelFromDisplay(payload.courseName, payload.courseStage);
@@ -225,7 +227,7 @@ export const createStudent = async (payload: CreateStudentInput) => {
     ? calculateBillingPlan({ durationMinutes: duration, classDays, groupClass: payload.groupClass ?? false, billingCycle })
     : null;
 
-  return prisma.student.create({
+  return database.student.create({
     data: {
       ...(payload.image !== undefined ? { image: payload.image } : {}),
       ...(payload.name !== undefined ? { name: payload.name } : {}),
@@ -292,9 +294,7 @@ export const createStudent = async (payload: CreateStudentInput) => {
       ...(payload.teacherChangeReason !== undefined
         ? { teacherChangeReason: payload.teacherChangeReason }
         : {}),
-      ...(payload.status !== undefined
-        ? { status: parseOptionalStatus(payload.status) }
-        : {}),
+      status: parseOptionalStatus(payload.status ?? null) ?? StudentStatus.ACTIVE,
       ...(currentCourseLevel
         ? {
             currentCourseLevel,
@@ -319,6 +319,103 @@ export const createStudent = async (payload: CreateStudentInput) => {
     },
     include: studentInclude
   });
+};
+
+export const createStudentWithCredentials = async (
+  payload: CreateStudentInput,
+  credentials: { username: string; password: string }
+) => {
+  const email = payload.parentEmail?.trim().toLowerCase() ?? "";
+  const name = payload.name?.trim();
+  if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw createHttpError(422, "Student name and a valid parent email are required for a login");
+  }
+  const username = credentials.username.trim().toLowerCase();
+  if (!/^[a-z0-9._-]{3,32}$/.test(username)) throw createHttpError(422, "Username must be 3–32 letters, numbers, dots, underscores or hyphens");
+  validatePassword(credentials.password);
+  const studentStatus = parseOptionalStatus(payload.status ?? null) ?? StudentStatus.ACTIVE;
+  if (studentStatus !== StudentStatus.ACTIVE && studentStatus !== StudentStatus.TRIAL) {
+    throw createHttpError(422, "Set the student status to Active or Trial before creating a login");
+  }
+
+  const studentRole = await prisma.role.findUnique({ where: { code: "STUDENT" } });
+  if (!studentRole) throw createHttpError(500, "Student role is not configured");
+  if (await prisma.user.count({ where: { normalizedUsername: username } })) {
+    throw createHttpError(409, "Username is already in use");
+  }
+
+  const passwordHash = await hashPassword(credentials.password);
+  let created: { student: Awaited<ReturnType<typeof createStudent>> };
+  try {
+    created = await prisma.$transaction(async (transaction) => {
+      const student = await createStudent(payload, transaction);
+      await transaction.user.create({
+        data: {
+          name,
+          email,
+          normalizedEmail: email,
+          username,
+          normalizedUsername: username,
+          passwordHash,
+          status: "ACTIVE",
+          roleId: studentRole.id,
+          studentId: student.id,
+          mustChangePassword: false,
+        },
+      });
+      return { student };
+    });
+  } catch (cause) {
+    if ((cause as { code?: string }).code === "P2002") {
+      throw createHttpError(409, "Username is already in use");
+    }
+    throw cause;
+  }
+
+  return {
+    student: created.student,
+    credentials: { username, email },
+  };
+};
+
+export const getStudentCredentials = async (studentId: string) => {
+  const student = await prisma.student.findUnique({ where: { id: studentId }, select: { id: true } });
+  if (!student) throw createHttpError(404, "Student not found");
+  const user = await prisma.user.findUnique({ where: { studentId }, select: { username: true, email: true } });
+  return { hasLogin: Boolean(user), username: user?.username ?? "", email: user?.email ?? "" };
+};
+
+export const saveStudentCredentials = async (studentId: string, input: { username: string; password: string }) => {
+  const student = await prisma.student.findUnique({ where: { id: studentId }, select: { id: true, name: true, parentEmail: true, status: true } });
+  if (!student) throw createHttpError(404, "Student not found");
+  const existing = await prisma.user.findUnique({ where: { studentId } });
+  const username = (input.username.trim() || existing?.username || "").toLowerCase();
+  if (username !== existing?.normalizedUsername && !/^[a-z0-9._-]{3,32}$/.test(username)) throw createHttpError(422, "Username must be 3–32 letters, numbers, dots, underscores or hyphens");
+  if (!existing && !input.password) throw createHttpError(422, "Password is required for a new login");
+  if (input.password) validatePassword(input.password);
+  const duplicate = await prisma.user.findFirst({ where: { normalizedUsername: username, ...(existing ? { id: { not: existing.id } } : {}) }, select: { id: true } });
+  if (duplicate) throw createHttpError(409, "Username is already in use");
+  const email = student.parentEmail?.trim().toLowerCase() ?? "";
+  if (!existing && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw createHttpError(422, "Add a valid parent email to the student record first");
+  try {
+    if (existing) {
+      await prisma.user.update({ where: { id: existing.id }, data: {
+        username, normalizedUsername: username,
+        ...(input.password ? { passwordHash: await hashPassword(input.password), mustChangePassword: false } : {}),
+      } });
+      if (input.password || username !== existing.normalizedUsername) await revokeSessions(existing.id);
+    } else {
+      if (student.status !== StudentStatus.ACTIVE && student.status !== StudentStatus.TRIAL) throw createHttpError(422, "Set student status to Active or Trial before creating a login");
+      const role = await prisma.role.findUnique({ where: { code: "STUDENT" } });
+      if (!role) throw createHttpError(500, "Student role is not configured");
+      await prisma.user.create({ data: { name: student.name ?? "Student", email, normalizedEmail: email, username, normalizedUsername: username,
+        passwordHash: await hashPassword(input.password), status: "ACTIVE", roleId: role.id, studentId, mustChangePassword: false } });
+    }
+  } catch (cause) {
+    if ((cause as { code?: string }).code === "P2002") throw createHttpError(409, "Username is already in use or this student already has a login");
+    throw cause;
+  }
+  return { hasLogin: true, username, email: existing?.email ?? email };
 };
 
 export const getStudents = async (filters?: StudentFilters, scope?: ActorScope) => {
@@ -413,7 +510,8 @@ export const updateStudent = async (id: string, payload: UpdateStudentInput) => 
     ? calculateBillingPlan({ durationMinutes: duration, classDays, groupClass, billingCycle })
     : null;
 
-  return prisma.student.update({
+  return prisma.$transaction(async (transaction) => {
+    const student = await transaction.student.update({
     where: { id },
     data: {
       ...(payload.image !== undefined ? { image: payload.image } : {}),
@@ -518,6 +616,16 @@ export const updateStudent = async (id: string, payload: UpdateStudentInput) => 
           : {})
     },
     include: studentInclude
+    });
+    if (payload.parentEmail !== undefined) {
+      const linkedUser = await transaction.user.findUnique({ where: { studentId: id }, select: { id: true } });
+      if (linkedUser) {
+        const email = payload.parentEmail?.trim().toLowerCase() ?? "";
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw createHttpError(422, "A student with a login needs a valid parent email");
+        await transaction.user.update({ where: { id: linkedUser.id }, data: { email, normalizedEmail: email } });
+      }
+    }
+    return student;
   });
 };
 

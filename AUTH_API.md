@@ -11,7 +11,7 @@ Base URL: `http://localhost:5000/api` (the `/api/v1` alias also works). Every fr
 | POST | `/auth/refresh` | none | `{ "user": SafeUser }`, rotated cookies |
 | GET | `/auth/me` | none | `{ "user": SafeUser }` |
 | POST | `/auth/change-password` | `{ "currentPassword": "...", "newPassword": "..." }` | message; all sessions revoked |
-| POST | `/auth/forgot-password` | `{ "identifier": "email-or-username" }` | generic message (development also returns `resetToken`) |
+| POST | `/auth/forgot-password` | `{ "identifier": "email-or-username" }` | generic message; emails a one-hour reset link when SMTP is enabled (development returns `resetToken` only when SMTP is disabled) |
 | POST | `/auth/reset-password` | `{ "token": "...", "password": "..." }` | message; all sessions revoked |
 
 ## User and RBAC routes
@@ -24,11 +24,12 @@ Base URL: `http://localhost:5000/api` (the `/api/v1` alias also works). Every fr
 | PATCH | `/users/:id` | `user-management.edit` |
 | DELETE | `/users/:id` | `user-management.delete` |
 | POST | `/users/:id/reset-password` | `user-management.edit` |
+| POST | `/users/:id/invitation` | `user-management.edit` |
 | GET | `/roles` | `user-management.view` |
 | PATCH | `/roles/:id/permissions` | `user-management.edit` |
 | GET | `/permissions` | `user-management.view` |
 
-Create user body: `{ "name":"Rafiq Hossain", "email":"rafiq@example.com", "username":"rafiq", "temporaryPassword":"TemporaryPassword123!", "role":"Teacher", "status":"Active", "permissions":{} }`.
+Create staff or teacher user body: `{ "name":"Rafiq Hossain", "email":"rafiq@example.com", "role":"Teacher", "teacherId":"...", "status":"Active", "permissions":{} }`. These accounts receive a password setup link. Student accounts are created with an administrator chosen username and password in Add Student (`POST /students` with `createLogin`, `loginUsername`, and `loginPassword`), or later in Edit Student (`GET/PATCH /students/:id/credentials`). The parent email may be shared by multiple students. Students sign in with username and cannot change or reset their credentials themselves. Passwords are hashed and never returned by the API.
 
 User-list response is `{ "data": SafeUser[], "pagination": { "page":1,"limit":20,"total":0,"totalPages":0 } }`. Errors are `{ "message", "code", "errors"? }` with HTTP 401/403/404/409/422 as appropriate.
 

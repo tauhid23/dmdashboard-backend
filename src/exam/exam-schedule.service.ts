@@ -1,6 +1,7 @@
 import type { Prisma } from "../generated/prisma/client.js";
 import { ExamScheduleStatus } from "../generated/prisma/enums.js";
 import { prisma } from "../config/prisma.js";
+import { resolveStaffRecipients } from "../services/notification.service.js";
 import type { ActorScope } from "../auth/accessScope.js";
 import { assertStudentAccess, assertTeacherAccess, scheduleAccessWhere } from "../auth/accessScope.js";
 
@@ -101,15 +102,31 @@ export const createSchedule = async (raw: unknown, scope?: ActorScope) => {
     throw httpError(403, "Teacher is not assigned to this student");
   }
 
-  const schedule = await prisma.examSchedule.create({
-    data: {
-      studentId: input.studentId,
-      teacherId: input.teacherId,
-      courseName: input.courseName,
-      level: input.level,
-      scheduledAt: input.scheduledAt
-    },
-    include
+  const recipients = await resolveStaffRecipients();
+  const schedule = await prisma.$transaction(async (tx) => {
+    const created = await tx.examSchedule.create({
+      data: {
+        studentId: input.studentId,
+        teacherId: input.teacherId,
+        courseName: input.courseName,
+        level: input.level,
+        scheduledAt: input.scheduledAt
+      },
+      include
+    });
+    await tx.emailNotification.create({ data: {
+      eventKey: `exam-schedule:${created.id}`,
+      recipients,
+      subject: `Exam scheduled: ${created.student.name || "Student"}`,
+      body: [
+        `An exam has been scheduled for ${created.student.name || "Student"}.`,
+        `Course: ${created.courseName} (${created.level})`,
+        `Examiner: ${created.teacher.name || "Teacher"}`,
+        `Date and time: ${created.scheduledAt.toLocaleString("en-GB", { timeZone: "Asia/Dhaka" })} (Dhaka time)`,
+        "Review the exam schedule in the Deeni Madrasa dashboard.",
+      ].join("\n\n"),
+    } });
+    return created;
   });
 
   return publicSchedule(schedule);

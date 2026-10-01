@@ -4,6 +4,7 @@ import { prisma } from "../config/prisma.js";
 import type { ActorScope } from "../auth/accessScope.js";
 import { forbidden, scheduleAccessWhere } from "../auth/accessScope.js";
 import { recalculateStudentBillingFromSchedule } from "../billing/studentBilling.service.js";
+import { lockMakeupStudents, syncMakeupCredit } from "./makeupCredit.service.js";
 import type {
   ClassAttendanceStatus,
   ClassScheduleFilters,
@@ -214,7 +215,7 @@ const validateCreatePayload = (raw: unknown) => {
 
   return {
     teacherId,
-    attendeeIds: attendeeIds.map((id) => String(id)),
+    attendeeIds: [...new Set(attendeeIds.map((id) => String(id)))],
     category,
     startDate: parseDateOnly(date, "Date"),
     start,
@@ -254,6 +255,7 @@ const buildRecurringDates = (
 };
 
 const validateRecurringInput = (input: ReturnType<typeof validateCreatePayload>) => {
+  if (input.makeupCredit && input.recurring) throw httpError(400, "Make-up classes must be scheduled individually.");
   if (!input.recurring) return null;
 
   if (input.repeatDays.length === 0) {
@@ -396,9 +398,11 @@ export const createEvents = async (raw: unknown, scope?: ActorScope) => {
       ? randomUUID()
       : null;
 
-  const events = await prisma.$transaction(
-    input.attendeeIds.map((studentId) =>
-      prisma.classScheduleEvent.create({
+  const events = await prisma.$transaction(async (tx) => {
+    await lockMakeupStudents(tx, input.attendeeIds);
+    const created: EventWithDetails[] = [];
+    for (const studentId of input.attendeeIds) {
+      const event = await tx.classScheduleEvent.create({
         data: {
           studentId,
           teacherId: input.teacherId,
@@ -417,9 +421,12 @@ export const createEvents = async (raw: unknown, scope?: ActorScope) => {
           recurrenceEndDate
         },
         include
-      })
-    )
-  );
+      });
+      await syncMakeupCredit(tx, event, scope?.userId);
+      created.push(event);
+    }
+    return created;
+  }, { timeout: 30_000 });
 
   await Promise.all(input.attendeeIds.map(recalculateStudentBillingFromSchedule));
 
@@ -438,6 +445,7 @@ const materializeRecurringEvents = async (
   const seeds = await prisma.classScheduleEvent.findMany({
     where: {
       isRecurring: true,
+      makeupCredit: false,
       recurrenceSourceId: null,
       scheduledDate: { lte: rangeEnd },
       OR: [
@@ -556,6 +564,7 @@ export const updateEvent = async (
   const existing = await prisma.classScheduleEvent.findUnique({ where: { id } });
   if (!existing) throw httpError(404, "Class schedule event not found");
   assertEventAccess(existing, scope);
+  if (scope && !scope.isPrivileged && !scope.teacherId) throw forbidden("Only staff and tutors can record attendance");
 
   const teacherId = optionalString(body.teacherId) ?? existing.teacherId;
   const studentId = optionalString(body.studentId) ?? existing.studentId;
@@ -592,8 +601,29 @@ export const updateEvent = async (
   ) {
     throw httpError(400, "attendanceStatus is invalid");
   }
+  if (body.makeupCredit !== undefined && parseBoolean(body.makeupCredit) !== existing.makeupCredit
+    && (existing.attendanceStatus !== "UNRECORDED" || normalizedAttendanceStatus !== "UNRECORDED")) {
+    throw httpError(409, "Correct attendance to unrecorded before changing whether this is a make-up class.");
+  }
 
-  const event = await prisma.classScheduleEvent.update({
+  assertEventAccess({ teacherId, studentId }, scope);
+  const event = await prisma.$transaction(async (tx) => {
+    await lockMakeupStudents(tx, [existing.studentId, studentId]);
+    const current = await tx.classScheduleEvent.findUnique({ where: { id } });
+    if (!current || current.updatedAt.getTime() !== existing.updatedAt.getTime()) {
+      throw httpError(409, "This class was changed by another user. Refresh and try again.");
+    }
+    const linked = await tx.makeupCreditUse.count({ where: { eventId: id, status: { not: "RELEASED" } } });
+    const earnedWithHistory = await tx.makeupCredit.count({ where: { sourceEventId: id,
+      OR: [{ adjustmentId: { not: null } }, { uses: { some: { status: { not: "RELEASED" } } } }] } });
+    if (earnedWithHistory && body.date !== undefined && parseDateOnly(String(body.date), "Date").getTime() !== existing.scheduledDate.getTime()) {
+      throw httpError(409, "The date of a class whose make-up credit has been used or adjusted cannot be changed.");
+    }
+    if (linked && (studentId !== existing.studentId || duration !== existing.durationMinutes
+      || (body.date !== undefined && parseDateOnly(String(body.date), "Date").getTime() !== existing.scheduledDate.getTime()))) {
+      throw httpError(409, "Cancel this make-up class before changing its student, date or duration.");
+    }
+    const updated = await tx.classScheduleEvent.update({
     where: { id },
     data: {
       teacherId,
@@ -615,7 +645,10 @@ export const updateEvent = async (
       ...(body.note !== undefined ? { note: optionalString(body.note) } : {})
     },
     include
-  });
+    });
+    await syncMakeupCredit(tx, updated, scope?.userId);
+    return updated;
+  }, { timeout: 30_000 });
   assertEventAccess(event, scope);
 
   await Promise.all([...new Set([existing.studentId, studentId])].map(recalculateStudentBillingFromSchedule));
@@ -671,6 +704,16 @@ export const deleteEvent = async (
   });
   if (!event) throw httpError(404, "Class schedule event not found");
   assertEventAccess(event, actorScope);
+  if (actorScope && !actorScope.isPrivileged && !actorScope.teacherId) throw forbidden("Only staff and tutors can delete classes");
+  const history = await prisma.classScheduleEvent.count({ where: {
+    ...(scope === "future" ? {
+      scheduledDate: { gte: event.scheduledDate },
+      ...(event.recurrenceGroupId ? { recurrenceGroupId: event.recurrenceGroupId }
+        : { OR: [{ id: event.recurrenceSourceId ?? id }, { recurrenceSourceId: event.recurrenceSourceId ?? id }] }),
+    } : { id }),
+    AND: [{ OR: [{ earnedMakeupCredit: { isNot: null } }, { makeupUses: { some: {} } }] }],
+  } });
+  if (history) throw httpError(409, "Classes with make-up credit history cannot be deleted. Cancel the class or correct its attendance instead.");
   const affectedStudentIds = event.recurrenceGroupId
     ? [...new Set((await prisma.classScheduleEvent.findMany({ where: { recurrenceGroupId: event.recurrenceGroupId }, select: { studentId: true } })).map((item) => item.studentId))]
     : [event.studentId];

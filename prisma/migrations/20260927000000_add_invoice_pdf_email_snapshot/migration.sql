@@ -1,0 +1,12 @@
+ALTER TABLE "StudentInvoice"
+ADD COLUMN "includeBalanceForward" BOOLEAN NOT NULL DEFAULT true,
+ADD COLUMN "previousBalanceBdt" DECIMAL(10, 2) NOT NULL DEFAULT 0,
+ADD COLUMN "currentChargesBdt" DECIMAL(10, 2) NOT NULL DEFAULT 0,
+ADD COLUMN "currentPaymentsBdt" DECIMAL(10, 2) NOT NULL DEFAULT 0,
+ADD COLUMN "sentTo" TEXT,
+ADD COLUMN "emailSubject" TEXT,
+ADD COLUMN "emailBody" TEXT,
+ADD COLUMN "pdfTemplate" TEXT NOT NULL DEFAULT 'CLASSIC',
+ADD COLUMN "pdfAccentColor" TEXT,
+ADD COLUMN "pdfNotes" TEXT,
+ADD COLUMN "lineItems" JSONB;

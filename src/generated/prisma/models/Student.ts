@@ -27,6 +27,8 @@ export type AggregateStudent = {
 }
 
 export type StudentAvgAggregateOutputType = {
+  age: number | null
+  preferredLocalDays: number | null
   classDurationMinutes: number | null
   classDays: number | null
   weeklyHours: runtime.Decimal | null
@@ -36,6 +38,8 @@ export type StudentAvgAggregateOutputType = {
 }
 
 export type StudentSumAggregateOutputType = {
+  age: number | null
+  preferredLocalDays: number[]
   classDurationMinutes: number | null
   classDays: number[]
   weeklyHours: runtime.Decimal | null
@@ -48,11 +52,17 @@ export type StudentMinAggregateOutputType = {
   id: string | null
   image: string | null
   name: string | null
+  studentType: string | null
+  age: number | null
+  gender: string | null
   country: string | null
   studentSince: Date | null
   weeklySchedule: string | null
   classStartDate: Date | null
   classStartTime: string | null
+  preferredTimeZone: string | null
+  preferredLocalTime: string | null
+  preferredStartDate: Date | null
   classDurationMinutes: number | null
   packageCode: string | null
   weeklyHours: runtime.Decimal | null
@@ -90,11 +100,17 @@ export type StudentMaxAggregateOutputType = {
   id: string | null
   image: string | null
   name: string | null
+  studentType: string | null
+  age: number | null
+  gender: string | null
   country: string | null
   studentSince: Date | null
   weeklySchedule: string | null
   classStartDate: Date | null
   classStartTime: string | null
+  preferredTimeZone: string | null
+  preferredLocalTime: string | null
+  preferredStartDate: Date | null
   classDurationMinutes: number | null
   packageCode: string | null
   weeklyHours: runtime.Decimal | null
@@ -132,11 +148,18 @@ export type StudentCountAggregateOutputType = {
   id: number
   image: number
   name: number
+  studentType: number
+  age: number
+  gender: number
   country: number
   studentSince: number
   weeklySchedule: number
   classStartDate: number
   classStartTime: number
+  preferredTimeZone: number
+  preferredLocalTime: number
+  preferredLocalDays: number
+  preferredStartDate: number
   classDurationMinutes: number
   classDays: number
   packageCode: number
@@ -174,6 +197,8 @@ export type StudentCountAggregateOutputType = {
 
 
 export type StudentAvgAggregateInputType = {
+  age?: true
+  preferredLocalDays?: true
   classDurationMinutes?: true
   classDays?: true
   weeklyHours?: true
@@ -183,6 +208,8 @@ export type StudentAvgAggregateInputType = {
 }
 
 export type StudentSumAggregateInputType = {
+  age?: true
+  preferredLocalDays?: true
   classDurationMinutes?: true
   classDays?: true
   weeklyHours?: true
@@ -195,11 +222,17 @@ export type StudentMinAggregateInputType = {
   id?: true
   image?: true
   name?: true
+  studentType?: true
+  age?: true
+  gender?: true
   country?: true
   studentSince?: true
   weeklySchedule?: true
   classStartDate?: true
   classStartTime?: true
+  preferredTimeZone?: true
+  preferredLocalTime?: true
+  preferredStartDate?: true
   classDurationMinutes?: true
   packageCode?: true
   weeklyHours?: true
@@ -237,11 +270,17 @@ export type StudentMaxAggregateInputType = {
   id?: true
   image?: true
   name?: true
+  studentType?: true
+  age?: true
+  gender?: true
   country?: true
   studentSince?: true
   weeklySchedule?: true
   classStartDate?: true
   classStartTime?: true
+  preferredTimeZone?: true
+  preferredLocalTime?: true
+  preferredStartDate?: true
   classDurationMinutes?: true
   packageCode?: true
   weeklyHours?: true
@@ -279,11 +318,18 @@ export type StudentCountAggregateInputType = {
   id?: true
   image?: true
   name?: true
+  studentType?: true
+  age?: true
+  gender?: true
   country?: true
   studentSince?: true
   weeklySchedule?: true
   classStartDate?: true
   classStartTime?: true
+  preferredTimeZone?: true
+  preferredLocalTime?: true
+  preferredLocalDays?: true
+  preferredStartDate?: true
   classDurationMinutes?: true
   classDays?: true
   packageCode?: true
@@ -409,11 +455,18 @@ export type StudentGroupByOutputType = {
   id: string
   image: string | null
   name: string | null
+  studentType: string | null
+  age: number | null
+  gender: string | null
   country: string | null
   studentSince: Date | null
   weeklySchedule: string | null
   classStartDate: Date | null
   classStartTime: string | null
+  preferredTimeZone: string | null
+  preferredLocalTime: string | null
+  preferredLocalDays: number[]
+  preferredStartDate: Date | null
   classDurationMinutes: number | null
   classDays: number[]
   packageCode: string | null
@@ -475,11 +528,18 @@ export type StudentWhereInput = {
   id?: Prisma.StringFilter<"Student"> | string
   image?: Prisma.StringNullableFilter<"Student"> | string | null
   name?: Prisma.StringNullableFilter<"Student"> | string | null
+  studentType?: Prisma.StringNullableFilter<"Student"> | string | null
+  age?: Prisma.IntNullableFilter<"Student"> | number | null
+  gender?: Prisma.StringNullableFilter<"Student"> | string | null
   country?: Prisma.StringNullableFilter<"Student"> | string | null
   studentSince?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
   weeklySchedule?: Prisma.StringNullableFilter<"Student"> | string | null
   classStartDate?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
   classStartTime?: Prisma.StringNullableFilter<"Student"> | string | null
+  preferredTimeZone?: Prisma.StringNullableFilter<"Student"> | string | null
+  preferredLocalTime?: Prisma.StringNullableFilter<"Student"> | string | null
+  preferredLocalDays?: Prisma.IntNullableListFilter<"Student">
+  preferredStartDate?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
   classDurationMinutes?: Prisma.IntNullableFilter<"Student"> | number | null
   classDays?: Prisma.IntNullableListFilter<"Student">
   packageCode?: Prisma.StringNullableFilter<"Student"> | string | null
@@ -523,17 +583,25 @@ export type StudentWhereInput = {
   userAccount?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   billingTransactions?: Prisma.StudentBillingTransactionListRelationFilter
   invoices?: Prisma.StudentInvoiceListRelationFilter
+  makeupCredits?: Prisma.MakeupCreditListRelationFilter
 }
 
 export type StudentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
+  studentType?: Prisma.SortOrderInput | Prisma.SortOrder
+  age?: Prisma.SortOrderInput | Prisma.SortOrder
+  gender?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
   studentSince?: Prisma.SortOrderInput | Prisma.SortOrder
   weeklySchedule?: Prisma.SortOrderInput | Prisma.SortOrder
   classStartDate?: Prisma.SortOrderInput | Prisma.SortOrder
   classStartTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  preferredTimeZone?: Prisma.SortOrderInput | Prisma.SortOrder
+  preferredLocalTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  preferredLocalDays?: Prisma.SortOrder
+  preferredStartDate?: Prisma.SortOrderInput | Prisma.SortOrder
   classDurationMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
   classDays?: Prisma.SortOrder
   packageCode?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -577,6 +645,7 @@ export type StudentOrderByWithRelationInput = {
   userAccount?: Prisma.UserOrderByWithRelationInput
   billingTransactions?: Prisma.StudentBillingTransactionOrderByRelationAggregateInput
   invoices?: Prisma.StudentInvoiceOrderByRelationAggregateInput
+  makeupCredits?: Prisma.MakeupCreditOrderByRelationAggregateInput
 }
 
 export type StudentWhereUniqueInput = Prisma.AtLeast<{
@@ -586,11 +655,18 @@ export type StudentWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.StudentWhereInput | Prisma.StudentWhereInput[]
   image?: Prisma.StringNullableFilter<"Student"> | string | null
   name?: Prisma.StringNullableFilter<"Student"> | string | null
+  studentType?: Prisma.StringNullableFilter<"Student"> | string | null
+  age?: Prisma.IntNullableFilter<"Student"> | number | null
+  gender?: Prisma.StringNullableFilter<"Student"> | string | null
   country?: Prisma.StringNullableFilter<"Student"> | string | null
   studentSince?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
   weeklySchedule?: Prisma.StringNullableFilter<"Student"> | string | null
   classStartDate?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
   classStartTime?: Prisma.StringNullableFilter<"Student"> | string | null
+  preferredTimeZone?: Prisma.StringNullableFilter<"Student"> | string | null
+  preferredLocalTime?: Prisma.StringNullableFilter<"Student"> | string | null
+  preferredLocalDays?: Prisma.IntNullableListFilter<"Student">
+  preferredStartDate?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
   classDurationMinutes?: Prisma.IntNullableFilter<"Student"> | number | null
   classDays?: Prisma.IntNullableListFilter<"Student">
   packageCode?: Prisma.StringNullableFilter<"Student"> | string | null
@@ -634,17 +710,25 @@ export type StudentWhereUniqueInput = Prisma.AtLeast<{
   userAccount?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   billingTransactions?: Prisma.StudentBillingTransactionListRelationFilter
   invoices?: Prisma.StudentInvoiceListRelationFilter
+  makeupCredits?: Prisma.MakeupCreditListRelationFilter
 }, "id">
 
 export type StudentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
+  studentType?: Prisma.SortOrderInput | Prisma.SortOrder
+  age?: Prisma.SortOrderInput | Prisma.SortOrder
+  gender?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
   studentSince?: Prisma.SortOrderInput | Prisma.SortOrder
   weeklySchedule?: Prisma.SortOrderInput | Prisma.SortOrder
   classStartDate?: Prisma.SortOrderInput | Prisma.SortOrder
   classStartTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  preferredTimeZone?: Prisma.SortOrderInput | Prisma.SortOrder
+  preferredLocalTime?: Prisma.SortOrderInput | Prisma.SortOrder
+  preferredLocalDays?: Prisma.SortOrder
+  preferredStartDate?: Prisma.SortOrderInput | Prisma.SortOrder
   classDurationMinutes?: Prisma.SortOrderInput | Prisma.SortOrder
   classDays?: Prisma.SortOrder
   packageCode?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -691,11 +775,18 @@ export type StudentScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Student"> | string
   image?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   name?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  studentType?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  age?: Prisma.IntNullableWithAggregatesFilter<"Student"> | number | null
+  gender?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   country?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   studentSince?: Prisma.DateTimeNullableWithAggregatesFilter<"Student"> | Date | string | null
   weeklySchedule?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
   classStartDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Student"> | Date | string | null
   classStartTime?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  preferredTimeZone?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  preferredLocalTime?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
+  preferredLocalDays?: Prisma.IntNullableListFilter<"Student">
+  preferredStartDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Student"> | Date | string | null
   classDurationMinutes?: Prisma.IntNullableWithAggregatesFilter<"Student"> | number | null
   classDays?: Prisma.IntNullableListFilter<"Student">
   packageCode?: Prisma.StringNullableWithAggregatesFilter<"Student"> | string | null
@@ -734,11 +825,18 @@ export type StudentCreateInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -781,17 +879,25 @@ export type StudentCreateInput = {
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -834,17 +940,25 @@ export type StudentUncheckedCreateInput = {
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -887,17 +1001,25 @@ export type StudentUpdateInput = {
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -940,17 +1062,25 @@ export type StudentUncheckedUpdateInput = {
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateManyInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -989,11 +1119,18 @@ export type StudentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1031,11 +1168,18 @@ export type StudentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1087,11 +1231,18 @@ export type StudentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   image?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  studentType?: Prisma.SortOrder
+  age?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
   country?: Prisma.SortOrder
   studentSince?: Prisma.SortOrder
   weeklySchedule?: Prisma.SortOrder
   classStartDate?: Prisma.SortOrder
   classStartTime?: Prisma.SortOrder
+  preferredTimeZone?: Prisma.SortOrder
+  preferredLocalTime?: Prisma.SortOrder
+  preferredLocalDays?: Prisma.SortOrder
+  preferredStartDate?: Prisma.SortOrder
   classDurationMinutes?: Prisma.SortOrder
   classDays?: Prisma.SortOrder
   packageCode?: Prisma.SortOrder
@@ -1127,6 +1278,8 @@ export type StudentCountOrderByAggregateInput = {
 }
 
 export type StudentAvgOrderByAggregateInput = {
+  age?: Prisma.SortOrder
+  preferredLocalDays?: Prisma.SortOrder
   classDurationMinutes?: Prisma.SortOrder
   classDays?: Prisma.SortOrder
   weeklyHours?: Prisma.SortOrder
@@ -1139,11 +1292,17 @@ export type StudentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   image?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  studentType?: Prisma.SortOrder
+  age?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
   country?: Prisma.SortOrder
   studentSince?: Prisma.SortOrder
   weeklySchedule?: Prisma.SortOrder
   classStartDate?: Prisma.SortOrder
   classStartTime?: Prisma.SortOrder
+  preferredTimeZone?: Prisma.SortOrder
+  preferredLocalTime?: Prisma.SortOrder
+  preferredStartDate?: Prisma.SortOrder
   classDurationMinutes?: Prisma.SortOrder
   packageCode?: Prisma.SortOrder
   weeklyHours?: Prisma.SortOrder
@@ -1181,11 +1340,17 @@ export type StudentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   image?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  studentType?: Prisma.SortOrder
+  age?: Prisma.SortOrder
+  gender?: Prisma.SortOrder
   country?: Prisma.SortOrder
   studentSince?: Prisma.SortOrder
   weeklySchedule?: Prisma.SortOrder
   classStartDate?: Prisma.SortOrder
   classStartTime?: Prisma.SortOrder
+  preferredTimeZone?: Prisma.SortOrder
+  preferredLocalTime?: Prisma.SortOrder
+  preferredStartDate?: Prisma.SortOrder
   classDurationMinutes?: Prisma.SortOrder
   packageCode?: Prisma.SortOrder
   weeklyHours?: Prisma.SortOrder
@@ -1220,6 +1385,8 @@ export type StudentMinOrderByAggregateInput = {
 }
 
 export type StudentSumOrderByAggregateInput = {
+  age?: Prisma.SortOrder
+  preferredLocalDays?: Prisma.SortOrder
   classDurationMinutes?: Prisma.SortOrder
   classDays?: Prisma.SortOrder
   weeklyHours?: Prisma.SortOrder
@@ -1259,6 +1426,10 @@ export type StudentUpdateOneWithoutUserAccountNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StudentUpdateToOneWithWhereWithoutUserAccountInput, Prisma.StudentUpdateWithoutUserAccountInput>, Prisma.StudentUncheckedUpdateWithoutUserAccountInput>
 }
 
+export type StudentCreatepreferredLocalDaysInput = {
+  set: number[]
+}
+
 export type StudentCreateclassDaysInput = {
   set: number[]
 }
@@ -1269,6 +1440,11 @@ export type NullableIntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type StudentUpdatepreferredLocalDaysInput = {
+  set?: number[]
+  push?: number | number[]
 }
 
 export type StudentUpdateclassDaysInput = {
@@ -1408,6 +1584,20 @@ export type StudentUpdateOneRequiredWithoutClassScheduleEventsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.StudentUpdateToOneWithWhereWithoutClassScheduleEventsInput, Prisma.StudentUpdateWithoutClassScheduleEventsInput>, Prisma.StudentUncheckedUpdateWithoutClassScheduleEventsInput>
 }
 
+export type StudentCreateNestedOneWithoutMakeupCreditsInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutMakeupCreditsInput, Prisma.StudentUncheckedCreateWithoutMakeupCreditsInput>
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutMakeupCreditsInput
+  connect?: Prisma.StudentWhereUniqueInput
+}
+
+export type StudentUpdateOneRequiredWithoutMakeupCreditsNestedInput = {
+  create?: Prisma.XOR<Prisma.StudentCreateWithoutMakeupCreditsInput, Prisma.StudentUncheckedCreateWithoutMakeupCreditsInput>
+  connectOrCreate?: Prisma.StudentCreateOrConnectWithoutMakeupCreditsInput
+  upsert?: Prisma.StudentUpsertWithoutMakeupCreditsInput
+  connect?: Prisma.StudentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StudentUpdateToOneWithWhereWithoutMakeupCreditsInput, Prisma.StudentUpdateWithoutMakeupCreditsInput>, Prisma.StudentUncheckedUpdateWithoutMakeupCreditsInput>
+}
+
 export type StudentCreateNestedOneWithoutExamSchedulesInput = {
   create?: Prisma.XOR<Prisma.StudentCreateWithoutExamSchedulesInput, Prisma.StudentUncheckedCreateWithoutExamSchedulesInput>
   connectOrCreate?: Prisma.StudentCreateOrConnectWithoutExamSchedulesInput
@@ -1470,11 +1660,18 @@ export type StudentCreateWithoutUserAccountInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -1516,17 +1713,25 @@ export type StudentCreateWithoutUserAccountInput = {
   courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutUserAccountInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -1568,6 +1773,7 @@ export type StudentUncheckedCreateWithoutUserAccountInput = {
   courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutUserAccountInput = {
@@ -1590,11 +1796,18 @@ export type StudentUpdateWithoutUserAccountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1636,17 +1849,25 @@ export type StudentUpdateWithoutUserAccountInput = {
   courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutUserAccountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1688,17 +1909,25 @@ export type StudentUncheckedUpdateWithoutUserAccountInput = {
   courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutBillingTransactionsInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -1740,17 +1969,25 @@ export type StudentCreateWithoutBillingTransactionsInput = {
   courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
   invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutBillingTransactionsInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -1792,6 +2029,7 @@ export type StudentUncheckedCreateWithoutBillingTransactionsInput = {
   courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
   invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutBillingTransactionsInput = {
@@ -1814,11 +2052,18 @@ export type StudentUpdateWithoutBillingTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1860,17 +2105,25 @@ export type StudentUpdateWithoutBillingTransactionsInput = {
   courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutBillingTransactionsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1912,17 +2165,25 @@ export type StudentUncheckedUpdateWithoutBillingTransactionsInput = {
   courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutInvoicesInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -1964,17 +2225,25 @@ export type StudentCreateWithoutInvoicesInput = {
   courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutInvoicesInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -2016,6 +2285,7 @@ export type StudentUncheckedCreateWithoutInvoicesInput = {
   courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutInvoicesInput = {
@@ -2038,11 +2308,18 @@ export type StudentUpdateWithoutInvoicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2084,17 +2361,25 @@ export type StudentUpdateWithoutInvoicesInput = {
   courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutInvoicesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2136,17 +2421,25 @@ export type StudentUncheckedUpdateWithoutInvoicesInput = {
   courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutCoursesInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -2188,17 +2481,25 @@ export type StudentCreateWithoutCoursesInput = {
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutCoursesInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -2240,6 +2541,7 @@ export type StudentUncheckedCreateWithoutCoursesInput = {
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutCoursesInput = {
@@ -2262,11 +2564,18 @@ export type StudentUpdateWithoutCoursesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2308,17 +2617,25 @@ export type StudentUpdateWithoutCoursesInput = {
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutCoursesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2360,17 +2677,25 @@ export type StudentUncheckedUpdateWithoutCoursesInput = {
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutTeacherChangesInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -2412,17 +2737,25 @@ export type StudentCreateWithoutTeacherChangesInput = {
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutTeacherChangesInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -2464,6 +2797,7 @@ export type StudentUncheckedCreateWithoutTeacherChangesInput = {
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutTeacherChangesInput = {
@@ -2486,11 +2820,18 @@ export type StudentUpdateWithoutTeacherChangesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2532,17 +2873,25 @@ export type StudentUpdateWithoutTeacherChangesInput = {
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutTeacherChangesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2584,17 +2933,25 @@ export type StudentUncheckedUpdateWithoutTeacherChangesInput = {
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutTeacherInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -2636,17 +2993,25 @@ export type StudentCreateWithoutTeacherInput = {
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutTeacherInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -2688,6 +3053,7 @@ export type StudentUncheckedCreateWithoutTeacherInput = {
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutTeacherInput = {
@@ -2723,11 +3089,18 @@ export type StudentScalarWhereInput = {
   id?: Prisma.StringFilter<"Student"> | string
   image?: Prisma.StringNullableFilter<"Student"> | string | null
   name?: Prisma.StringNullableFilter<"Student"> | string | null
+  studentType?: Prisma.StringNullableFilter<"Student"> | string | null
+  age?: Prisma.IntNullableFilter<"Student"> | number | null
+  gender?: Prisma.StringNullableFilter<"Student"> | string | null
   country?: Prisma.StringNullableFilter<"Student"> | string | null
   studentSince?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
   weeklySchedule?: Prisma.StringNullableFilter<"Student"> | string | null
   classStartDate?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
   classStartTime?: Prisma.StringNullableFilter<"Student"> | string | null
+  preferredTimeZone?: Prisma.StringNullableFilter<"Student"> | string | null
+  preferredLocalTime?: Prisma.StringNullableFilter<"Student"> | string | null
+  preferredLocalDays?: Prisma.IntNullableListFilter<"Student">
+  preferredStartDate?: Prisma.DateTimeNullableFilter<"Student"> | Date | string | null
   classDurationMinutes?: Prisma.IntNullableFilter<"Student"> | number | null
   classDays?: Prisma.IntNullableListFilter<"Student">
   packageCode?: Prisma.StringNullableFilter<"Student"> | string | null
@@ -2766,11 +3139,18 @@ export type StudentCreateWithoutClassScheduleEventsInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -2812,17 +3192,25 @@ export type StudentCreateWithoutClassScheduleEventsInput = {
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutClassScheduleEventsInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -2864,6 +3252,7 @@ export type StudentUncheckedCreateWithoutClassScheduleEventsInput = {
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutClassScheduleEventsInput = {
@@ -2886,11 +3275,18 @@ export type StudentUpdateWithoutClassScheduleEventsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2932,17 +3328,25 @@ export type StudentUpdateWithoutClassScheduleEventsInput = {
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutClassScheduleEventsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2984,17 +3388,281 @@ export type StudentUncheckedUpdateWithoutClassScheduleEventsInput = {
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentCreateWithoutMakeupCreditsInput = {
+  id?: string
+  image?: string | null
+  name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
+  country?: string | null
+  studentSince?: Date | string | null
+  weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
+  parentName?: string | null
+  parentEmail?: string | null
+  parentPhone?: string | null
+  courseName?: string | null
+  courseStage?: string | null
+  teacherName?: string | null
+  groupClass?: boolean | null
+  groupSchedule?: string | null
+  groupClassSchedule?: string | null
+  groupTeacher?: string | null
+  groupSubject?: string | null
+  subject?: string | null
+  teacherChanged?: boolean | null
+  previousTeacherName?: string | null
+  teacherChangeReason?: string | null
+  status?: $Enums.StudentStatus | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
+  teacher?: Prisma.TeacherCreateNestedOneWithoutStudentsInput
+  courses?: Prisma.StudentCourseCreateNestedManyWithoutStudentInput
+  teacherChanges?: Prisma.TeacherChangeCreateNestedManyWithoutStudentInput
+  classReports?: Prisma.ClassReportCreateNestedManyWithoutStudentInput
+  classScheduleEvents?: Prisma.ClassScheduleEventCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptCreateNestedManyWithoutStudentInput
+  examSchedules?: Prisma.ExamScheduleCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryCreateNestedManyWithoutStudentInput
+  userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
+}
+
+export type StudentUncheckedCreateWithoutMakeupCreditsInput = {
+  id?: string
+  image?: string | null
+  name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
+  country?: string | null
+  studentSince?: Date | string | null
+  weeklySchedule?: string | null
+  classStartDate?: Date | string | null
+  classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
+  classDurationMinutes?: number | null
+  classDays?: Prisma.StudentCreateclassDaysInput | number[]
+  packageCode?: string | null
+  weeklyHours?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: string
+  monthlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: boolean
+  scheduleConfirmed?: boolean
+  parentName?: string | null
+  parentEmail?: string | null
+  parentPhone?: string | null
+  courseName?: string | null
+  courseStage?: string | null
+  teacherId?: string | null
+  teacherName?: string | null
+  groupClass?: boolean | null
+  groupSchedule?: string | null
+  groupClassSchedule?: string | null
+  groupTeacher?: string | null
+  groupSubject?: string | null
+  subject?: string | null
+  teacherChanged?: boolean | null
+  previousTeacherName?: string | null
+  teacherChangeReason?: string | null
+  status?: $Enums.StudentStatus | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  currentCourseLevel?: $Enums.CourseLevel | null
+  courseCompleted?: boolean
+  courseUpdatedAt?: Date | string | null
+  courses?: Prisma.StudentCourseUncheckedCreateNestedManyWithoutStudentInput
+  teacherChanges?: Prisma.TeacherChangeUncheckedCreateNestedManyWithoutStudentInput
+  classReports?: Prisma.ClassReportUncheckedCreateNestedManyWithoutStudentInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedCreateNestedManyWithoutStudentInput
+  examAttempts?: Prisma.ExamAttemptUncheckedCreateNestedManyWithoutStudentInput
+  examSchedules?: Prisma.ExamScheduleUncheckedCreateNestedManyWithoutStudentInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedCreateNestedManyWithoutStudentInput
+  userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
+  invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
+}
+
+export type StudentCreateOrConnectWithoutMakeupCreditsInput = {
+  where: Prisma.StudentWhereUniqueInput
+  create: Prisma.XOR<Prisma.StudentCreateWithoutMakeupCreditsInput, Prisma.StudentUncheckedCreateWithoutMakeupCreditsInput>
+}
+
+export type StudentUpsertWithoutMakeupCreditsInput = {
+  update: Prisma.XOR<Prisma.StudentUpdateWithoutMakeupCreditsInput, Prisma.StudentUncheckedUpdateWithoutMakeupCreditsInput>
+  create: Prisma.XOR<Prisma.StudentCreateWithoutMakeupCreditsInput, Prisma.StudentUncheckedCreateWithoutMakeupCreditsInput>
+  where?: Prisma.StudentWhereInput
+}
+
+export type StudentUpdateToOneWithWhereWithoutMakeupCreditsInput = {
+  where?: Prisma.StudentWhereInput
+  data: Prisma.XOR<Prisma.StudentUpdateWithoutMakeupCreditsInput, Prisma.StudentUncheckedUpdateWithoutMakeupCreditsInput>
+}
+
+export type StudentUpdateWithoutMakeupCreditsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClass?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  groupSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClassSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupTeacher?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupSubject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChanged?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  previousTeacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChangeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  teacher?: Prisma.TeacherUpdateOneWithoutStudentsNestedInput
+  courses?: Prisma.StudentCourseUpdateManyWithoutStudentNestedInput
+  teacherChanges?: Prisma.TeacherChangeUpdateManyWithoutStudentNestedInput
+  classReports?: Prisma.ClassReportUpdateManyWithoutStudentNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUpdateManyWithoutStudentNestedInput
+  examSchedules?: Prisma.ExamScheduleUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUpdateManyWithoutStudentNestedInput
+  userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
+}
+
+export type StudentUncheckedUpdateWithoutMakeupCreditsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  classDays?: Prisma.StudentUpdateclassDaysInput | number[]
+  packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weeklyHours?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingCycle?: Prisma.StringFieldUpdateOperationsInput | string
+  monthlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  quarterlyPriceBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingAmountBdt?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  billingManualOverride?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  scheduleConfirmed?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  parentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  courseStage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClass?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  groupSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupClassSchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupTeacher?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  groupSubject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChanged?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  previousTeacherName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  teacherChangeReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.NullableEnumStudentStatusFieldUpdateOperationsInput | $Enums.StudentStatus | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  currentCourseLevel?: Prisma.NullableEnumCourseLevelFieldUpdateOperationsInput | $Enums.CourseLevel | null
+  courseCompleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  courseUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  courses?: Prisma.StudentCourseUncheckedUpdateManyWithoutStudentNestedInput
+  teacherChanges?: Prisma.TeacherChangeUncheckedUpdateManyWithoutStudentNestedInput
+  classReports?: Prisma.ClassReportUncheckedUpdateManyWithoutStudentNestedInput
+  classScheduleEvents?: Prisma.ClassScheduleEventUncheckedUpdateManyWithoutStudentNestedInput
+  examAttempts?: Prisma.ExamAttemptUncheckedUpdateManyWithoutStudentNestedInput
+  examSchedules?: Prisma.ExamScheduleUncheckedUpdateManyWithoutStudentNestedInput
+  courseHistory?: Prisma.StudentCourseHistoryUncheckedUpdateManyWithoutStudentNestedInput
+  userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
+  billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
+  invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutExamSchedulesInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -3036,17 +3704,25 @@ export type StudentCreateWithoutExamSchedulesInput = {
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutExamSchedulesInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -3088,6 +3764,7 @@ export type StudentUncheckedCreateWithoutExamSchedulesInput = {
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutExamSchedulesInput = {
@@ -3110,11 +3787,18 @@ export type StudentUpdateWithoutExamSchedulesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3156,17 +3840,25 @@ export type StudentUpdateWithoutExamSchedulesInput = {
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutExamSchedulesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3208,17 +3900,25 @@ export type StudentUncheckedUpdateWithoutExamSchedulesInput = {
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutExamAttemptsInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -3260,17 +3960,25 @@ export type StudentCreateWithoutExamAttemptsInput = {
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutExamAttemptsInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -3312,6 +4020,7 @@ export type StudentUncheckedCreateWithoutExamAttemptsInput = {
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutExamAttemptsInput = {
@@ -3334,11 +4043,18 @@ export type StudentUpdateWithoutExamAttemptsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3380,17 +4096,25 @@ export type StudentUpdateWithoutExamAttemptsInput = {
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutExamAttemptsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3432,17 +4156,25 @@ export type StudentUncheckedUpdateWithoutExamAttemptsInput = {
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutCourseHistoryInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -3484,17 +4216,25 @@ export type StudentCreateWithoutCourseHistoryInput = {
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutCourseHistoryInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -3536,6 +4276,7 @@ export type StudentUncheckedCreateWithoutCourseHistoryInput = {
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutCourseHistoryInput = {
@@ -3558,11 +4299,18 @@ export type StudentUpdateWithoutCourseHistoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3604,17 +4352,25 @@ export type StudentUpdateWithoutCourseHistoryInput = {
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutCourseHistoryInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3656,17 +4412,25 @@ export type StudentUncheckedUpdateWithoutCourseHistoryInput = {
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateWithoutClassReportsInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -3708,17 +4472,25 @@ export type StudentCreateWithoutClassReportsInput = {
   userAccount?: Prisma.UserCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditCreateNestedManyWithoutStudentInput
 }
 
 export type StudentUncheckedCreateWithoutClassReportsInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -3760,6 +4532,7 @@ export type StudentUncheckedCreateWithoutClassReportsInput = {
   userAccount?: Prisma.UserUncheckedCreateNestedOneWithoutStudentInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedCreateNestedManyWithoutStudentInput
   invoices?: Prisma.StudentInvoiceUncheckedCreateNestedManyWithoutStudentInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedCreateNestedManyWithoutStudentInput
 }
 
 export type StudentCreateOrConnectWithoutClassReportsInput = {
@@ -3782,11 +4555,18 @@ export type StudentUpdateWithoutClassReportsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3828,17 +4608,25 @@ export type StudentUpdateWithoutClassReportsInput = {
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutClassReportsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3880,17 +4668,25 @@ export type StudentUncheckedUpdateWithoutClassReportsInput = {
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentCreateManyTeacherInput = {
   id?: string
   image?: string | null
   name?: string | null
+  studentType?: string | null
+  age?: number | null
+  gender?: string | null
   country?: string | null
   studentSince?: Date | string | null
   weeklySchedule?: string | null
   classStartDate?: Date | string | null
   classStartTime?: string | null
+  preferredTimeZone?: string | null
+  preferredLocalTime?: string | null
+  preferredLocalDays?: Prisma.StudentCreatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Date | string | null
   classDurationMinutes?: number | null
   classDays?: Prisma.StudentCreateclassDaysInput | number[]
   packageCode?: string | null
@@ -3928,11 +4724,18 @@ export type StudentUpdateWithoutTeacherInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -3974,17 +4777,25 @@ export type StudentUpdateWithoutTeacherInput = {
   userAccount?: Prisma.UserUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateWithoutTeacherInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4026,17 +4837,25 @@ export type StudentUncheckedUpdateWithoutTeacherInput = {
   userAccount?: Prisma.UserUncheckedUpdateOneWithoutStudentNestedInput
   billingTransactions?: Prisma.StudentBillingTransactionUncheckedUpdateManyWithoutStudentNestedInput
   invoices?: Prisma.StudentInvoiceUncheckedUpdateManyWithoutStudentNestedInput
+  makeupCredits?: Prisma.MakeupCreditUncheckedUpdateManyWithoutStudentNestedInput
 }
 
 export type StudentUncheckedUpdateManyWithoutTeacherInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  studentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  gender?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   studentSince?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   weeklySchedule?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   classStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classStartTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredTimeZone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalTime?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  preferredLocalDays?: Prisma.StudentUpdatepreferredLocalDaysInput | number[]
+  preferredStartDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   classDurationMinutes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   classDays?: Prisma.StudentUpdateclassDaysInput | number[]
   packageCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -4085,6 +4904,7 @@ export type StudentCountOutputType = {
   courseHistory: number
   billingTransactions: number
   invoices: number
+  makeupCredits: number
 }
 
 export type StudentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4097,6 +4917,7 @@ export type StudentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   courseHistory?: boolean | StudentCountOutputTypeCountCourseHistoryArgs
   billingTransactions?: boolean | StudentCountOutputTypeCountBillingTransactionsArgs
   invoices?: boolean | StudentCountOutputTypeCountInvoicesArgs
+  makeupCredits?: boolean | StudentCountOutputTypeCountMakeupCreditsArgs
 }
 
 /**
@@ -4172,16 +4993,30 @@ export type StudentCountOutputTypeCountInvoicesArgs<ExtArgs extends runtime.Type
   where?: Prisma.StudentInvoiceWhereInput
 }
 
+/**
+ * StudentCountOutputType without action
+ */
+export type StudentCountOutputTypeCountMakeupCreditsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MakeupCreditWhereInput
+}
+
 
 export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   image?: boolean
   name?: boolean
+  studentType?: boolean
+  age?: boolean
+  gender?: boolean
   country?: boolean
   studentSince?: boolean
   weeklySchedule?: boolean
   classStartDate?: boolean
   classStartTime?: boolean
+  preferredTimeZone?: boolean
+  preferredLocalTime?: boolean
+  preferredLocalDays?: boolean
+  preferredStartDate?: boolean
   classDurationMinutes?: boolean
   classDays?: boolean
   packageCode?: boolean
@@ -4225,6 +5060,7 @@ export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   userAccount?: boolean | Prisma.Student$userAccountArgs<ExtArgs>
   billingTransactions?: boolean | Prisma.Student$billingTransactionsArgs<ExtArgs>
   invoices?: boolean | Prisma.Student$invoicesArgs<ExtArgs>
+  makeupCredits?: boolean | Prisma.Student$makeupCreditsArgs<ExtArgs>
   _count?: boolean | Prisma.StudentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["student"]>
 
@@ -4232,11 +5068,18 @@ export type StudentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   image?: boolean
   name?: boolean
+  studentType?: boolean
+  age?: boolean
+  gender?: boolean
   country?: boolean
   studentSince?: boolean
   weeklySchedule?: boolean
   classStartDate?: boolean
   classStartTime?: boolean
+  preferredTimeZone?: boolean
+  preferredLocalTime?: boolean
+  preferredLocalDays?: boolean
+  preferredStartDate?: boolean
   classDurationMinutes?: boolean
   classDays?: boolean
   packageCode?: boolean
@@ -4276,11 +5119,18 @@ export type StudentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   image?: boolean
   name?: boolean
+  studentType?: boolean
+  age?: boolean
+  gender?: boolean
   country?: boolean
   studentSince?: boolean
   weeklySchedule?: boolean
   classStartDate?: boolean
   classStartTime?: boolean
+  preferredTimeZone?: boolean
+  preferredLocalTime?: boolean
+  preferredLocalDays?: boolean
+  preferredStartDate?: boolean
   classDurationMinutes?: boolean
   classDays?: boolean
   packageCode?: boolean
@@ -4320,11 +5170,18 @@ export type StudentSelectScalar = {
   id?: boolean
   image?: boolean
   name?: boolean
+  studentType?: boolean
+  age?: boolean
+  gender?: boolean
   country?: boolean
   studentSince?: boolean
   weeklySchedule?: boolean
   classStartDate?: boolean
   classStartTime?: boolean
+  preferredTimeZone?: boolean
+  preferredLocalTime?: boolean
+  preferredLocalDays?: boolean
+  preferredStartDate?: boolean
   classDurationMinutes?: boolean
   classDays?: boolean
   packageCode?: boolean
@@ -4359,7 +5216,7 @@ export type StudentSelectScalar = {
   courseUpdatedAt?: boolean
 }
 
-export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "image" | "name" | "country" | "studentSince" | "weeklySchedule" | "classStartDate" | "classStartTime" | "classDurationMinutes" | "classDays" | "packageCode" | "weeklyHours" | "billingCycle" | "monthlyPriceBdt" | "quarterlyPriceBdt" | "billingAmountBdt" | "billingManualOverride" | "scheduleConfirmed" | "parentName" | "parentEmail" | "parentPhone" | "courseName" | "courseStage" | "teacherId" | "teacherName" | "groupClass" | "groupSchedule" | "groupClassSchedule" | "groupTeacher" | "groupSubject" | "subject" | "teacherChanged" | "previousTeacherName" | "teacherChangeReason" | "status" | "createdAt" | "updatedAt" | "currentCourseLevel" | "courseCompleted" | "courseUpdatedAt", ExtArgs["result"]["student"]>
+export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "image" | "name" | "studentType" | "age" | "gender" | "country" | "studentSince" | "weeklySchedule" | "classStartDate" | "classStartTime" | "preferredTimeZone" | "preferredLocalTime" | "preferredLocalDays" | "preferredStartDate" | "classDurationMinutes" | "classDays" | "packageCode" | "weeklyHours" | "billingCycle" | "monthlyPriceBdt" | "quarterlyPriceBdt" | "billingAmountBdt" | "billingManualOverride" | "scheduleConfirmed" | "parentName" | "parentEmail" | "parentPhone" | "courseName" | "courseStage" | "teacherId" | "teacherName" | "groupClass" | "groupSchedule" | "groupClassSchedule" | "groupTeacher" | "groupSubject" | "subject" | "teacherChanged" | "previousTeacherName" | "teacherChangeReason" | "status" | "createdAt" | "updatedAt" | "currentCourseLevel" | "courseCompleted" | "courseUpdatedAt", ExtArgs["result"]["student"]>
 export type StudentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   teacher?: boolean | Prisma.Student$teacherArgs<ExtArgs>
   courses?: boolean | Prisma.Student$coursesArgs<ExtArgs>
@@ -4372,6 +5229,7 @@ export type StudentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   userAccount?: boolean | Prisma.Student$userAccountArgs<ExtArgs>
   billingTransactions?: boolean | Prisma.Student$billingTransactionsArgs<ExtArgs>
   invoices?: boolean | Prisma.Student$invoicesArgs<ExtArgs>
+  makeupCredits?: boolean | Prisma.Student$makeupCreditsArgs<ExtArgs>
   _count?: boolean | Prisma.StudentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StudentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4395,16 +5253,24 @@ export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     userAccount: Prisma.$UserPayload<ExtArgs> | null
     billingTransactions: Prisma.$StudentBillingTransactionPayload<ExtArgs>[]
     invoices: Prisma.$StudentInvoicePayload<ExtArgs>[]
+    makeupCredits: Prisma.$MakeupCreditPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     image: string | null
     name: string | null
+    studentType: string | null
+    age: number | null
+    gender: string | null
     country: string | null
     studentSince: Date | null
     weeklySchedule: string | null
     classStartDate: Date | null
     classStartTime: string | null
+    preferredTimeZone: string | null
+    preferredLocalTime: string | null
+    preferredLocalDays: number[]
+    preferredStartDate: Date | null
     classDurationMinutes: number | null
     classDays: number[]
     packageCode: string | null
@@ -4842,6 +5708,7 @@ export interface Prisma__StudentClient<T, Null = never, ExtArgs extends runtime.
   userAccount<T extends Prisma.Student$userAccountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$userAccountArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   billingTransactions<T extends Prisma.Student$billingTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$billingTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentBillingTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   invoices<T extends Prisma.Student$invoicesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$invoicesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentInvoicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  makeupCredits<T extends Prisma.Student$makeupCreditsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Student$makeupCreditsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MakeupCreditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4874,11 +5741,18 @@ export interface StudentFieldRefs {
   readonly id: Prisma.FieldRef<"Student", 'String'>
   readonly image: Prisma.FieldRef<"Student", 'String'>
   readonly name: Prisma.FieldRef<"Student", 'String'>
+  readonly studentType: Prisma.FieldRef<"Student", 'String'>
+  readonly age: Prisma.FieldRef<"Student", 'Int'>
+  readonly gender: Prisma.FieldRef<"Student", 'String'>
   readonly country: Prisma.FieldRef<"Student", 'String'>
   readonly studentSince: Prisma.FieldRef<"Student", 'DateTime'>
   readonly weeklySchedule: Prisma.FieldRef<"Student", 'String'>
   readonly classStartDate: Prisma.FieldRef<"Student", 'DateTime'>
   readonly classStartTime: Prisma.FieldRef<"Student", 'String'>
+  readonly preferredTimeZone: Prisma.FieldRef<"Student", 'String'>
+  readonly preferredLocalTime: Prisma.FieldRef<"Student", 'String'>
+  readonly preferredLocalDays: Prisma.FieldRef<"Student", 'Int[]'>
+  readonly preferredStartDate: Prisma.FieldRef<"Student", 'DateTime'>
   readonly classDurationMinutes: Prisma.FieldRef<"Student", 'Int'>
   readonly classDays: Prisma.FieldRef<"Student", 'Int[]'>
   readonly packageCode: Prisma.FieldRef<"Student", 'String'>
@@ -5563,6 +6437,30 @@ export type Student$invoicesArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.StudentInvoiceScalarFieldEnum | Prisma.StudentInvoiceScalarFieldEnum[]
+}
+
+/**
+ * Student.makeupCredits
+ */
+export type Student$makeupCreditsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MakeupCredit
+   */
+  select?: Prisma.MakeupCreditSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MakeupCredit
+   */
+  omit?: Prisma.MakeupCreditOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MakeupCreditInclude<ExtArgs> | null
+  where?: Prisma.MakeupCreditWhereInput
+  orderBy?: Prisma.MakeupCreditOrderByWithRelationInput | Prisma.MakeupCreditOrderByWithRelationInput[]
+  cursor?: Prisma.MakeupCreditWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MakeupCreditScalarFieldEnum | Prisma.MakeupCreditScalarFieldEnum[]
 }
 
 /**

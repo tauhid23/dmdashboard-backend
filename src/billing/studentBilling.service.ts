@@ -12,7 +12,7 @@ export const calculateBillingPlan = (input: { durationMinutes: number; classDays
 export const recalculateStudentBillingFromSchedule = async (studentId: string) => {
   const student = await prisma.student.findUnique({ where: { id: studentId } });
   if (!student || student.billingManualOverride) return;
-  const sources = await prisma.classScheduleEvent.findMany({ where: { studentId, status: "CONFIRMED", recurrenceSourceId: null, isRecurring: true } });
+  const sources = await prisma.classScheduleEvent.findMany({ where: { studentId, status: "CONFIRMED", makeupCredit: false, recurrenceSourceId: null, isRecurring: true } });
   if (!sources.length) {
     await prisma.student.update({ where: { id: studentId }, data: { scheduleConfirmed: false } });
     return;

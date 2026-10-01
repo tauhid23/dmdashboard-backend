@@ -356,7 +356,6 @@ export type UserOrderByWithRelationInput = {
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  normalizedEmail?: string
   normalizedUsername?: string
   teacherId?: string
   studentId?: string
@@ -365,6 +364,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringFilter<"User"> | string
   email?: Prisma.StringFilter<"User"> | string
+  normalizedEmail?: Prisma.StringFilter<"User"> | string
   username?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringFilter<"User"> | string
   status?: Prisma.EnumUserStatusFilter<"User"> | $Enums.UserStatus
@@ -385,7 +385,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   auditLogsAsTarget?: Prisma.AuditLogListRelationFilter
   createdExamAttempts?: Prisma.ExamAttemptListRelationFilter
   courseChanges?: Prisma.StudentCourseHistoryListRelationFilter
-}, "id" | "normalizedEmail" | "normalizedUsername" | "teacherId" | "studentId">
+}, "id" | "normalizedUsername" | "teacherId" | "studentId">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

@@ -285,6 +285,7 @@ export type StudentBillingTransactionWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"StudentBillingTransaction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentBillingTransaction"> | Date | string
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
+  makeupCredits?: Prisma.MakeupCreditListRelationFilter
 }
 
 export type StudentBillingTransactionOrderByWithRelationInput = {
@@ -302,6 +303,7 @@ export type StudentBillingTransactionOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   student?: Prisma.StudentOrderByWithRelationInput
+  makeupCredits?: Prisma.MakeupCreditOrderByRelationAggregateInput
 }
 
 export type StudentBillingTransactionWhereUniqueInput = Prisma.AtLeast<{
@@ -322,6 +324,7 @@ export type StudentBillingTransactionWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"StudentBillingTransaction"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"StudentBillingTransaction"> | Date | string
   student?: Prisma.XOR<Prisma.StudentScalarRelationFilter, Prisma.StudentWhereInput>
+  makeupCredits?: Prisma.MakeupCreditListRelationFilter
 }, "id" | "automationKey">
 
 export type StudentBillingTransactionOrderByWithAggregationInput = {
@@ -378,6 +381,7 @@ export type StudentBillingTransactionCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   student: Prisma.StudentCreateNestedOneWithoutBillingTransactionsInput
+  makeupCredits?: Prisma.MakeupCreditCreateNestedManyWithoutAdjustmentInput
 }
 
 export type StudentBillingTransactionUncheckedCreateInput = {
@@ -394,6 +398,7 @@ export type StudentBillingTransactionUncheckedCreateInput = {
   automationKey?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  makeupCredits?: Prisma.MakeupCreditUncheckedCreateNestedManyWithoutAdjustmentInput
 }
 
 export type StudentBillingTransactionUpdateInput = {
@@ -410,6 +415,7 @@ export type StudentBillingTransactionUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   student?: Prisma.StudentUpdateOneRequiredWithoutBillingTransactionsNestedInput
+  makeupCredits?: Prisma.MakeupCreditUpdateManyWithoutAdjustmentNestedInput
 }
 
 export type StudentBillingTransactionUncheckedUpdateInput = {
@@ -426,6 +432,7 @@ export type StudentBillingTransactionUncheckedUpdateInput = {
   automationKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  makeupCredits?: Prisma.MakeupCreditUncheckedUpdateManyWithoutAdjustmentNestedInput
 }
 
 export type StudentBillingTransactionCreateManyInput = {
@@ -543,6 +550,11 @@ export type StudentBillingTransactionSumOrderByAggregateInput = {
   repeatsEvery?: Prisma.SortOrder
 }
 
+export type StudentBillingTransactionNullableScalarRelationFilter = {
+  is?: Prisma.StudentBillingTransactionWhereInput | null
+  isNot?: Prisma.StudentBillingTransactionWhereInput | null
+}
+
 export type StudentBillingTransactionCreateNestedManyWithoutStudentInput = {
   create?: Prisma.XOR<Prisma.StudentBillingTransactionCreateWithoutStudentInput, Prisma.StudentBillingTransactionUncheckedCreateWithoutStudentInput> | Prisma.StudentBillingTransactionCreateWithoutStudentInput[] | Prisma.StudentBillingTransactionUncheckedCreateWithoutStudentInput[]
   connectOrCreate?: Prisma.StudentBillingTransactionCreateOrConnectWithoutStudentInput | Prisma.StudentBillingTransactionCreateOrConnectWithoutStudentInput[]
@@ -593,6 +605,22 @@ export type DecimalFieldUpdateOperationsInput = {
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
+export type StudentBillingTransactionCreateNestedOneWithoutMakeupCreditsInput = {
+  create?: Prisma.XOR<Prisma.StudentBillingTransactionCreateWithoutMakeupCreditsInput, Prisma.StudentBillingTransactionUncheckedCreateWithoutMakeupCreditsInput>
+  connectOrCreate?: Prisma.StudentBillingTransactionCreateOrConnectWithoutMakeupCreditsInput
+  connect?: Prisma.StudentBillingTransactionWhereUniqueInput
+}
+
+export type StudentBillingTransactionUpdateOneWithoutMakeupCreditsNestedInput = {
+  create?: Prisma.XOR<Prisma.StudentBillingTransactionCreateWithoutMakeupCreditsInput, Prisma.StudentBillingTransactionUncheckedCreateWithoutMakeupCreditsInput>
+  connectOrCreate?: Prisma.StudentBillingTransactionCreateOrConnectWithoutMakeupCreditsInput
+  upsert?: Prisma.StudentBillingTransactionUpsertWithoutMakeupCreditsInput
+  disconnect?: Prisma.StudentBillingTransactionWhereInput | boolean
+  delete?: Prisma.StudentBillingTransactionWhereInput | boolean
+  connect?: Prisma.StudentBillingTransactionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StudentBillingTransactionUpdateToOneWithWhereWithoutMakeupCreditsInput, Prisma.StudentBillingTransactionUpdateWithoutMakeupCreditsInput>, Prisma.StudentBillingTransactionUncheckedUpdateWithoutMakeupCreditsInput>
+}
+
 export type StudentBillingTransactionCreateWithoutStudentInput = {
   id?: string
   type: string
@@ -606,6 +634,7 @@ export type StudentBillingTransactionCreateWithoutStudentInput = {
   automationKey?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  makeupCredits?: Prisma.MakeupCreditCreateNestedManyWithoutAdjustmentInput
 }
 
 export type StudentBillingTransactionUncheckedCreateWithoutStudentInput = {
@@ -621,6 +650,7 @@ export type StudentBillingTransactionUncheckedCreateWithoutStudentInput = {
   automationKey?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  makeupCredits?: Prisma.MakeupCreditUncheckedCreateNestedManyWithoutAdjustmentInput
 }
 
 export type StudentBillingTransactionCreateOrConnectWithoutStudentInput = {
@@ -668,6 +698,86 @@ export type StudentBillingTransactionScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"StudentBillingTransaction"> | Date | string
 }
 
+export type StudentBillingTransactionCreateWithoutMakeupCreditsInput = {
+  id?: string
+  type: string
+  amountBdt: runtime.Decimal | runtime.DecimalJsLike | number | string
+  date: Date | string
+  description?: string | null
+  category?: string | null
+  recurring?: boolean
+  frequency?: string | null
+  repeatsEvery?: number | null
+  automationKey?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  student: Prisma.StudentCreateNestedOneWithoutBillingTransactionsInput
+}
+
+export type StudentBillingTransactionUncheckedCreateWithoutMakeupCreditsInput = {
+  id?: string
+  studentId: string
+  type: string
+  amountBdt: runtime.Decimal | runtime.DecimalJsLike | number | string
+  date: Date | string
+  description?: string | null
+  category?: string | null
+  recurring?: boolean
+  frequency?: string | null
+  repeatsEvery?: number | null
+  automationKey?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type StudentBillingTransactionCreateOrConnectWithoutMakeupCreditsInput = {
+  where: Prisma.StudentBillingTransactionWhereUniqueInput
+  create: Prisma.XOR<Prisma.StudentBillingTransactionCreateWithoutMakeupCreditsInput, Prisma.StudentBillingTransactionUncheckedCreateWithoutMakeupCreditsInput>
+}
+
+export type StudentBillingTransactionUpsertWithoutMakeupCreditsInput = {
+  update: Prisma.XOR<Prisma.StudentBillingTransactionUpdateWithoutMakeupCreditsInput, Prisma.StudentBillingTransactionUncheckedUpdateWithoutMakeupCreditsInput>
+  create: Prisma.XOR<Prisma.StudentBillingTransactionCreateWithoutMakeupCreditsInput, Prisma.StudentBillingTransactionUncheckedCreateWithoutMakeupCreditsInput>
+  where?: Prisma.StudentBillingTransactionWhereInput
+}
+
+export type StudentBillingTransactionUpdateToOneWithWhereWithoutMakeupCreditsInput = {
+  where?: Prisma.StudentBillingTransactionWhereInput
+  data: Prisma.XOR<Prisma.StudentBillingTransactionUpdateWithoutMakeupCreditsInput, Prisma.StudentBillingTransactionUncheckedUpdateWithoutMakeupCreditsInput>
+}
+
+export type StudentBillingTransactionUpdateWithoutMakeupCreditsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  amountBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  frequency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  repeatsEvery?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  automationKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  student?: Prisma.StudentUpdateOneRequiredWithoutBillingTransactionsNestedInput
+}
+
+export type StudentBillingTransactionUncheckedUpdateWithoutMakeupCreditsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  studentId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  amountBdt?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  frequency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  repeatsEvery?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  automationKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type StudentBillingTransactionCreateManyStudentInput = {
   id?: string
   type: string
@@ -696,6 +806,7 @@ export type StudentBillingTransactionUpdateWithoutStudentInput = {
   automationKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  makeupCredits?: Prisma.MakeupCreditUpdateManyWithoutAdjustmentNestedInput
 }
 
 export type StudentBillingTransactionUncheckedUpdateWithoutStudentInput = {
@@ -711,6 +822,7 @@ export type StudentBillingTransactionUncheckedUpdateWithoutStudentInput = {
   automationKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  makeupCredits?: Prisma.MakeupCreditUncheckedUpdateManyWithoutAdjustmentNestedInput
 }
 
 export type StudentBillingTransactionUncheckedUpdateManyWithoutStudentInput = {
@@ -729,6 +841,35 @@ export type StudentBillingTransactionUncheckedUpdateManyWithoutStudentInput = {
 }
 
 
+/**
+ * Count Type StudentBillingTransactionCountOutputType
+ */
+
+export type StudentBillingTransactionCountOutputType = {
+  makeupCredits: number
+}
+
+export type StudentBillingTransactionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  makeupCredits?: boolean | StudentBillingTransactionCountOutputTypeCountMakeupCreditsArgs
+}
+
+/**
+ * StudentBillingTransactionCountOutputType without action
+ */
+export type StudentBillingTransactionCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StudentBillingTransactionCountOutputType
+   */
+  select?: Prisma.StudentBillingTransactionCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * StudentBillingTransactionCountOutputType without action
+ */
+export type StudentBillingTransactionCountOutputTypeCountMakeupCreditsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MakeupCreditWhereInput
+}
+
 
 export type StudentBillingTransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -745,6 +886,8 @@ export type StudentBillingTransactionSelect<ExtArgs extends runtime.Types.Extens
   createdAt?: boolean
   updatedAt?: boolean
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
+  makeupCredits?: boolean | Prisma.StudentBillingTransaction$makeupCreditsArgs<ExtArgs>
+  _count?: boolean | Prisma.StudentBillingTransactionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["studentBillingTransaction"]>
 
 export type StudentBillingTransactionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -800,6 +943,8 @@ export type StudentBillingTransactionSelectScalar = {
 export type StudentBillingTransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "studentId" | "type" | "amountBdt" | "date" | "description" | "category" | "recurring" | "frequency" | "repeatsEvery" | "automationKey" | "createdAt" | "updatedAt", ExtArgs["result"]["studentBillingTransaction"]>
 export type StudentBillingTransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
+  makeupCredits?: boolean | Prisma.StudentBillingTransaction$makeupCreditsArgs<ExtArgs>
+  _count?: boolean | Prisma.StudentBillingTransactionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type StudentBillingTransactionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   student?: boolean | Prisma.StudentDefaultArgs<ExtArgs>
@@ -812,6 +957,7 @@ export type $StudentBillingTransactionPayload<ExtArgs extends runtime.Types.Exte
   name: "StudentBillingTransaction"
   objects: {
     student: Prisma.$StudentPayload<ExtArgs>
+    makeupCredits: Prisma.$MakeupCreditPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1222,6 +1368,7 @@ readonly fields: StudentBillingTransactionFieldRefs;
 export interface Prisma__StudentBillingTransactionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   student<T extends Prisma.StudentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentDefaultArgs<ExtArgs>>): Prisma.Prisma__StudentClient<runtime.Types.Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  makeupCredits<T extends Prisma.StudentBillingTransaction$makeupCreditsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StudentBillingTransaction$makeupCreditsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MakeupCreditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1662,6 +1809,30 @@ export type StudentBillingTransactionDeleteManyArgs<ExtArgs extends runtime.Type
    * Limit how many StudentBillingTransactions to delete.
    */
   limit?: number
+}
+
+/**
+ * StudentBillingTransaction.makeupCredits
+ */
+export type StudentBillingTransaction$makeupCreditsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MakeupCredit
+   */
+  select?: Prisma.MakeupCreditSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MakeupCredit
+   */
+  omit?: Prisma.MakeupCreditOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MakeupCreditInclude<ExtArgs> | null
+  where?: Prisma.MakeupCreditWhereInput
+  orderBy?: Prisma.MakeupCreditOrderByWithRelationInput | Prisma.MakeupCreditOrderByWithRelationInput[]
+  cursor?: Prisma.MakeupCreditWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MakeupCreditScalarFieldEnum | Prisma.MakeupCreditScalarFieldEnum[]
 }
 
 /**

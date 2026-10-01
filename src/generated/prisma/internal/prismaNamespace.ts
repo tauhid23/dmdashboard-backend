@@ -393,6 +393,7 @@ export const ModelName = {
   PasswordResetToken: 'PasswordResetToken',
   AuditLog: 'AuditLog',
   AppSetting: 'AppSetting',
+  EmailNotification: 'EmailNotification',
   Student: 'Student',
   StudentBillingTransaction: 'StudentBillingTransaction',
   StudentInvoice: 'StudentInvoice',
@@ -402,6 +403,8 @@ export const ModelName = {
   TeacherPayrollCategoryRate: 'TeacherPayrollCategoryRate',
   TeacherPayrollPayment: 'TeacherPayrollPayment',
   ClassScheduleEvent: 'ClassScheduleEvent',
+  MakeupCredit: 'MakeupCredit',
+  MakeupCreditUse: 'MakeupCreditUse',
   ExamSchedule: 'ExamSchedule',
   ExamAttempt: 'ExamAttempt',
   ExamRule: 'ExamRule',
@@ -427,7 +430,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "role" | "permission" | "rolePermission" | "userPermissionOverride" | "refreshSession" | "passwordResetToken" | "auditLog" | "appSetting" | "student" | "studentBillingTransaction" | "studentInvoice" | "studentCourse" | "teacherChange" | "teacher" | "teacherPayrollCategoryRate" | "teacherPayrollPayment" | "classScheduleEvent" | "examSchedule" | "examAttempt" | "examRule" | "examRuleSection" | "examRuleField" | "examMark" | "examSectionResult" | "studentCourseHistory" | "classReport" | "studentLeftLog"
+    modelProps: "user" | "role" | "permission" | "rolePermission" | "userPermissionOverride" | "refreshSession" | "passwordResetToken" | "auditLog" | "appSetting" | "emailNotification" | "student" | "studentBillingTransaction" | "studentInvoice" | "studentCourse" | "teacherChange" | "teacher" | "teacherPayrollCategoryRate" | "teacherPayrollPayment" | "classScheduleEvent" | "makeupCredit" | "makeupCreditUse" | "examSchedule" | "examAttempt" | "examRule" | "examRuleSection" | "examRuleField" | "examMark" | "examSectionResult" | "studentCourseHistory" | "classReport" | "studentLeftLog"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1097,6 +1100,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    EmailNotification: {
+      payload: Prisma.$EmailNotificationPayload<ExtArgs>
+      fields: Prisma.EmailNotificationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EmailNotificationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailNotificationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EmailNotificationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailNotificationPayload>
+        }
+        findFirst: {
+          args: Prisma.EmailNotificationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailNotificationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EmailNotificationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailNotificationPayload>
+        }
+        findMany: {
+          args: Prisma.EmailNotificationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailNotificationPayload>[]
+        }
+        create: {
+          args: Prisma.EmailNotificationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailNotificationPayload>
+        }
+        createMany: {
+          args: Prisma.EmailNotificationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EmailNotificationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailNotificationPayload>[]
+        }
+        delete: {
+          args: Prisma.EmailNotificationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailNotificationPayload>
+        }
+        update: {
+          args: Prisma.EmailNotificationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailNotificationPayload>
+        }
+        deleteMany: {
+          args: Prisma.EmailNotificationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EmailNotificationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EmailNotificationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailNotificationPayload>[]
+        }
+        upsert: {
+          args: Prisma.EmailNotificationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EmailNotificationPayload>
+        }
+        aggregate: {
+          args: Prisma.EmailNotificationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEmailNotification>
+        }
+        groupBy: {
+          args: Prisma.EmailNotificationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmailNotificationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EmailNotificationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EmailNotificationCountAggregateOutputType> | number
+        }
+      }
+    }
     Student: {
       payload: Prisma.$StudentPayload<ExtArgs>
       fields: Prisma.StudentFieldRefs
@@ -1760,6 +1837,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ClassScheduleEventCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ClassScheduleEventCountAggregateOutputType> | number
+        }
+      }
+    }
+    MakeupCredit: {
+      payload: Prisma.$MakeupCreditPayload<ExtArgs>
+      fields: Prisma.MakeupCreditFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MakeupCreditFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MakeupCreditFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditPayload>
+        }
+        findFirst: {
+          args: Prisma.MakeupCreditFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MakeupCreditFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditPayload>
+        }
+        findMany: {
+          args: Prisma.MakeupCreditFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditPayload>[]
+        }
+        create: {
+          args: Prisma.MakeupCreditCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditPayload>
+        }
+        createMany: {
+          args: Prisma.MakeupCreditCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MakeupCreditCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditPayload>[]
+        }
+        delete: {
+          args: Prisma.MakeupCreditDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditPayload>
+        }
+        update: {
+          args: Prisma.MakeupCreditUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditPayload>
+        }
+        deleteMany: {
+          args: Prisma.MakeupCreditDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MakeupCreditUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MakeupCreditUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditPayload>[]
+        }
+        upsert: {
+          args: Prisma.MakeupCreditUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditPayload>
+        }
+        aggregate: {
+          args: Prisma.MakeupCreditAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMakeupCredit>
+        }
+        groupBy: {
+          args: Prisma.MakeupCreditGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MakeupCreditGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MakeupCreditCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MakeupCreditCountAggregateOutputType> | number
+        }
+      }
+    }
+    MakeupCreditUse: {
+      payload: Prisma.$MakeupCreditUsePayload<ExtArgs>
+      fields: Prisma.MakeupCreditUseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MakeupCreditUseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditUsePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MakeupCreditUseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditUsePayload>
+        }
+        findFirst: {
+          args: Prisma.MakeupCreditUseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditUsePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MakeupCreditUseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditUsePayload>
+        }
+        findMany: {
+          args: Prisma.MakeupCreditUseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditUsePayload>[]
+        }
+        create: {
+          args: Prisma.MakeupCreditUseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditUsePayload>
+        }
+        createMany: {
+          args: Prisma.MakeupCreditUseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MakeupCreditUseCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditUsePayload>[]
+        }
+        delete: {
+          args: Prisma.MakeupCreditUseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditUsePayload>
+        }
+        update: {
+          args: Prisma.MakeupCreditUseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditUsePayload>
+        }
+        deleteMany: {
+          args: Prisma.MakeupCreditUseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MakeupCreditUseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MakeupCreditUseUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditUsePayload>[]
+        }
+        upsert: {
+          args: Prisma.MakeupCreditUseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MakeupCreditUsePayload>
+        }
+        aggregate: {
+          args: Prisma.MakeupCreditUseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMakeupCreditUse>
+        }
+        groupBy: {
+          args: Prisma.MakeupCreditUseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MakeupCreditUseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MakeupCreditUseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MakeupCreditUseCountAggregateOutputType> | number
         }
       }
     }
@@ -2660,15 +2885,38 @@ export const AppSettingScalarFieldEnum = {
 export type AppSettingScalarFieldEnum = (typeof AppSettingScalarFieldEnum)[keyof typeof AppSettingScalarFieldEnum]
 
 
+export const EmailNotificationScalarFieldEnum = {
+  id: 'id',
+  eventKey: 'eventKey',
+  recipients: 'recipients',
+  subject: 'subject',
+  body: 'body',
+  attempts: 'attempts',
+  nextAttemptAt: 'nextAttemptAt',
+  sentAt: 'sentAt',
+  lastError: 'lastError',
+  createdAt: 'createdAt'
+} as const
+
+export type EmailNotificationScalarFieldEnum = (typeof EmailNotificationScalarFieldEnum)[keyof typeof EmailNotificationScalarFieldEnum]
+
+
 export const StudentScalarFieldEnum = {
   id: 'id',
   image: 'image',
   name: 'name',
+  studentType: 'studentType',
+  age: 'age',
+  gender: 'gender',
   country: 'country',
   studentSince: 'studentSince',
   weeklySchedule: 'weeklySchedule',
   classStartDate: 'classStartDate',
   classStartTime: 'classStartTime',
+  preferredTimeZone: 'preferredTimeZone',
+  preferredLocalTime: 'preferredLocalTime',
+  preferredLocalDays: 'preferredLocalDays',
+  preferredStartDate: 'preferredStartDate',
   classDurationMinutes: 'classDurationMinutes',
   classDays: 'classDays',
   packageCode: 'packageCode',
@@ -2729,14 +2977,29 @@ export const StudentInvoiceScalarFieldEnum = {
   id: 'id',
   studentId: 'studentId',
   invoiceNumber: 'invoiceNumber',
+  automationKey: 'automationKey',
   invoiceDate: 'invoiceDate',
   rangeStart: 'rangeStart',
   rangeEnd: 'rangeEnd',
   dueDate: 'dueDate',
+  includeBalanceForward: 'includeBalanceForward',
+  previousBalanceBdt: 'previousBalanceBdt',
+  currentChargesBdt: 'currentChargesBdt',
+  currentPaymentsBdt: 'currentPaymentsBdt',
   amountBdt: 'amountBdt',
   paidAmountBdt: 'paidAmountBdt',
   status: 'status',
   emailedAt: 'emailedAt',
+  autoSendAt: 'autoSendAt',
+  autoRetryAt: 'autoRetryAt',
+  sendingUntil: 'sendingUntil',
+  sentTo: 'sentTo',
+  emailSubject: 'emailSubject',
+  emailBody: 'emailBody',
+  pdfTemplate: 'pdfTemplate',
+  pdfAccentColor: 'pdfAccentColor',
+  pdfNotes: 'pdfNotes',
+  lineItems: 'lineItems',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2840,6 +3103,37 @@ export const ClassScheduleEventScalarFieldEnum = {
 } as const
 
 export type ClassScheduleEventScalarFieldEnum = (typeof ClassScheduleEventScalarFieldEnum)[keyof typeof ClassScheduleEventScalarFieldEnum]
+
+
+export const MakeupCreditScalarFieldEnum = {
+  id: 'id',
+  studentId: 'studentId',
+  sourceEventId: 'sourceEventId',
+  durationMinutes: 'durationMinutes',
+  periodKey: 'periodKey',
+  expiresAt: 'expiresAt',
+  revokedAt: 'revokedAt',
+  adjustedMinutes: 'adjustedMinutes',
+  adjustmentId: 'adjustmentId',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MakeupCreditScalarFieldEnum = (typeof MakeupCreditScalarFieldEnum)[keyof typeof MakeupCreditScalarFieldEnum]
+
+
+export const MakeupCreditUseScalarFieldEnum = {
+  id: 'id',
+  creditId: 'creditId',
+  eventId: 'eventId',
+  minutes: 'minutes',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MakeupCreditUseScalarFieldEnum = (typeof MakeupCreditUseScalarFieldEnum)[keyof typeof MakeupCreditUseScalarFieldEnum]
 
 
 export const ExamScheduleScalarFieldEnum = {
@@ -3403,6 +3697,7 @@ export type GlobalOmitConfig = {
   passwordResetToken?: Prisma.PasswordResetTokenOmit
   auditLog?: Prisma.AuditLogOmit
   appSetting?: Prisma.AppSettingOmit
+  emailNotification?: Prisma.EmailNotificationOmit
   student?: Prisma.StudentOmit
   studentBillingTransaction?: Prisma.StudentBillingTransactionOmit
   studentInvoice?: Prisma.StudentInvoiceOmit
@@ -3412,6 +3707,8 @@ export type GlobalOmitConfig = {
   teacherPayrollCategoryRate?: Prisma.TeacherPayrollCategoryRateOmit
   teacherPayrollPayment?: Prisma.TeacherPayrollPaymentOmit
   classScheduleEvent?: Prisma.ClassScheduleEventOmit
+  makeupCredit?: Prisma.MakeupCreditOmit
+  makeupCreditUse?: Prisma.MakeupCreditUseOmit
   examSchedule?: Prisma.ExamScheduleOmit
   examAttempt?: Prisma.ExamAttemptOmit
   examRule?: Prisma.ExamRuleOmit

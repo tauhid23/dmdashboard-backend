@@ -12,7 +12,10 @@ export type SendEmailInput = {
   html?: string;
   cc?: EmailRecipient;
   replyTo?: string;
+  attachments?: SendMailOptions["attachments"];
 };
+
+export const isEmailDeliveryEnabled = () => Boolean(mailTransport && env.EMAIL_FROM_ADDRESS);
 
 export const sendEmail = async (input: SendEmailInput) => {
   if (!mailTransport || !env.EMAIL_FROM_ADDRESS) {
@@ -29,10 +32,14 @@ export const sendEmail = async (input: SendEmailInput) => {
     replyTo: input.replyTo,
     subject: input.subject,
     text: input.text,
-    html: input.html
+    html: input.html,
+    attachments: input.attachments
   };
 
   const result = await mailTransport.sendMail(message);
+  if (!result.accepted.length) {
+    throw new Error("The mail server did not accept any recipients");
+  }
 
   return {
     messageId: result.messageId,

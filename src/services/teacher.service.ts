@@ -325,9 +325,7 @@ export const createTeacher = async (payload: CreateTeacherInput) => {
       ...(payload.joiningDate !== undefined
         ? { joiningDate: parseOptionalDate(payload.joiningDate, "joiningDate") }
         : {}),
-      ...(payload.status !== undefined
-        ? { status: parseOptionalStatus(payload.status) }
-        : {}),
+      status: parseOptionalStatus(payload.status ?? null) ?? TeacherStatus.ACTIVE,
       ...(payload.strongArea !== undefined
         ? { strongArea: payload.strongArea }
         : {}),
