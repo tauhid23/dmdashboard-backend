@@ -3,6 +3,28 @@ import type { AuthRequest } from "../auth/auth.types.js";
 import * as service from "../services/settings.service.js";
 import { env } from "../config/env.js";
 import { verifyMailConnection } from "../config/mail.js";
+import * as loginAppearance from "../services/loginAppearance.service.js";
+
+export async function getPublicLoginAppearance(_req: AuthRequest, res: Response) {
+  res.json({ data: await loginAppearance.getLoginAppearance() });
+}
+
+export async function getLoginBackgroundImage(_req: AuthRequest, res: Response) {
+  const image = await loginAppearance.getLoginImage();
+  if (!image) { res.sendStatus(404); return; }
+  res.set("Cache-Control", "public, max-age=300");
+  res.set("Cross-Origin-Resource-Policy", "cross-origin");
+  res.type(image.mimeType).send(image.buffer);
+}
+
+export async function uploadLoginBackgroundImage(req: AuthRequest, res: Response) {
+  if (!req.file) { res.status(400).json({ message: "Choose an image to upload." }); return; }
+  res.json({ data: await loginAppearance.saveLoginImage(req.auth!.id, req.file) });
+}
+
+export async function resetLoginBackgroundImage(_req: AuthRequest, res: Response) {
+  res.json({ data: await loginAppearance.removeLoginImage() });
+}
 
 export async function getSettings(_req: AuthRequest, res: Response) {
   res.json({ data: await service.getSettings() });

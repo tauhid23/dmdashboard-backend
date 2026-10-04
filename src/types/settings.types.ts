@@ -40,6 +40,7 @@ export type NotificationSettings = {
 };
 
 export type AppSettings = {
+  loginAppearance: { imageOpacity: number };
   workspace: WorkspaceSettings;
   operations: OperationsSettings;
   security: SecuritySettings;

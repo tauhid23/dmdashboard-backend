@@ -7,6 +7,7 @@ const error = (statusCode: number, message: string, code: string, errors?: unkno
   Object.assign(new Error(message), { statusCode, code, errors });
 
 export const defaultSettings: AppSettings = {
+  loginAppearance: { imageOpacity: 65 },
   workspace: {
     madrasaName: "Deeni Madrasa",
     legalName: "Deeni Madrasa",
@@ -127,8 +128,12 @@ export const normalizeSettings = (value: unknown): AppSettings => {
   const security = isObject(input.security) ? input.security : {};
   const invoicing = isObject(input.invoicing) ? input.invoicing : {};
   const notifications = isObject(input.notifications) ? input.notifications : {};
+  const loginAppearance = isObject(input.loginAppearance) ? input.loginAppearance : {};
 
   return {
+    loginAppearance: {
+      imageOpacity: integer(loginAppearance.imageOpacity, defaultSettings.loginAppearance.imageOpacity, 0, 100),
+    },
     workspace: {
       madrasaName: text(workspace.madrasaName, defaultSettings.workspace.madrasaName, 120),
       legalName: text(workspace.legalName, defaultSettings.workspace.legalName, 160),
@@ -235,6 +240,7 @@ export async function updateSettings(actorId: string, payload: unknown) {
 
   const current = await getSettings();
   const merged = normalizeSettings({
+    loginAppearance: { ...current.loginAppearance, ...(isObject(payload) && isObject(payload.loginAppearance) ? payload.loginAppearance : {}) },
     workspace: { ...current.workspace, ...(isObject(payload) && isObject(payload.workspace) ? payload.workspace : {}) },
     operations: { ...current.operations, ...(isObject(payload) && isObject(payload.operations) ? payload.operations : {}) },
     security: { ...current.security, ...(isObject(payload) && isObject(payload.security) ? payload.security : {}) },

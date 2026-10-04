@@ -54,3 +54,10 @@ void test("invalid manager notification addresses are rejected", () => {
     /Validation failed/,
   );
 });
+
+void test("login background opacity defaults and stays within the allowed range", () => {
+  assert.equal(normalizeSettings({}).loginAppearance.imageOpacity, 65);
+  assert.equal(normalizeSettings({ loginAppearance: { imageOpacity: 28 } }).loginAppearance.imageOpacity, 28);
+  assert.equal(normalizeSettings({ loginAppearance: { imageOpacity: 150 } }).loginAppearance.imageOpacity, 100);
+  assert.equal(normalizeSettings({ loginAppearance: { imageOpacity: -10 } }).loginAppearance.imageOpacity, 0);
+});
